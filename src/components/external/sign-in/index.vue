@@ -22,7 +22,7 @@
           <span>or</span>
           <div class="line r"></div>
         </div>
-        
+
         <form class="text-left">
           <div class="form-group">
             <input type="email" v-model="username" class="form-control" aria-describedby="emailHelp" placeholder="Enter email" autocomplete="email" :disabled="disabled">
@@ -34,13 +34,13 @@
             </small>
           </div>
         </form>
-        
+
         <b-button variant="primary" class="btn-rounded btn-login btn-block" @click.prevent="regular()">Enter</b-button>
         <router-link to="/" class="btn">Back</router-link>
-        <br>
+        <!-- <br>
         <small>
           Don't have an account? <router-link to="/external/signup">Sign up</router-link>.
-        </small>
+        </small> -->
       </b-card>
     </b-col>
   </b-row>
@@ -139,8 +139,16 @@ export default {
 
       .btn span { color: $color-light; }
       .btn-google { background-color: $color-google; }
-      .btn-facebook { background-color: $color-facebook; }
-      .btn-twitter { background-color: $color-twitter; }
+      // .btn-facebook { background-color: $color-facebook; }
+      // .btn-twitter { background-color: $color-twitter; }
+      .btn-twitter,
+      .btn-facebook {
+        background-color: $color-gray-1;
+
+        &:hover {
+          cursor: not-allowed;
+        }
+      }
     }
 
     .divider {
@@ -158,7 +166,7 @@ export default {
         width: 40%;
         &.l { left: 0; }
         &.r { right: 0;}
-      } 
+      }
     }
 
     form {

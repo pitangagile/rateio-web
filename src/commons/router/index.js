@@ -5,7 +5,7 @@ import Router from 'vue-router';
 import ExternalMaster from '@/components/external/_master/';
 import ExternalHome from '@/components/external/home/';
 import ExternalSignIn from '@/components/external/sign-in/';
-import ExternalSignUp from '@/components/external/sign-up/';
+// import ExternalSignUp from '@/components/external/sign-up/';
 // #endregion external
 
 // #region internal
@@ -42,11 +42,11 @@ const router = new Router({
           name: 'signin',
           component: ExternalSignIn,
         },
-        {
-          path: 'signup',
-          name: 'signup',
-          component: ExternalSignUp,
-        },
+        // {
+        //   path: 'signup',
+        //   name: 'signup',
+        //   component: ExternalSignUp,
+        // },
       ],
     },
     {
