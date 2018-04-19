@@ -234,6 +234,10 @@ export default {
         a:hover span,
         a.active span{
           color: #00b6e3;
+
+          &.icon-logout {
+            color: $color-maturity;
+          }
         }
 
         a.active, a:hover {
