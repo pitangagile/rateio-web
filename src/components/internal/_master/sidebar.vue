@@ -1,13 +1,14 @@
 <template>
   <nav class="d-none d-md-block sidebar">
-    <div class="sidebar-sticky py-5">
+    <div class="sidebar-sticky py-2">
       <div class="brand mb-4 text-center">
         <a href="#">
-          <img src="/static/img/icons/favicon-32x32.png">
+          <img class="brand--logo" src="/static/img/pitanga-branca.png"/>
+          <!-- <div class="brand--img red"></div> -->
         </a>
       </div>
 
-      <ul class="nav flex-column">
+      <!-- <ul class="nav flex-column">
         <li class="nav-item project-selection">
           <b-dropdown :text="currentProjectSelection">
             <b-dropdown-item>Sky TN</b-dropdown-item>
@@ -15,10 +16,10 @@
             <b-dropdown-item>SEE-PE</b-dropdown-item>
           </b-dropdown>
         </li>
-      </ul>
+      </ul> -->
 
       <h6 class="sidebar-heading d-flex justify-content-between align-items-center px-3 mt-4 mb-3 text-muted">
-        <span>MAIN</span>
+        <span>SISTEMA DE RATEIO</span>
       </h6>
 
       <ul class="nav flex-column mb-2">
@@ -29,53 +30,66 @@
           </router-link>
         </li>
         <li class="nav-item">
-          <router-link to="/internal/spreadsheets" class="nav-link" :class="{ 'active' : isActive('spreadsheets')}">
+          <router-link to="/internal/reporting" class="nav-link" :class="{ 'active' : isActive('reporting')}">
             <span class="icon-doc-text mr-2"></span>
-            Spreadsheets
+            Reportagem
           </router-link>
         </li>
         <li class="nav-item">
-          <router-link to="/internal/leaderboard" class="nav-link" :class="{ 'active' : isActive('leaderboard')}">
+          <router-link to="/internal/manage" class="nav-link" :class="{ 'active' : isActive('manage')}">
             <span class="icon-crown mr-2"></span>
-            Leaderboard
+            Gerenciar Rateio
           </router-link>
         </li>
+        
         <li class="nav-item">
-          <router-link to="/internal/administration" class="nav-link" :class="{ 'active' : isActive('administration')}">
-            <span class="icon-user-o mr-2"></span>
-            Administration
-          </router-link>
-        </li>
-        <li class="nav-item">
-          <router-link to="/internal/schedule" class="nav-link" :class="{ 'active' : isActive('schedule')}">
+          <router-link to="/internal/allocation" class="nav-link" :class="{ 'active' : isActive('allocation')}">
             <span class="icon-calendar mr-2"></span>
-            Schedule
+            Alocação
+          </router-link>
+        </li>
+        <li class="nav-item">
+          <router-link to="/internal/allocationmap" class="nav-link" :class="{ 'active' : isActive('allocationmap')}">
+            <span class="icon-calendar mr-2"></span>
+            Mapa alocação
           </router-link>
         </li>
       </ul>
 
       <h6 class="sidebar-heading d-flex justify-content-between align-items-center px-3 mt-4 mb-3 text-muted">
-        <span>HELP</span>
+        <span>CONFIGURAÇÃO</span>
       </h6>
 
       <ul class="nav flex-column mb-2">
         <li class="nav-item">
           <router-link to="/internal/settings" class="nav-link" :class="{ 'active' : isActive('settings')}">
             <span class="icon-cog mr-2"></span>
-            Settings
+            Colaborador
+          </router-link>
+        </li>
+        <li class="nav-item">
+          <router-link to="/internal/costcenter" class="nav-link" :class="{ 'active' : isActive('costcenter')}">
+            <span class="icon-user-o mr-2"></span>
+            Centros de custo
+          </router-link>
+        </li>
+        <li class="nav-item">
+          <router-link to="/internal/schedule" class="nav-link" :class="{ 'active' : isActive('schedule')}">
+            <span class="icon-user-o mr-2"></span>
+            Rotinas batch
           </router-link>
         </li>
         <li class="nav-item">
           <router-link to="/internal/support" class="nav-link" :class="{ 'active' : isActive('support')}">
             <span class="icon-umbrella mr-2"></span>
-            Support
+            Ajuda
           </router-link>
         </li>
         <hr>
         <li class="nav-item">
           <a class="nav-link" href="#" @click.prevent="logout">
             <span class="icon-logout mr-2"></span>
-            Logout
+            Sair
           </a>
         </li>
       </ul>
@@ -127,6 +141,33 @@ export default {
   z-index: 10000;
 
   .sidebar-sticky {
+    .brand {
+      position: relative;
+      height: 50px;
+      width: 100%;
+      
+      .brand--logo{
+        position: relative;
+        width: 30%;
+      }
+
+      .brand--img {
+        background-image: url('/static/img/pitangas.png') ;
+        height: 50px;
+        width: 65px;
+        background-size: cover;
+        background-repeat: no-repeat;        
+        margin: 0 auto;
+
+        &.orange {
+          background-position: 0 0;
+        }
+        &.red {
+          background-position: -368px 0;
+        }
+      }
+    }
+
     .sidebar-heading,
     .project-selection,
     .nav-link

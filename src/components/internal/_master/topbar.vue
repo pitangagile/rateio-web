@@ -6,7 +6,7 @@
     <b-navbar-brand href="#">
       <img src="/static/img/icons/favicon-32x32.png">
     </b-navbar-brand>
-
+    
     <b-collapse is-nav id="nav_collapse">
       <!-- Right aligned nav items -->
       <b-navbar-nav class="ml-auto">
@@ -107,6 +107,7 @@ export default {
       margin-top: 10px !important;
     }
   }
+  
 }
 @media (min-width: 768px) {
   .topbar.bg-light {
