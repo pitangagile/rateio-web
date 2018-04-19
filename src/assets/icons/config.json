@@ -89,6 +89,24 @@
       "css": "search",
       "code": 59400,
       "src": "fontawesome"
+    },
+    {
+      "uid": "414fe97e4af5215a06d29be0f2cecdf5",
+      "css": "network",
+      "code": 59401,
+      "src": "entypo"
+    },
+    {
+      "uid": "ebffa4e734c8379ffee4fbfe49264d94",
+      "css": "lifebuoy",
+      "code": 61901,
+      "src": "fontawesome"
+    },
+    {
+      "uid": "3212f42c65d41ed91cb435d0490e29ed",
+      "css": "flash",
+      "code": 59402,
+      "src": "fontawesome"
     }
   ]
 }

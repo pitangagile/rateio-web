@@ -1,25 +1,36 @@
 <template>
   <nav class="d-none d-md-block sidebar">
     <div class="sidebar-sticky py-2">
-      <div class="brand mb-4 text-center">
+      <div class="brand mt-4 mb-2 text-center">
         <a href="#">
-          <img class="brand--logo" src="/static/img/pitanga-branca.png"/>
+          <img class="brand--logo mb-2" src="/static/img/pitanga-branca.png"/>
+          <!-- <br>
+          <strong class="text-light">Rateio</strong> -->
           <!-- <div class="brand--img red"></div> -->
         </a>
       </div>
 
-      <!-- <ul class="nav flex-column">
-        <li class="nav-item project-selection">
-          <b-dropdown :text="currentProjectSelection">
-            <b-dropdown-item>Sky TN</b-dropdown-item>
-            <b-dropdown-item>ONS</b-dropdown-item>
-            <b-dropdown-item>SEE-PE</b-dropdown-item>
+      <ul class="nav flex-column">
+        <li class="nav-item app-selection">
+          <b-dropdown :text="'Rateio'">
+            <b-dropdown-item @click="goTo('http://intranet.pitang.com.br/')">
+              <span class="icon-network"></span>
+              Intranet Pitang
+            </b-dropdown-item>
+            <b-dropdown-item @click="goTo('http://portalcolaborador.cesar.org.br/Corpore.Net/Login.aspx')">
+              <span class="icon-lifebuoy"></span>
+              Portal do Colaborador
+            </b-dropdown-item>
+            <b-dropdown-item @click="goTo('http://mercuri.pitang.com/atual/site/index.html')">
+              <span class="icon-flash"></span>
+              Mercuri
+            </b-dropdown-item>
           </b-dropdown>
         </li>
-      </ul> -->
+      </ul>
 
       <h6 class="sidebar-heading d-flex justify-content-between align-items-center px-3 mt-4 mb-3 text-muted">
-        <span>SISTEMA DE RATEIO</span>
+        <span>PRINCIPAL</span>
       </h6>
 
       <ul class="nav flex-column mb-2">
@@ -41,7 +52,7 @@
             Gerenciar Rateio
           </router-link>
         </li>
-        
+
         <li class="nav-item">
           <router-link to="/internal/allocation" class="nav-link" :class="{ 'active' : isActive('allocation')}">
             <span class="icon-calendar mr-2"></span>
@@ -102,7 +113,6 @@ export default {
   name: 'Sidebar',
   data() {
     return {
-      selectedProject: 'Sky Digital',
       currentRoute: '',
     };
   },
@@ -113,14 +123,12 @@ export default {
       this.currentRoute = to.name;
     });
   },
-  computed: {
-    currentProjectSelection() {
-      return `Project: ${this.selectedProject}`;
-    },
-  },
   methods: {
     isActive(routeName) {
       return this.currentRoute === routeName;
+    },
+    goTo(href) {
+      window.open(href, '_blank');
     },
   },
 };
@@ -134,6 +142,8 @@ export default {
   background: linear-gradient(to bottom, rgba(53,57,93,1) 0%, rgba(42,45,68,1) 100%);
   bottom: 0;
   max-width: 15rem;
+  min-height: 100%;
+  overflow: auto;
   padding: 0;
   position: fixed;
   left: 0;
@@ -143,20 +153,15 @@ export default {
   .sidebar-sticky {
     .brand {
       position: relative;
-      height: 50px;
-      width: 100%;
-      
-      .brand--logo{
-        position: relative;
-        width: 30%;
-      }
+
+      .brand--logo{ width: 50px; }
 
       .brand--img {
         background-image: url('/static/img/pitangas.png') ;
         height: 50px;
         width: 65px;
         background-size: cover;
-        background-repeat: no-repeat;        
+        background-repeat: no-repeat;
         margin: 0 auto;
 
         &.orange {
@@ -169,7 +174,7 @@ export default {
     }
 
     .sidebar-heading,
-    .project-selection,
+    .app-selection,
     .nav-link
     {
       margin-left: 1.5rem;
@@ -182,7 +187,7 @@ export default {
         font-size: .7rem;
       }
     }
-    .project-selection {
+    .app-selection {
       .dropdown {
         width: 100%;
 
@@ -214,11 +219,19 @@ export default {
             }
           }
         }
+
+        .dropdown-item {
+          padding: 0.25rem;
+
+          span { color: $color-light; }
+
+          &:hover span { color: $color-maturation; }
+        }
       }
     }
 
     .nav {
-      .nav-item:not(.project-selection) {
+      .nav-item:not(.app-selection) {
         margin-bottom: .25rem;
 
         a, a span {

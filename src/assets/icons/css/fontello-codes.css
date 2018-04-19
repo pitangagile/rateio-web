@@ -8,8 +8,11 @@
 .icon-doc-text:before { content: '\e806'; } /* '' */
 .icon-logout:before { content: '\e807'; } /* '' */
 .icon-search:before { content: '\e808'; } /* '' */
+.icon-network:before { content: '\e809'; } /* '' */
+.icon-flash:before { content: '\e80a'; } /* '' */
 .icon-crown:before { content: '\e844'; } /* '' */
 .icon-twitter:before { content: '\f099'; } /* '' */
 .icon-facebook:before { content: '\f09a'; } /* '' */
 .icon-google:before { content: '\f1a0'; } /* '' */
+.icon-lifebuoy:before { content: '\f1cd'; } /* '' */
 .icon-user-o:before { content: '\f2c0'; } /* '' */
