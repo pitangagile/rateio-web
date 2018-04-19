@@ -11,6 +11,7 @@ import ExternalSignUp from '@/components/external/sign-up/';
 // #region internal
 import InternalMaster from '@/components/internal/_master/';
 import InternalDashboard from '@/components/internal/dashboard/';
+import InternalSettings from '@/components/internal/settings/';
 // #endregion internal
 
 import NavigationGuards from './navigations.guards';
@@ -58,6 +59,11 @@ const router = new Router({
           path: '',
           name: 'dashboard',
           component: InternalDashboard,
+        },
+        {
+          path: 'settings',
+          name: 'settings',
+          component: InternalSettings,
         },
       ],
     },

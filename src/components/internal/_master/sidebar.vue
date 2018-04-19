@@ -23,34 +23,34 @@
 
       <ul class="nav flex-column mb-2">
         <li class="nav-item">
-          <a class="nav-link active" href="#">
+          <router-link to="/internal/" class="nav-link" :class="{ 'active' : isActive('dashboard')}">
             <span class="icon-chart-line mr-2"></span>
             Dashboard
-          </a>
+          </router-link>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="#">
+          <router-link to="/internal/spreadsheets" class="nav-link" :class="{ 'active' : isActive('spreadsheets')}">
             <span class="icon-doc-text mr-2"></span>
             Spreadsheets
-          </a>
+          </router-link>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="#">
+          <router-link to="/internal/leaderboard" class="nav-link" :class="{ 'active' : isActive('leaderboard')}">
             <span class="icon-crown mr-2"></span>
             Leaderboard
-          </a>
+          </router-link>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="#">
+          <router-link to="/internal/administration" class="nav-link" :class="{ 'active' : isActive('administration')}">
             <span class="icon-user-o mr-2"></span>
             Administration
-          </a>
+          </router-link>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="#">
+          <router-link to="/internal/schedule" class="nav-link" :class="{ 'active' : isActive('schedule')}">
             <span class="icon-calendar mr-2"></span>
             Schedule
-          </a>
+          </router-link>
         </li>
       </ul>
 
@@ -60,16 +60,16 @@
 
       <ul class="nav flex-column mb-2">
         <li class="nav-item">
-          <a class="nav-link" href="#">
+          <router-link to="/internal/settings" class="nav-link" :class="{ 'active' : isActive('settings')}">
             <span class="icon-cog mr-2"></span>
             Settings
-          </a>
+          </router-link>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="#">
+          <router-link to="/internal/support" class="nav-link" :class="{ 'active' : isActive('support')}">
             <span class="icon-umbrella mr-2"></span>
             Support
-          </a>
+          </router-link>
         </li>
         <hr>
         <li class="nav-item">
@@ -89,7 +89,15 @@ export default {
   data() {
     return {
       selectedProject: 'Sky Digital',
+      currentRoute: '',
     };
+  },
+  created() {
+    this.currentRoute = this.$route.name;
+
+    this.$router.afterEach((to) => {
+      this.currentRoute = to.name;
+    });
   },
   computed: {
     currentProjectSelection() {
@@ -97,6 +105,9 @@ export default {
     },
   },
   methods: {
+    isActive(routeName) {
+      return this.currentRoute === routeName;
+    },
   },
 };
 </script>
