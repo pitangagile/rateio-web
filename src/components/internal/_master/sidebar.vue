@@ -227,7 +227,7 @@ export default {
 
           span { color: $color-light; }
 
-          &:hover span { color: $color-maturation; }
+          &:hover span { color: $color-light; }
         }
       }
     }
@@ -251,7 +251,7 @@ export default {
           color: #f8ac1d;
 
           &.icon-logout {
-            color: $color-maturity;
+            color: #f8ac1d;
           }
         }
 
