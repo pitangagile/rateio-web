@@ -150,6 +150,21 @@ export default {
   top: 0;
   z-index: 10000;
 
+  &:before {
+    content: "";
+    opacity: 0.15;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    position: absolute;
+    z-index: -1;
+    // background-image: url('/static/img/sidebar.jpg');
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: -650px 0;
+  }
+
   .sidebar-sticky {
     .brand {
       position: relative;
