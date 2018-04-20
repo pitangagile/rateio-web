@@ -5,13 +5,14 @@ const prodEnv = require("./prod.env");
 module.exports = merge(prodEnv, {
   // #region Environment
   NODE_ENV: '"development"',
-  PROD_TIP: true,
+  PROD_TIP: false,
   DEV_TOOLS: true,
   // #endregion Environment
 
   // #region Auth
   APP_AUTH_TOKEN_KEY: '"rateio-auth"',
   APP_AUTH_EXPIRES: '15', // in minutes
+  APP_AUTH_USER:'"rateio-user"',
   // #endregion Auth
 
   // #region Api
