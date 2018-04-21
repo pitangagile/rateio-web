@@ -11,16 +11,10 @@
         <span slot="h__age">Idade</span>
         <span slot="h__active">Ativo</span>
 
-        <div slot="filter__active">
-          <toggle-button
-            :sync="true"
-            @change="toggleFilterActive($event)" />
-        </div>
-
         <toggle-button  slot="active" slot-scope="props"
                         :value="props.row.active"
                         :sync="true"
-                        @change="changeActive(props.row.id, $event.value)" />
+                        @change="changeValue(props.row.id, 'active', $event.value)" />
       </v-client-table>
     </b-col>
   </b-col>
@@ -59,6 +53,7 @@ export default {
       options: {
         sortable: ['name', 'age'],
         filterable: ['name', 'age'],
+        editable: ['name', 'age'],
       },
     };
   },
@@ -66,13 +61,12 @@ export default {
     getUserData(id) {
       return this.tableData.filter(u => u.id === id)[0];
     },
-    changeActive(id, value) {
-      this.getUserData(id).active = value;
+    changeValue(id, prop, value) {
+      this.getUserData(id)[prop] = value;
     },
   },
 };
 </script>
 
 <style lang="scss" scoped>
-
 </style>
