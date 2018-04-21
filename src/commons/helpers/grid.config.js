@@ -57,7 +57,7 @@ export default {
   highlightMatches: false,
   orderBy: false,
   descOrderColumns: [],
-  footerHeadings: true,
+  footerHeadings: false,
   headings: {},
   headingsTooltips: {},
   pagination: {
