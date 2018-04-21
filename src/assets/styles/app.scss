@@ -1,6 +1,13 @@
 @import './variables.scss';
 
 @import './_button.scss';
+@import './_input.scss';
 @import './_text.scss';
+@import './_table.scss';
 
 .debug { border: 1px solid red; }
+
+* { outline: 0 !important; &:focus { box-shadow: none !important; }}
+hr { width: 100%; }
+
+.vue-js-switch { margin: 0; }

@@ -267,6 +267,12 @@ arr-diff@^4.0.0:
   version "4.0.0"
   resolved "https://registry.yarnpkg.com/arr-diff/-/arr-diff-4.0.0.tgz#d6461074febfec71e7e15235761a329a5dc7c520"
 
+arr-filter@^1.1.0:
+  version "1.1.2"
+  resolved "https://registry.yarnpkg.com/arr-filter/-/arr-filter-1.1.2.tgz#43fdddd091e8ef11aa4c45d9cdc18e2dff1711ee"
+  dependencies:
+    make-iterator "^1.0.0"
+
 arr-flatten@^1.0.1, arr-flatten@^1.1.0:
   version "1.1.0"
   resolved "https://registry.yarnpkg.com/arr-flatten/-/arr-flatten-1.1.0.tgz#36048bbff4e7b47e136644316c99669ea5ae91f1"
@@ -274,6 +280,12 @@ arr-flatten@^1.0.1, arr-flatten@^1.1.0:
 arr-union@^3.1.0:
   version "3.1.0"
   resolved "https://registry.yarnpkg.com/arr-union/-/arr-union-3.1.0.tgz#e39b09aea9def866a8f206e288af63919bae39c4"
+
+array-every@^0.1.2:
+  version "0.1.2"
+  resolved "https://registry.yarnpkg.com/array-every/-/array-every-0.1.2.tgz#be54cf7fbfc4c4777bba85c7af7edac2836d83ed"
+  dependencies:
+    make-iterator "^0.1.1"
 
 array-find-index@^1.0.1:
   version "1.0.2"
@@ -286,6 +298,16 @@ array-find@^1.0.0:
 array-flatten@1.1.1:
   version "1.1.1"
   resolved "https://registry.yarnpkg.com/array-flatten/-/array-flatten-1.1.1.tgz#9a5f699051b1e7073328f2a008968b64ea2955d2"
+
+array-intersection@^0.1.2:
+  version "0.1.2"
+  resolved "https://registry.yarnpkg.com/array-intersection/-/array-intersection-0.1.2.tgz#b14ef021df25e9c9d804116c847cc6a0d67cface"
+  dependencies:
+    array-every "^0.1.2"
+    array-slice "^0.2.3"
+    array-unique "^0.2.1"
+    filter-array "^0.2.0"
+    index-of "^0.1.1"
 
 array-slice@^0.2.3:
   version "0.2.3"
@@ -1598,6 +1620,10 @@ clone@^1.0.2:
   version "1.0.4"
   resolved "https://registry.yarnpkg.com/clone/-/clone-1.0.4.tgz#da309cc263df15994c688ca902179ca3c7cd7c7e"
 
+clone@^2.1.0:
+  version "2.1.2"
+  resolved "https://registry.yarnpkg.com/clone/-/clone-2.1.2.tgz#1b7f4b9f591f1e8f83670401600345a02887435f"
+
 co@^4.6.0:
   version "4.6.0"
   resolved "https://registry.yarnpkg.com/co/-/co-4.6.0.tgz#6ea6bdf3d853ae54ccb8e47bfa0bf3f9031fb184"
@@ -2078,6 +2104,10 @@ dateformat@^1.0.6:
 de-indent@^1.0.2:
   version "1.0.2"
   resolved "https://registry.yarnpkg.com/de-indent/-/de-indent-1.0.2.tgz#b2038e846dc33baa5796128d0804b455b8c1e21d"
+
+debounce@^1.1:
+  version "1.1.0"
+  resolved "https://registry.yarnpkg.com/debounce/-/debounce-1.1.0.tgz#6a1a4ee2a9dc4b7c24bb012558dbcdb05b37f408"
 
 debug@2, debug@2.6.9, debug@^2.2.0, debug@^2.3.3, debug@^2.6.8, debug@^2.6.9:
   version "2.6.9"
@@ -3040,6 +3070,14 @@ fill-range@^4.0.0:
     repeat-string "^1.6.1"
     to-regex-range "^2.1.0"
 
+filter-array@^0.2.0:
+  version "0.2.0"
+  resolved "https://registry.yarnpkg.com/filter-array/-/filter-array-0.2.0.tgz#9f6f4ceaf5b5e8a6b674a5b5460537714a8c51f1"
+  dependencies:
+    arr-filter "^1.1.0"
+    kind-of "^1.1.0"
+    micromatch "^2.1.0"
+
 finalhandler@1.1.0:
   version "1.1.0"
   resolved "https://registry.yarnpkg.com/finalhandler/-/finalhandler-1.1.0.tgz#ce0b6855b45853e791b2fcc680046d88253dd7f5"
@@ -3131,7 +3169,7 @@ for-in@^1.0.1, for-in@^1.0.2:
   version "1.0.2"
   resolved "https://registry.yarnpkg.com/for-in/-/for-in-1.0.2.tgz#81068d295a8142ec0ac726c6e2200c30fb6d5e80"
 
-for-own@^0.1.4:
+for-own@^0.1.1, for-own@^0.1.4:
   version "0.1.5"
   resolved "https://registry.yarnpkg.com/for-own/-/for-own-0.1.5.tgz#5265c681a4f294dabbf17c9509b6763aa84510ce"
   dependencies:
@@ -3834,6 +3872,10 @@ indent-string@^2.1.0:
   dependencies:
     repeating "^2.0.0"
 
+index-of@^0.1.1:
+  version "0.1.1"
+  resolved "https://registry.yarnpkg.com/index-of/-/index-of-0.1.1.tgz#d855af36341b284dad61bbd71695c6c694c157ac"
+
 indexes-of@^1.0.1:
   version "1.0.1"
   resolved "https://registry.yarnpkg.com/indexes-of/-/indexes-of-1.0.1.tgz#f30f716c8e2bd346c7b67d3df3915566a7c05607"
@@ -4480,6 +4522,10 @@ kew@^0.7.0:
   version "0.7.0"
   resolved "https://registry.yarnpkg.com/kew/-/kew-0.7.0.tgz#79d93d2d33363d6fdd2970b335d9141ad591d79b"
 
+kind-of@^1.1.0:
+  version "1.1.0"
+  resolved "https://registry.yarnpkg.com/kind-of/-/kind-of-1.1.0.tgz#140a3d2d41a36d2efcfa9377b62c24f8495a5c44"
+
 kind-of@^3.0.2, kind-of@^3.0.3, kind-of@^3.2.0:
   version "3.2.2"
   resolved "https://registry.yarnpkg.com/kind-of/-/kind-of-3.2.2.tgz#31ea21a734bab9bbb0f32466d893aea51e4a3c64"
@@ -4852,6 +4898,18 @@ make-dir@^1.0.0:
   dependencies:
     pify "^3.0.0"
 
+make-iterator@^0.1.1:
+  version "0.1.1"
+  resolved "https://registry.yarnpkg.com/make-iterator/-/make-iterator-0.1.1.tgz#873d27b8198a465a81483b6f5d16da4e863ecf5b"
+  dependencies:
+    for-own "^0.1.1"
+
+make-iterator@^1.0.0:
+  version "1.0.1"
+  resolved "https://registry.yarnpkg.com/make-iterator/-/make-iterator-1.0.1.tgz#29b33f312aa8f547c4a5e490f56afcec99133ad6"
+  dependencies:
+    kind-of "^6.0.2"
+
 map-cache@^0.2.2:
   version "0.2.2"
   resolved "https://registry.yarnpkg.com/map-cache/-/map-cache-0.2.2.tgz#c32abd0bd6525d9b051645bb4f26ac5dc98a0dbf"
@@ -4917,11 +4975,15 @@ merge-descriptors@1.0.1:
   version "1.0.1"
   resolved "https://registry.yarnpkg.com/merge-descriptors/-/merge-descriptors-1.0.1.tgz#b00aaa556dd8b44568150ec9d1b953f3f90cbb61"
 
+merge@^1.2.0:
+  version "1.2.0"
+  resolved "https://registry.yarnpkg.com/merge/-/merge-1.2.0.tgz#7531e39d4949c281a66b8c5a6e0265e8b05894da"
+
 methods@~1.1.2:
   version "1.1.2"
   resolved "https://registry.yarnpkg.com/methods/-/methods-1.1.2.tgz#5529a4d67654134edcc5266656835b0f851afcee"
 
-micromatch@^2.1.5, micromatch@^2.3.11:
+micromatch@^2.1.0, micromatch@^2.1.5, micromatch@^2.3.11:
   version "2.3.11"
   resolved "https://registry.yarnpkg.com/micromatch/-/micromatch-2.3.11.tgz#86677c97d1720b363431d04d0d15293bd38c1565"
   dependencies:
@@ -7740,6 +7802,10 @@ vue-hot-reload-api@^2.2.0:
   version "2.3.0"
   resolved "https://registry.yarnpkg.com/vue-hot-reload-api/-/vue-hot-reload-api-2.3.0.tgz#97976142405d13d8efae154749e88c4e358cf926"
 
+vue-js-toggle-button@^1.2.2:
+  version "1.2.2"
+  resolved "https://registry.yarnpkg.com/vue-js-toggle-button/-/vue-js-toggle-button-1.2.2.tgz#0062f8fa0f34babf2d76c77d88ccbe4d462ce1ac"
+
 vue-loader@^13.3.0:
   version "13.7.1"
   resolved "https://registry.yarnpkg.com/vue-loader/-/vue-loader-13.7.1.tgz#d9009d0abd392b4efe8b8fb1f542f6723b02dd3a"
@@ -7758,6 +7824,18 @@ vue-loader@^13.3.0:
     vue-style-loader "^3.0.0"
     vue-template-es2015-compiler "^1.6.0"
 
+vue-pagination-2@^1.6:
+  version "1.6.1"
+  resolved "https://registry.yarnpkg.com/vue-pagination-2/-/vue-pagination-2-1.6.1.tgz#df28a0d629ccc4a3898a7f30555d6260372c49f1"
+  dependencies:
+    merge "^1.2.0"
+    vue ">=2.0.0"
+    vuex "^2.0.0"
+
+vue-resource@^0.9.0:
+  version "0.9.3"
+  resolved "https://registry.yarnpkg.com/vue-resource/-/vue-resource-0.9.3.tgz#ab46e1c44ea219142dcc28ae4043b3b04c80959d"
+
 vue-router@^3.0.1:
   version "3.0.1"
   resolved "https://registry.yarnpkg.com/vue-router/-/vue-router-3.0.1.tgz#d9b05ad9c7420ba0f626d6500d693e60092cc1e9"
@@ -7773,6 +7851,18 @@ vue-style-loader@^3.0.0, vue-style-loader@^3.0.3:
     hash-sum "^1.0.2"
     loader-utils "^1.0.2"
 
+vue-tables-2@^1.4.3:
+  version "1.4.3"
+  resolved "https://registry.yarnpkg.com/vue-tables-2/-/vue-tables-2-1.4.3.tgz#e1521e19acccde0148120e0096819795074ddc8c"
+  dependencies:
+    array-intersection "^0.1.2"
+    clone "^2.1.0"
+    debounce "^1.1"
+    merge "^1.2.0"
+    vue ">=2.0.0"
+    vue-pagination-2 "^1.6"
+    vue-resource "^0.9.0"
+
 vue-template-compiler@^2.5.2:
   version "2.5.16"
   resolved "https://registry.yarnpkg.com/vue-template-compiler/-/vue-template-compiler-2.5.16.tgz#93b48570e56c720cdf3f051cc15287c26fbd04cb"
@@ -7784,9 +7874,13 @@ vue-template-es2015-compiler@^1.6.0:
   version "1.6.0"
   resolved "https://registry.yarnpkg.com/vue-template-es2015-compiler/-/vue-template-es2015-compiler-1.6.0.tgz#dc42697133302ce3017524356a6c61b7b69b4a18"
 
-vue@^2.5.2:
+vue@>=2.0.0, vue@^2.5.2:
   version "2.5.16"
   resolved "https://registry.yarnpkg.com/vue/-/vue-2.5.16.tgz#07edb75e8412aaeed871ebafa99f4672584a0085"
+
+vuex@^2.0.0:
+  version "2.5.0"
+  resolved "https://registry.yarnpkg.com/vuex/-/vuex-2.5.0.tgz#20f0265ade6c9a5ac6724a405d3ffdb4726c9741"
 
 vuex@^3.0.1:
   version "3.0.1"

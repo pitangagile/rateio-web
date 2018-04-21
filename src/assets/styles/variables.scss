@@ -1,32 +1,10 @@
+@import './mixins.scss';
+
 $color-growth: rgba(3, 142, 26, 1);
 $color-maturation: rgba(130, 163, 6, 1);
 $color-maturity: rgba(242, 90, 6, 1);
 $color-senescent: rgba(214, 4, 6, 1);
 $color-senescence: rgba(125, 79, 48, 1);
-
-/*Gusto Gold
-R: 248 G: 172 B: 29
-Hex Value: #f8ac1d
-
-Forsythia
-R: 255 G: 200 B: 1
-Hex Value: #ffc801
-
-Direct Green
-R: 63 G: 138 B: 36
-Hex Value: #3f8a24
-
-Fireworks
-R: 208 G: 62 B: 53
-Hex Value: #d03e35
-
-Invigorate
-R: 228 G: 114 B: 55
-Hex Value: #e47237
-
-Daredevil
-R: 211 G: 76 B: 42
-Hex Value: #d34c2a */
 
 $color-gusto-gold: rgba(248, 172, 29, 1);
 $color-forsythia: rgba(255, 200, 1, 1);

@@ -16,6 +16,7 @@ import Vue from 'vue';
 import Vuex from 'vuex';
 import BootstrapVue from 'bootstrap-vue';
 import Snotify from 'vue-snotify';
+import ToggleButton from 'vue-js-toggle-button';
 
 import App from './App'; // eslint-disable-line
 
@@ -32,6 +33,7 @@ import AuthMixin from './commons/mixins/auth.mixin';
 Vue.use(Vuex);
 Vue.use(BootstrapVue);
 Vue.use(Snotify);
+Vue.use(ToggleButton);
 Vue.use(NProgressPlugin, { showSpinner: true });
 Vue.use(AxiosPlugin, variables); // axios plugin depends on the Progress Bar
 Vue.use(ConfigPlugin, variables);

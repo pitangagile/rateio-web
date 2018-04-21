@@ -1,0 +1,3 @@
+@mixin color-alpha($attr, $color, $alpha) {
+  #{$attr}: rgba($color, $alpha);
+}
