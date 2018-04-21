@@ -15,6 +15,6 @@ export default {
 
 <style lang="scss" scoped>
 h1 span {
-  color: #00b6e3;
+  color: #d03e35;
 }
 </style>

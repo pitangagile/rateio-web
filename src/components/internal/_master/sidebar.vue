@@ -138,8 +138,8 @@ export default {
 @import '../../../assets/styles/variables.scss';
 
 .sidebar {
-  background-color: rgba(53,57,93,1);
-  background: linear-gradient(to bottom, rgba(53,57,93,1) 0%, rgba(42,45,68,1) 100%);
+  background-color: rgba(211,76,42,1);
+  background: linear-gradient(to bottom, rgba(211,76,42,1) 0%, rgba(208,62,53,1) 100%);
   bottom: 0;
   max-width: 15rem;
   min-height: 100%;
@@ -149,6 +149,7 @@ export default {
   left: 0;
   top: 0;
   z-index: 10000;
+  box-shadow: 0 10px 20px rgba(0,0,0,0.19), 0 6px 6px rgba(0,0,0,0.23);
 
   &:before {
     content: "";
@@ -199,7 +200,8 @@ export default {
     .sidebar-heading {
       span {
         color: $color-light;
-        font-size: .7rem;
+        font-size: .8rem;
+        font-weight: 700;
       }
     }
     .app-selection {
@@ -207,7 +209,7 @@ export default {
         width: 100%;
 
         .dropdown-toggle {
-          background: #3e4368;
+          background: #e47237;
           border: 0;
           border-radius: 1cm;
           font-size: .8rem;
@@ -221,7 +223,7 @@ export default {
         }
 
         .dropdown-menu {
-          background: #3e4368;
+          background: #d34c2a;
           box-shadow: 3px 5px 15px 2px rgba(0, 0, 0, .5);
           width: 100%;
 
@@ -230,7 +232,7 @@ export default {
             font-size: .8rem;
             outline: 0;
             &:hover, &:focus{
-              background-color: #2a2c44;
+              background-color: #e47237;
             }
           }
         }
@@ -240,7 +242,7 @@ export default {
 
           span { color: $color-light; }
 
-          &:hover span { color: $color-maturation; }
+          &:hover span { color: $color-light; }
         }
       }
     }
@@ -256,15 +258,15 @@ export default {
 
         a.active, a.active span,
         a:hover, a:hover span {
-          background: #2a2c44;
+          background: #e47237;
         }
 
         a:hover span,
         a.active span{
-          color: #00b6e3;
+          color: #f8ac1d;
 
           &.icon-logout {
-            color: $color-maturity;
+            color: #f8ac1d;
           }
         }
 
@@ -277,4 +279,3 @@ export default {
   }
 }
 </style>
-

@@ -10,8 +10,15 @@ import ExternalSignIn from '@/components/external/sign-in/';
 
 // #region internal
 import InternalMaster from '@/components/internal/_master/';
+import InternalAllocation from '@/components/internal/allocation';
+import InternalAllocationMap from '@/components/internal/allocationmap';
+import InternalCostCenter from '@/components/internal/costcenter';
 import InternalDashboard from '@/components/internal/dashboard/';
+import InternalManage from '@/components/internal/manage';
+import InternalReporting from '@/components/internal/reporting';
+import InternalSchedule from '@/components/internal/schedule';
 import InternalSettings from '@/components/internal/settings/';
+
 // #endregion internal
 
 import NavigationGuards from './navigations.guards';
@@ -59,6 +66,36 @@ const router = new Router({
           path: '',
           name: 'dashboard',
           component: InternalDashboard,
+        },
+        {
+          path: 'allocation',
+          name: 'allocation',
+          component: InternalAllocation,
+        },
+        {
+          path: 'allocationmap',
+          name: 'allocationmap',
+          component: InternalAllocationMap,
+        },
+        {
+          path: 'costcenter',
+          name: 'costcenter',
+          component: InternalCostCenter,
+        },
+        {
+          path: 'manage',
+          name: 'manage',
+          component: InternalManage,
+        },
+        {
+          path: 'reporting',
+          name: 'reporting',
+          component: InternalReporting,
+        },
+        {
+          path: 'schedule',
+          name: 'schedule',
+          component: InternalSchedule,
         },
         {
           path: 'settings',
