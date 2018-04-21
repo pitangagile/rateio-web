@@ -65,7 +65,7 @@ html, body {
         color: $color-light;
         position: relative;
         left: -50%;
-        width: 205px;
+        width: 225px;
         font-size: .8rem;
         font-weight: $font-light;
 
@@ -85,5 +85,3 @@ html, body {
   }
 }
 </style>
-
-

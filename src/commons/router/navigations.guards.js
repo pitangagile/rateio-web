@@ -20,7 +20,9 @@ const NavigationGuards = {
   beforeEnter(to, from, next) {
     const requiresAuth = to.matched.some(route => route.meta.requiresAuth);
 
-    if (requiresAuth) {
+    if (to.path === '/external' && isAuthMetadataValid()) {
+      next({ path: '/internal/' });
+    } else if (requiresAuth) {
       if (isAuthMetadataValid()) {
         next();
       } else {

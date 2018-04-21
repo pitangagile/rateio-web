@@ -139,7 +139,7 @@ export default {
 
 .sidebar {
   background-color: rgba(211,76,42,1);
-  background: linear-gradient(to bottom, rgba(211,76,42,1) 0%, rgba(208,62,53,1) 100%);
+  background: linear-gradient(to bottom, $color-daredevil 0%, $color-fireworks 100%);
   bottom: 0;
   max-width: 15rem;
   min-height: 100%;
@@ -209,7 +209,7 @@ export default {
         width: 100%;
 
         .dropdown-toggle {
-          background: #e47237;
+          background: $color-invigorate;
           border: 0;
           border-radius: 1cm;
           font-size: .8rem;
@@ -223,7 +223,7 @@ export default {
         }
 
         .dropdown-menu {
-          background: #d34c2a;
+          background: $color-daredevil;
           box-shadow: 3px 5px 15px 2px rgba(0, 0, 0, .5);
           width: 100%;
 
@@ -232,7 +232,7 @@ export default {
             font-size: .8rem;
             outline: 0;
             &:hover, &:focus{
-              background-color: #e47237;
+              background-color: $color-invigorate;
             }
           }
         }
@@ -242,7 +242,7 @@ export default {
 
           span { color: $color-light; }
 
-          &:hover span { color: $color-light; }
+          &:hover span { color: $color-forsythia; }
         }
       }
     }
@@ -258,15 +258,15 @@ export default {
 
         a.active, a.active span,
         a:hover, a:hover span {
-          background: #e47237;
+          background: $color-invigorate;
         }
 
         a:hover span,
         a.active span{
-          color: #f8ac1d;
+          color: $color-forsythia;
 
           &.icon-logout {
-            color: #f8ac1d;
+            color: $color-forsythia;
           }
         }
 

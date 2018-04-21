@@ -25,6 +25,8 @@ export default {
 </script>
 
 <style lang="scss">
+@import '../../../assets/styles/variables.scss';
+
 .fade-enter-active,
 .fade-leave-active { transition-property: opacity; transition-duration: 0.25s; }
 .fade-enter-active { transition-delay: 0.25s; }
@@ -36,6 +38,10 @@ main {
   padding-left: 1.5rem;
   padding-right: 1.5rem;
   width: 100%;
+}
+
+.page--title span {
+  color: $color-invigorate;
 }
 
 @media (min-width: 768px) {
