@@ -1,5 +1,5 @@
 <template>
-  <b-col class="page">
+  <b-row class="page">
     <b-col cols="12">
       <h1 class="page--title"><span class="icon-cog h4"></span> Reportagem</h1>
     </b-col>
@@ -17,7 +17,7 @@
                         @change="changeValue(props.row.id, 'active', $event.value)" />
       </v-client-table>
     </b-col>
-  </b-col>
+  </b-row>
 </template>
 
 <script>

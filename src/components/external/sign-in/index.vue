@@ -1,7 +1,7 @@
 <template>
   <b-row class="page">
     <b-col cols="12" class="">
-      <b-card title="Sign In"
+      <b-card title="Entrar"
           sub-title=""
           class="mb-2 text-center">
 
@@ -10,7 +10,7 @@
             <span class="icon-facebook"></span>
           </b-button>
           <b-button @click="social('google')" variant="link" class="btn-google btn-circle">
-            <span class="icon-google"></span>
+            <span class="icon-google">conta Pitang</span>
           </b-button>
           <b-button variant="link" class="btn-twitter btn-circle">
             <span class="icon-twitter"></span>
@@ -19,24 +19,24 @@
 
         <div class="divider">
           <div class="line l"></div>
-          <span>or</span>
+          <span>ou</span>
           <div class="line r"></div>
         </div>
 
         <form class="text-left">
           <div class="form-group">
-            <input type="email" v-model="username" class="form-control" aria-describedby="emailHelp" placeholder="Enter email" autocomplete="email" :disabled="disabled">
+            <input type="email" v-model="username" class="form-control" aria-describedby="emailHelp" placeholder="E-mail" autocomplete="email" :disabled="disabled">
           </div>
           <div class="form-group">
-            <input type="password" v-model="password" class="form-control" placeholder="Password" autocomplete="password" :disabled="disabled">
+            <input type="password" v-model="password" class="form-control" placeholder="Senha" autocomplete="password" :disabled="disabled">
             <small>
-              Don't remember your credentials? <router-link to="/external/recover">Recover</router-link>.
+              Esqueceu sua senha? <router-link to="/external/recover">Relembrar</router-link>.
             </small>
           </div>
         </form>
 
-        <b-button variant="primary" class="btn-rounded btn-login btn-block" @click.prevent="regular()">Enter</b-button>
-        <router-link to="/" class="btn">Back</router-link>
+        <b-button variant="primary" class="btn-rounded btn-login btn-block" @click.prevent="regular()">Entrar</b-button>
+        <router-link to="/" class="btn">Voltar</router-link>
         <!-- <br>
         <small>
           Don't have an account? <router-link to="/external/signup">Sign up</router-link>.
@@ -186,5 +186,3 @@ export default {
   }
 }
 </style>
-
-

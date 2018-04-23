@@ -18,19 +18,7 @@
           </b-button>
         </b-nav-form>
 
-        <b-nav-item-dropdown right class="user-settings">
-          <!-- Using button-content slot -->
-          <template slot="button-content">
-            <img src="/static/img/avatar.jpg">
-            <span class="user-name d-block d-md-none">{{user.firstName}}</span>
-          </template>
-          <b-dropdown-item href="#">
-            <span class="icon-user-o"></span>Profile
-          </b-dropdown-item>
-          <b-dropdown-item href="#" @click.prevent="logout">
-            <span class="icon-logout"></span>Logout
-          </b-dropdown-item>
-        </b-nav-item-dropdown>
+        <topbaruser />
       </b-navbar-nav>
 
     </b-collapse>
@@ -38,17 +26,17 @@
 </template>
 
 <script>
+import topbaruser from './topbaruser';
+
 export default {
   name: 'Topbar',
+  components: {
+    topbaruser,
+  },
   data() {
     return {
       term: '',
     };
-  },
-  computed: {
-    user() {
-      return this.$store.getters['auth/user'];
-    },
   },
   methods: {
     search() {
@@ -89,28 +77,6 @@ export default {
       }
     }
   }
-
-  .user-settings {
-    position: relative;
-    margin-top: 10px;
-
-    .user-name {
-      position: absolute;
-      left: 55px;
-      top: 10px;
-    }
-    img {
-      border-radius: 1cm;
-      border: 1px solid $color-gray-1;
-      padding: 2px;
-      max-width: 30px;
-    }
-
-    .dropdown-toggle::after {
-      margin-top: 10px !important;
-    }
-  }
-
 }
 @media (min-width: 768px) {
   .topbar.bg-light {

@@ -14,6 +14,7 @@ export default {
   auth: {
     appToken: process.env.APP_AUTH_TOKEN_KEY,
     expires: parseInt(process.env.APP_AUTH_EXPIRES, 10),
+    userdetais: process.env.APP_AUTH_USER_DETAILS,
   },
   social: {
     google: {

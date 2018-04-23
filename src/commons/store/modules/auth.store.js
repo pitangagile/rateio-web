@@ -4,15 +4,26 @@ import variables from '../../helpers/variables';
 const AuthModule = {
   namespaced: true,
   state: {
-    user: {
-      firstName: '',
-      lastName: '',
-      email: '',
-    },
   },
   mutations: {
     setUser(state, newUser) {
-      state.user = newUser;
+      if (newUser) {
+        const userDTO = {
+          Id: newUser.id,
+          FistName: newUser.first_name,
+          LastName: newUser.last_name,
+          DisplayName: newUser.displayName,
+          Email: newUser.email,
+          Domain: newUser.domain,
+          PictureUrl: newUser.picture,
+        };
+        if (userDTO.PictureUrl) {
+          userDTO.PictureUrl = userDTO.PictureUrl.substring(0, userDTO.PictureUrl.indexOf('?'));
+        }
+        localStorage.setItem(variables.auth.userdetais, JSON.stringify(userDTO));
+      } else {
+        localStorage.removeItem(variables.auth.userdetais);
+      }
     },
     setToken(state, newToken) {
       if (newToken) {
@@ -49,8 +60,12 @@ const AuthModule = {
     /**
      * Get Logged user
      */
-    user(state) {
-      return state.user;
+    user() {
+      try {
+        return JSON.parse(localStorage.getItem(variables.auth.userdetais));
+      } catch (e) {
+        return undefined;
+      }
     },
     /**
      * Get the authentication metadata

@@ -1,10 +1,13 @@
 <template>
   <b-row class="page">
     <b-col cols="12" class="text-center">
-      <h1 class="page--title">Welcome to Rateio App</h1>
-      <h3 class="page--subtitle">The biggest, badass new time managing app has arrived, tell us your time now.</h3>
+      <h1 class="page--title">
+        <img src="../../../../static/img/pitanga-branca.png" class="logoPitang">
+        Rateio
+      </h1>
+      <h3 class="page--subtitle">Bem vindo ao Rateio de horas do colaborador</h3>
       <br>
-      <router-link to="/external/signin" class="btn btn-default btn-rounded">Login</router-link>
+      <router-link to="/external/signin" class="btn btn-default btn-rounded">Entrar</router-link>
     </b-col>
   </b-row>
 </template>
@@ -21,7 +24,7 @@ export default {
 
 .page {
   margin-top: 30vh;
-  
+
   .page--title{
     color: $color-light;
     font-size: 3rem;
@@ -38,6 +41,10 @@ export default {
     margin-top: 3rem;
     background-color: $color-maturity;
     color: $color-light;
+  }
+
+  .logoPitang {
+    width:50px;
   }
 }
 
