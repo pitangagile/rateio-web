@@ -140,6 +140,7 @@ export default {
       .btn span { color: $color-light; }
       .btn-google {
         background-color: $color-google;
+        text-decoration: none;
         span {
           padding-right: 5px;
         }

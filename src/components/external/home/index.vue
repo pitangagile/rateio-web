@@ -3,9 +3,9 @@
     <b-col cols="12" class="text-center">
       <h1 class="page--title">
         <img src="../../../../static/img/pitanga-branca.png" class="logoPitang">
-        Rateio
+        {{$env.app.name}}
       </h1>
-      <h3 class="page--subtitle">Bem vindo ao Rateio de horas do colaborador</h3>
+      <h3 class="page--subtitle">Bem vindo ao {{$env.app.name}}, sistema de rateio de horas do colaborador</h3>
       <br>
       <router-link to="/external/signin" class="btn btn-default btn-rounded">Entrar</router-link>
     </b-col>

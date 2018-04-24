@@ -6,7 +6,7 @@ module.exports = {
   // #endregion Environment
 
   // #region App
-  APP_NAME: '"Rateio"',
+  APP_NAME: '"SIRA"',
   APP_VERSION: '"1.0.0"',
   // #endregion App
 };
