@@ -3,7 +3,9 @@
 .VueTables {
   .VueTables__table {
     thead {
-      background: linear-gradient(0deg, $color-daredevil 0%, $color-invigorate 100%);
+      // background: linear-gradient(0deg, $color-daredevil 0%, $color-invigorate 100%);
+      @include color-alpha('background-color', $color-daredevil, 1);
+
       tr {
         &:first-of-type {
           th {
@@ -37,7 +39,9 @@
     tbody {
       tr {
         &:hover {
-          background-color: rgba(228, 114, 55, .1);
+          background-color: $color-light;
+          box-shadow: 0 5px 15px 0px rgba(0, 0, 0, 0.2);
+          transition: box-shadow 0.25s ease;
         }
 
         td {
@@ -103,12 +107,12 @@
       }
 
       .page-link {
-        color: $color-invigorate;
+        color: $color-daredevil;
       }
 
       .page-item.active .page-link {
-        background-color: $color-invigorate;
-        border-color: $color-invigorate;
+        background-color: $color-daredevil;
+        border-color: $color-daredevil;
         color: $color-light;
       }
     }

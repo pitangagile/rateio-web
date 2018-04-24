@@ -139,15 +139,6 @@ html, body {
 @media (min-width: 1366px) {
   .cover {
     .mansory {
-      column-count: 25;
-    }
-  }
-}
-
-// Ultra large devices (large desktops, 2000px and up)
-@media (min-width: 2000px) {
-  .cover {
-    .mansory {
       column-count: 30;
     }
   }

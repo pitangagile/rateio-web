@@ -41,7 +41,7 @@ main {
 }
 
 .page--title span {
-  color: $color-invigorate;
+  color: $color-fireworks;
 }
 
 @media (min-width: 768px) {

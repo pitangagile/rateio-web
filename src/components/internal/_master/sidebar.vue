@@ -3,7 +3,7 @@
     <div class="sidebar-sticky py-2">
       <div class="brand mt-4 mb-2 text-center">
         <a href="#">
-          <img class="brand--logo mb-2" src="/static/img/pitanga-branca.png"/>
+          <img class="brand--logo mb-2" src="/static/img/pitanga-vermelha.png"/>
           <!-- <br>
           <strong class="text-light">Rateio</strong> -->
           <!-- <div class="brand--img red"></div> -->
@@ -138,8 +138,8 @@ export default {
 @import '../../../assets/styles/variables.scss';
 
 .sidebar {
-  background-color: rgba(211,76,42,1);
-  background: linear-gradient(to bottom, $color-daredevil 0%, $color-fireworks 100%);
+  background-color: $color-sidebar;
+  //background: linear-gradient(to bottom, $color-daredevil 0%, $color-fireworks 100%);
   bottom: 0;
   max-width: 15rem;
   min-height: 100%;
@@ -149,7 +149,7 @@ export default {
   left: 0;
   top: 0;
   z-index: 10000;
-  box-shadow: 0 10px 20px rgba(0,0,0,0.19), 0 6px 6px rgba(0,0,0,0.23);
+  box-shadow: inset -5px 0 10px 0 rgba(0, 0, 0, .2);
 
   &:before {
     content: "";
@@ -173,19 +173,9 @@ export default {
       .brand--logo{ width: 50px; }
 
       .brand--img {
-        background-image: url('/static/img/pitangas.png') ;
         height: 50px;
         width: 65px;
-        background-size: cover;
-        background-repeat: no-repeat;
         margin: 0 auto;
-
-        &.orange {
-          background-position: 0 0;
-        }
-        &.red {
-          background-position: -368px 0;
-        }
       }
     }
 
@@ -199,7 +189,7 @@ export default {
 
     .sidebar-heading {
       span {
-        color: $color-light;
+        color: $color-dark;
         font-size: .8rem;
         font-weight: 700;
       }
@@ -209,12 +199,14 @@ export default {
         width: 100%;
 
         .dropdown-toggle {
-          background: $color-invigorate;
+          background: $color-light;
           border: 0;
           border-radius: 1cm;
+          color: $color-dark;
           font-size: .8rem;
           padding-left: 25px;
           padding-right: 25px;
+          box-shadow: 0 1px 0 0 rgba(0, 0, 0, .2) !important;
           width: 160px;
 
           &:after{
@@ -223,16 +215,16 @@ export default {
         }
 
         .dropdown-menu {
-          background: $color-daredevil;
-          box-shadow: 3px 5px 15px 2px rgba(0, 0, 0, .5);
+          background: $color-light;
+          box-shadow: 3px 5px 5px 0 rgba(0, 0, 0, 0.2);
           width: 100%;
 
           a {
-            color: $color-light;
+            color: $color-dark;
             font-size: .8rem;
             outline: 0;
-            &:hover, &:focus{
-              background-color: $color-invigorate;
+            &:hover, &:focus {
+              background-color: $color-sidebar;
             }
           }
         }
@@ -240,9 +232,9 @@ export default {
         .dropdown-item {
           padding: 0.25rem;
 
-          span { color: $color-light; }
+          span { color: $color-dark; }
 
-          &:hover span { color: $color-forsythia; }
+          &:hover span { color: $color-fireworks; }
         }
       }
     }
@@ -253,26 +245,30 @@ export default {
 
         a, a span {
           font-size: .8rem;
-          color: $color-light;
+          color: $color-dark;
         }
 
         a.active, a.active span,
-        a:hover, a:hover span {
-          background: $color-invigorate;
+        a:hover, a:hover span,
+        a:focus, a:focus span {
+          background: $color-light;
         }
 
         a:hover span,
-        a.active span{
-          color: $color-forsythia;
+        a.active span,
+        a:focus span {
+          color: $color-fireworks;
 
           &.icon-logout {
-            color: $color-forsythia;
+            color: $color-fireworks;
           }
         }
 
-        a.active, a:hover {
+        a.active, a:hover, a:focus {
           margin-right: 0;
           border-radius: 1cm 0 0 1cm;
+          box-shadow: -3px 5px 10px 0 rgba(0, 0, 0, 0.2) !important;
+          transition: box-shadow 0.25s ease, background-color 0.25s ease;
         }
       }
     }

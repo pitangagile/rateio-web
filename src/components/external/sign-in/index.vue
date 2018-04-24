@@ -10,7 +10,7 @@
             <span class="icon-facebook"></span>
           </b-button>
           <b-button @click="social('google')" variant="link" class="btn-google btn-circle">
-            <span class="icon-google">conta Pitang</span>
+            <span class="icon-google">Pitang</span>
           </b-button>
           <b-button variant="link" class="btn-twitter btn-circle">
             <span class="icon-twitter"></span>
@@ -138,7 +138,12 @@ export default {
       margin-top: 20px;
 
       .btn span { color: $color-light; }
-      .btn-google { background-color: $color-google; }
+      .btn-google {
+        background-color: $color-google;
+        span {
+          padding-right: 5px;
+        }
+      }
       // .btn-facebook { background-color: $color-facebook; }
       // .btn-twitter { background-color: $color-twitter; }
       .btn-twitter,
