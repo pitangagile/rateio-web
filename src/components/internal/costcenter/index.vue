@@ -1,7 +1,7 @@
 <template>
   <b-row class="page">
     <b-col cols="12">
-      <h1 class="page--title"><span class="icon-cog h4"></span> Centros de custo</h1>
+      <h1 class="page--title"><span class="icon-money h4"></span> Centros de custo</h1>
     </b-col>
      <NewEdit style="margin:13px 12px 12px 10px"/>
 

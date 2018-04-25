@@ -10,14 +10,16 @@ import ExternalSignIn from '@/components/external/sign-in/';
 
 // #region internal
 import InternalMaster from '@/components/internal/_master/';
-import InternalAllocation from '@/components/internal/allocation';
-import InternalAllocationMap from '@/components/internal/allocationmap';
-import InternalCostCenter from '@/components/internal/costcenter';
+import InternalAllocation from '@/components/internal/allocation/';
+import InternalAllocationMap from '@/components/internal/allocationmap/';
+import InternalCostCenter from '@/components/internal/costcenter/';
 import InternalDashboard from '@/components/internal/dashboard/';
-import InternalManage from '@/components/internal/manage';
-import InternalReporting from '@/components/internal/reporting';
+import InternalManage from '@/components/internal/manage/';
+import InternalReporting from '@/components/internal/reporting/';
+import InternalHoliday from '@/components/internal/holiday/';
 import InternalSchedule from '@/components/internal/schedule';
 import InternalSettings from '@/components/internal/settings/';
+import InternalHelp from '@/components/internal/help/';
 
 // #endregion internal
 
@@ -93,6 +95,11 @@ const router = new Router({
           component: InternalReporting,
         },
         {
+          path: 'holiday',
+          name: 'holiday',
+          component: InternalHoliday,
+        },
+        {
           path: 'schedule',
           name: 'schedule',
           component: InternalSchedule,
@@ -101,6 +108,11 @@ const router = new Router({
           path: 'settings',
           name: 'settings',
           component: InternalSettings,
+        },
+        {
+          path: 'help',
+          name: 'help',
+          component: InternalHelp,
         },
       ],
     },

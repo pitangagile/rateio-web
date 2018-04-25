@@ -28,13 +28,13 @@ Font license info
    Homepage:  http://typicons.com/
 
 
-## Iconic
+## Modern Pictograms
 
-   Copyright (C) 2012 by P.J. Onori
+   Copyright (c) 2012 by John Caserta. All rights reserved.
 
-   Author:    P.J. Onori
+   Author:    John Caserta
    License:   SIL (http://scripts.sil.org/OFL)
-   Homepage:  http://somerandomdude.com/work/iconic/
+   Homepage:  http://thedesignoffice.org/project/modern-pictograms/
 
 
 ## Fontelico
