@@ -10,6 +10,9 @@
 * { outline: 0 !important; &:focus { box-shadow: none !important; }}
 hr { width: 100%; }
 
+.scroll-hidden-x { overflow-x: hidden; }
+.scroll-hidden-y { overflow-y: hidden; }
+
 .vue-js-switch { margin: 0; }
 
 #nprogress .bar { z-index: 10000; }

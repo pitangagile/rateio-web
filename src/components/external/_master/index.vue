@@ -18,14 +18,21 @@
 
 <script>
 import mansory from './mansory';
+import { addClass, removeClass } from '../../../commons/helpers/dom.helper';
 
 export default {
   name: 'Master',
   components: { mansory },
+  created() {
+    addClass(document.body, 'scroll-hidden-y');
+  },
+  destroyed() {
+    removeClass(document.body, 'scroll-hidden-y');
+  },
 };
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
 @import '../../../assets/styles/variables.scss';
 .fade-enter-active, .fade-leave-active { transition-property: opacity; transition-duration: .25s; }
 .fade-enter-active { transition-delay: .25s; }

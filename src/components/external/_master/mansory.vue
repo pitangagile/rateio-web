@@ -6,6 +6,7 @@
 
 <script>
 import WindowMixin from './../../../commons/mixins/window.mixin';
+import { addClass, removeClass } from '../../../commons/helpers/dom.helper';
 
 export default {
   name: 'Mansory',
@@ -49,25 +50,12 @@ export default {
         .map(a => a[1]);
     },
     hoverRandom(currentHover) {
-      const self = this;
       const index = parseInt(Math.random() * this.total, 10);
       const next = document.querySelector(`[data-img="${index}"]`);
-      if (currentHover) self.removeClass(currentHover, 'hover');
-      self.addClass(next, 'hover');
+      if (currentHover) removeClass(currentHover, 'hover');
+      addClass(next, 'hover');
 
       return next;
-    },
-    addClass(el, name) {
-      if (!el || !name) return;
-      el.className += ` ${name}`; // eslint-disable-line no-param-reassign
-    },
-    removeClass(el, name) {
-      if (!el || !name) return;
-      let elClass = ` ${el.className} `;
-      while (elClass.indexOf(` ${name} `) !== -1) {
-        elClass = elClass.replace(` ${name} `, '');
-      }
-      el.className = elClass; // eslint-disable-line no-param-reassign
     },
   },
 };
