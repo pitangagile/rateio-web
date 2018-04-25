@@ -22,7 +22,7 @@
           <span>or</span>
           <div class="line r"></div>
         </div>
-        
+
         <form class="text-left">
           <div class="form-group">
             <input type="email" class="form-control" aria-describedby="emailHelp" placeholder="Enter email" autocomplete="email">
@@ -35,7 +35,7 @@
             <small class="form-text text-muted">We'll never share your data with anyone else.</small>
           </div>
         </form>
-        
+
         <b-button variant="primary" class="btn-rounded btn-block">Register</b-button>
         <router-link to="/" class="btn">Back</router-link>
         <br>
@@ -59,6 +59,7 @@ export default {
 
 .page {
   .card {
+    pointer-events: all;
     margin: 0 auto;
     margin-top: 20vh;
     max-width: 20rem;
@@ -87,7 +88,7 @@ export default {
         width: 40%;
         &.l { left: 0; }
         &.r { right: 0;}
-      } 
+      }
     }
 
     form {
@@ -107,5 +108,3 @@ export default {
   }
 }
 </style>
-
-

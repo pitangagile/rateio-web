@@ -41,6 +41,7 @@ export default {
     margin-top: 3rem;
     background-color: $color-maturity;
     color: $color-light;
+    pointer-events: all;
   }
 
   .logoPitang {

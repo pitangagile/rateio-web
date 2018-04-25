@@ -130,6 +130,7 @@ export default {
 
 .page {
   .card {
+    pointer-events: all;
     margin: 0 auto;
     margin-top: 20vh;
     max-width: 20rem;
@@ -141,6 +142,7 @@ export default {
       .btn-google {
         background-color: $color-google;
         text-decoration: none;
+        line-height: .7rem;
         span {
           padding-right: 5px;
         }
