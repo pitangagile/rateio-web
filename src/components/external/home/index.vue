@@ -1,10 +1,12 @@
 <template>
   <b-row class="page">
     <b-col cols="12" class="text-center">
-      <h1 class="page--title">
+      <div class="page--title-container">
         <img src="../../../../static/img/pitanga-branca.png" class="logoPitang">
-        {{$env.app.name}}
-      </h1>
+        <h1 class="page--title">
+          {{$env.app.name}}
+        </h1>
+      </div>
       <h3 class="page--subtitle">Bem vindo ao {{$env.app.name}}, sistema de rateio de horas do colaborador</h3>
       <br>
       <router-link to="/external/signin" class="btn btn-default btn-rounded">Entrar</router-link>
@@ -24,6 +26,17 @@ export default {
 
 .page {
   margin-top: 30vh;
+
+  .page--title-container {
+    h1 {
+      display: inline-block;
+    }
+
+    img {
+      margin-right: 15px;
+      vertical-align: unset;
+    }
+  }
 
   .page--title{
     color: $color-light;
@@ -49,6 +62,12 @@ export default {
   }
 }
 
+@media (min-width: 576px) {
+  .page--title-container {
+    // width: 11rem;
+  }
+}
+
 @media (min-width: 768px) {
   .page {
     margin-top: 35vh;
@@ -62,5 +81,13 @@ export default {
       font-size: 1.4rem;
     }
   }
+}
+
+@media (min-width: 992px) {
+
+}
+
+@media (min-width: 1200px) {
+
 }
 </style>
