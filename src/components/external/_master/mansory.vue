@@ -62,7 +62,7 @@ $img-size: 60px;
     position: relative;
     height: $img-size;
     width: $img-size;
-    transition: all .3s ease;
+    transition: all 1.5s ease;
 
     &:hover {
       border-radius: 10px;
@@ -70,7 +70,7 @@ $img-size: 60px;
       filter: grayscale(0);
       transform: scale(1.3);
       z-index: 1;
-      transition: all .5s ease;
+      transition: all .0s ease;
     }
   }
 }
