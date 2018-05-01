@@ -4,41 +4,44 @@
         <b-col cols="12">
           <h1 class="page--title"><span class="icon-calendar-check-o h4"></span> Feriados</h1>
         </b-col>
-        <b-col cols="6">
-          <b-form>
-            <div class="panel panel-default">
-              <div class="panel-body">
-                <b-form-group id="dateHoliday"
-                              label="Ano:"
-                              label-for="year_holiday"
-                              label-class="col-md-6 control-label pt-2"
-                              class="row">
-                <b-form-select id="year_holiday"
-                              :options="years"
-                              v-model="form.year"
-                              required />
-                </b-form-group>
-              </div>
-              <div class="panel-footer" style="background-color: #efefef;">
-                <b-button variant="secondary" @click.prevent="add()">Incluir</b-button>
-                <span class="separator"></span>
-                <b-button variant="primary" @click.prevent="doSearch()">Pesquisar</b-button>
-              </div>
-            </div>
-          </b-form>
-        </b-col>
     </b-row>
 
     <b-row>
-      <b-col cols="1"></b-col>
-      <b-col cols="4" class="col-md-offset-1">
+      <b-col cols="12">
+        <b-form>
+          <div class="panel panel-default">
+            <div class="panel-body">
+              <b-form-group id="dateHoliday"
+                            label="Ano:"
+                            label-for="year_holiday"
+                            label-class="col-md-6 col-sm-3 control-label pt-2"
+                            class="row">
+              <b-form-select id="year_holiday"
+                            :options="years"
+                            v-model="form.year"
+                            required />
+              </b-form-group>
+            </div>
+            <div class="panel-footer" style="background-color: #efefef;">
+              <b-button variant="secondary" @click.prevent="add()">Incluir</b-button>
+              <span class="separator"></span>
+              <b-button variant="primary" @click.prevent="doSearch()">Pesquisar</b-button>
+            </div>
+          </div>
+        </b-form>
+      </b-col>
+    </b-row>
+
+    <b-row>
+      <b-col cols="12" >
         <b-card no-body header="Janeiro">
           <b-list-group flush>
             <b-list-group-item class="flex-column align-items-start">
               <div class="d-flex w-100 justify-content-between">
                 <h5 class="mb-1">01 <i>Segunda-feira</i></h5>
-                <h5>Nacional</h5>
+
               </div>
+              <h5>Nacional</h5>
               <p class="mb-1">
                 Confraternização universal
               </p>
@@ -76,7 +79,6 @@
 </template>
 
 <script>
-
 
 export default {
   name: 'Holiday',
