@@ -33,12 +33,13 @@
     </b-row>
 
     <b-row>
-      <b-col cols="12" >
-        <b-card no-body header="Janeiro">
+      <b-col cols="12" v-if="holidaysGroup != undefined && holidaysGroup.length > 0  ">
+        <b-card no-body v-for="holiday in holidaysGroup" :key="holiday.id">
+        <!-- <b-card no-body header="Janeiro"> -->
           <b-list-group flush>
             <b-list-group-item class="flex-column align-items-start">
               <div class="d-flex w-100 justify-content-between">
-                <h5 class="mb-1">01 <i>Segunda-feira</i></h5>
+                <h5 class="mb-1">01 <i>{{holiday.dayofweek}}</i></h5>
 
               </div>
               <h5>Nacional</h5>
@@ -88,15 +89,32 @@ export default {
         year: new Date().getFullYear(),
       },
       years: ['2018', '2017', '2016'],
-      holidays: [
-        { id: '0', day: '01', month: 'Janeiro', dayOfWeek: 'Segunda-feira', classification: 'Nacional', description: 'Confraternização Universal', descriptionDayWork: 'Não haverá expediente' },
-        { id: '1', day: '12', month: 'Fevereiro', dayOfWeek: 'Segunda-feira', classification: 'Não é feriado', description: 'Carnaval', descriptionDayWork: 'Abono' },
-      ],
+      holidaysGroup: [],
     };
   },
   methods: {
     doSearch() {
+      const url = 'getAllHolidays';
 
+      this.$NProgress().start();
+
+      this.$http().get(url).then((response) => {
+        this.$NProgress().done();
+        debugger;
+        const months = {};
+        for (let i = 0; i < response.data.length; i += 1) {
+          const monthName = response.data[i].month;
+          if (!months[monthName]) {
+            months[monthName] = [];
+          }
+          months[monthName].push(response.data[i]);
+        }
+        this.holidaysGroup = months;
+      },
+      (err) => {
+        this.$NProgress().done();
+        console.error('> sign-in.AllCenters() error!', err); // eslint-disable-line
+      });
     },
     add() {
 
