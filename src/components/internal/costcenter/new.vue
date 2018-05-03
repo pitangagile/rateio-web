@@ -55,6 +55,8 @@ export default {
         description: this.description,
       };
       this.table.push(center);
+      this.$snotify.info('Adicionado');
+      this.clearModal();
     },
   },
 };

@@ -6,14 +6,13 @@
     </b-col>
 
     <b-col cols="12">
-      <v-client-table ref="grid" class="mt-5 mb-2" :data="tableCenter" :columns="columns" :options="options" :v-for="item in tableCenter">
-          <span slot="h__id">Id</span>
+      <v-client-table ref="grid" class="mt-5 mb-2" :data="tableCenter" :columns="columns" :options="options">
           <span slot="h__code">Codigo</span>
           <span slot="h__description">Centro de custo</span>
           <span slot="h__Edit"></span>
-          <div slot="Edit" slot-scope="props" class="btn-group">
-            <button v-on:click="remover(item)">Editar</button>
-            <Remove v-bind:table="tableCenter">Remover</Remove>
+          <div slot="Edit" slot-scope="props" class="btn-toolbar">
+            <Editar v-bind:table="tableCenter" :row="props.index">Editar</Editar>
+            <Remove v-bind:table="tableCenter" :row="props.index">Remover</Remove>
         </div>
 
       </v-client-table>
@@ -25,8 +24,9 @@
 import { ClientTable } from 'vue-tables-2';
 import Vue from 'vue';
 import options from './../../../commons/helpers/grid.config';
-import NewEdit from './new-edit';
+import NewEdit from './new';
 import Remove from './remove';
+import Editar from './edit';
 
 Vue.use(ClientTable, options, false, 'bootstrap4', 'default');
 
@@ -35,15 +35,19 @@ export default {
   components: {
     NewEdit,
     Remove,
+    Editar,
   },
   data() {
     return {
-      columns: ['id', 'code', 'description', 'Edit'],
+      columns: ['code', 'description', 'Edit'],
       tableCenter: [],
-      item: { code: '', description: '' },
       options: {
         sortable: ['code'],
-        filterable: ['code', 'desccription'],
+        filterable: ['code', 'description'],
+      },
+      headings: {
+        code: 'Codigo',
+        name: 'Centro de Custo',
       },
     };
   },
@@ -68,10 +72,6 @@ export default {
       this.getCenterData(id)[prop] = value;
     },
     // TODO: metodo api remocao
-    remover() {
-      const item = this.id;
-      this.tableCenter.splice(item, 1);
-    },
   },
 };
 </script>

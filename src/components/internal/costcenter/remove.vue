@@ -1,12 +1,12 @@
 <template>
   <div>
-    <b-btn @click="showModal" class="btn btn-danger" >Remover</b-btn>
+    <b-btn @click="showModal" class="btn btn-danger" style="margin:13px 12px 12px 10px">Remover</b-btn>
     <!-- Modal Component -->
     <b-modal ref="myModalRef"
              centered title="Excluir Centro de Custo"
              ok-title="Ok"
              cancel-title="Cancelar"
-             v-on:ok= 'removeCenter'>{{this.table.id}} Deseja excluir o centro de custo?</b-modal>
+             v-on:ok= 'removeCenter'>Deseja excluir o centro de custo?</b-modal>
 
   </div>
 </template>
@@ -20,6 +20,9 @@ export default {
   props: {
     table: {
       type: Array,
+      required: true,
+    },
+    row: {
       required: true,
     },
   },
@@ -37,7 +40,7 @@ export default {
       this.$refs.myModalRef.hide();
     },
     removeCenter() {
-      this.table.splice(this.table.id, 1);
+      this.table.splice((this.row - 1), 1);
       this.$snotify.info('Deletado');
     },
   },
