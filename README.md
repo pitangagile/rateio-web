@@ -24,6 +24,7 @@ Well... how about start learning what we use to write this app client?
   * [vue-router]
   * [Bootstrap Vue.js]
 * [Bootstrap 4.x]
+* [SASS/SCSS]
 * [PWA]
 * [ES6]
 * [Nodejs]
@@ -98,6 +99,7 @@ well ... we're still deciding.
 [PWA]: <https://github.com/vuejs-templates/pwa>
 [Bootstrap 4.x]: <https://getbootstrap.com/docs/4.1/getting-started/introduction/>
 [Bootstrap Vue.js]: <https://bootstrap-vue.js.org>
+[SASS/SCSS]: <https://sass-lang.com/>
 [PWA]: <https://developers.google.com/web/progressive-web-apps/>
 [AWS Lambda]: <https://aws.amazon.com/lambda/>
 [ES6]: <http://es6-features.org/#Constants>
