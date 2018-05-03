@@ -100,10 +100,9 @@ We use [SemVer](http://semver.org/) for versioning.
 
 ## License
 
-well ... we're still deciding.  
-='(
+This source code is issued under [Apache 2.0](http://www.apache.org/licenses/LICENSE-2.0) license, a permissive free license, which means you can modify it as you please, and incorporate it into your own commercial or non-commercial software.
 
-...but what I can guarantee is that it will be **FOSS, Hell Yeah!**
+**FOSS, oh yeah!**
 
 [Pitang]: <https://www.pitang.com/>
 [Nodejs]: <http://nodejs.org>
