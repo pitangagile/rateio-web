@@ -49,12 +49,10 @@ export default {
     },
     editCenter() {
       const id = this.row - 1;
-      const center = this.table[id];
       const newcenter = {
         code: this.code,
         description: this.description,
       };
-      console.log(center) // eslint-disable-line
       this.table.splice(id, 1, newcenter);
     },
   },

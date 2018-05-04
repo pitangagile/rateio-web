@@ -7,12 +7,12 @@
 
     <b-col cols="12">
       <v-client-table ref="grid" class="mt-5 mb-2" :data="tableCenter" :columns="columns" :options="options">
-          <span slot="h__code">Codigo</span>
-          <span slot="h__description">Centro de custo</span>
-          <span slot="h__Edit"></span>
-          <div slot="Edit" slot-scope="props" class="btn-toolbar">
-            <Editar v-bind:table="tableCenter" :row="props.index">Editar</Editar>
-            <Remove v-bind:table="tableCenter" :row="props.index">Remover</Remove>
+        <span slot="h__code">Codigo</span>
+        <span slot="h__description">Centro de custo</span>
+        <span slot="h__Edit"></span>
+        <div slot="Edit" slot-scope="props" class="btn-toolbar">
+          <Editar v-bind:table="tableCenter" :row="props.index">Editar</Editar>
+          <Remove v-bind:table="tableCenter" :row="props.index">Remover</Remove>
         </div>
 
       </v-client-table>
@@ -44,10 +44,6 @@ export default {
       options: {
         sortable: ['code'],
         filterable: ['code', 'description'],
-      },
-      headings: {
-        code: 'Codigo',
-        name: 'Centro de Custo',
       },
     };
   },
