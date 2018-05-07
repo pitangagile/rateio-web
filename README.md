@@ -1,6 +1,6 @@
 # Rateio (Web Client)
 Rateio, a [Pitang] app for Time Reporting.  
-This is a free [PWA] client, using [Vue.js], that consumes api hosted on [AWS Lambda].
+This is a free [PWA] client, using [Vue.js], that consumes [api] hosted on [AWS Lambda].
 
 ## Getting Started
 
@@ -105,6 +105,7 @@ This source code is issued under [Apache 2.0](http://www.apache.org/licenses/LIC
 **FOSS, oh yeah!**
 
 [Pitang]: <https://www.pitang.com/>
+[api]: <https://github.com/pitangagile/rateio-api>
 [Nodejs]: <http://nodejs.org>
 [Git]: <https://git-scm.com>
 [Gitflow]: <https://github.com/nvie/gitflow/wiki/Installation>
