@@ -109,6 +109,11 @@
       "src": "entypo"
     },
     {
+<<<<<<< HEAD
+      "uid": "41087bc74d4b20b55059c60a33bf4008",
+      "css": "edit",
+      "code": 59403,
+=======
       "uid": "9de4ac1aec6b1cca1929e1407eecf3db",
       "css": "calendar-check-o",
       "code": 62068,
@@ -166,6 +171,7 @@
       "uid": "f48ae54adfb27d8ada53d0fd9e34ee10",
       "css": "trash-empty",
       "code": 59409,
+>>>>>>> 4170a75dcd6e2715ce8d664c3c44c73658bdc7e5
       "src": "fontawesome"
     },
     {
