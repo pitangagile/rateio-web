@@ -5,25 +5,19 @@
     </b-col>
     <b-col cols="12">
     <div>
-    <b-form inline>
-      <label class="mr-sm-2" for="inlineFormCustomSelectPref">Período</label>
-      <b-form-select class="mb-2 mr-sm-2 mb-sm-0"
-                     :value="null"
-                     :options="{ '1': 'January', '2': 'February', '3': 'March' }"
-                     id="inlineFormCustomSelectPref">
-        <option slot="first" :value="null">Mês</option>
-      </b-form-select>
-    </b-form>
-  </div>
-
-      <v-client-table ref="grid" class="mt-5 mb-2" :data="tableData" :columns="columns" :options="options">
-        <span slot="h__period">Período</span>
-        <span slot="h__costCenter">Centro de custo</span>
+      <b-form inline>
+        <label class="mr-sm-2" for="inlineFormCustomSelectPref">Período</label>
+        <v-select label="text" v-model="selected" :options="months"></v-select>
+      </b-form>
+    </div>
+      <v-client-table ref="grid" class="mt-5 mb-2" :data="getCenterData(selected)" :columns="columns" :options="options">
+        <span style="width: 2px; height: 2px; line-height: 2px; margin-right: 1px; margin-left: 1px" slot="h__period">Período</span>
+        <span style="width: 2px; height: 2px; line-height: 2px; margin-right: 1px; margin-left: 1px" slot="h__costCenter">Centro de custo</span>
         <span slot="h__hours">Horas</span>
-        <span slot="h__buttons"></span>
+        <span id="test" slot="h__buttons"></span>
         <div slot="buttons" slot-scope="props" class="btn-toolbar">
-          <edit style="margin:13px 12px 12px 10px"/>
-          <erase style="margin:13px 12px 12px 10px"/>
+          <edit v-bind:table="tableData" :row="props.index" style="margin:1px 1px 2px -5px"/>
+          <erase hidden=true v-bind:table="tableData" :row="props.index" style="margin:20px 12px 12px 10px"/>
         </div>
       </v-client-table>
     </b-col>
@@ -33,14 +27,17 @@
 <script>
 import { ClientTable } from 'vue-tables-2';
 import Vue from 'vue';
+import vSelect from 'vue-select';
 import options from './../../../commons/helpers/grid.config';
 import edit from './edit';
 import erase from './erase';
 
 Vue.use(ClientTable, options, false, 'bootstrap4', 'default');
+Vue.component('v-select', vSelect);
 
 export default {
   name: 'Reporting',
+  removable: false,
   components: {
     edit,
     erase,
@@ -48,10 +45,11 @@ export default {
   showLoading: true,
   data() {
     return {
+      selected: null,
       columns: ['period', 'costCenter', 'hours', 'buttons'],
       tableData: [],
+      months: ['January/2018', 'February/2018', 'March/2018'],
       options: {
-
       },
     };
   },
@@ -67,17 +65,16 @@ export default {
       this.$http().get(url).then((response) => {
         this.tableData = response.data;
         this.$NProgress().done();
-      },
-      (err) => {
-        this.$NProgress().done();
-        console.error('> sign-in.AllCenters() error!', err); // eslint-disable-line
       });
     },
-    getCenterData(id) {
-      return this.tableData.filter(u => u.id === id)[0];
-    },
-    removeReporting(index) {
-      this.tableData.splice(index, 1);
+    getCenterData(period) {
+      let table;
+      if (period === null) {
+        table = this.tableData;
+      } else {
+        table = this.tableData.filter(u => u.period === period);
+      }
+      return table;
     },
     getUserData(id) {
       return this.tableData.filter(u => u.id === id)[0];

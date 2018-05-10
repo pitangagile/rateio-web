@@ -4,45 +4,48 @@
         <b-col cols="12">
           <h1 class="page--title"><span class="icon-calendar-check-o h4"></span> Feriados</h1>
         </b-col>
-        <b-col cols="6">
-          <b-form>
-            <div class="panel panel-default">
-              <div class="panel-body">
-                <b-form-group id="dateHoliday"
-                              label="Ano:"
-                              label-for="year_holiday"
-                              label-class="col-md-6 control-label pt-2"
-                              class="row">
-                <b-form-select id="year_holiday"
-                              :options="years"
-                              v-model="form.year"
-                              required />
-                </b-form-group>
-              </div>
-              <div class="panel-footer" style="background-color: #efefef;">
-                <b-button variant="secondary" @click.prevent="add()">Incluir</b-button>
-                <span class="separator"></span>
-                <b-button variant="primary" @click.prevent="doSearch()">Pesquisar</b-button>
-              </div>
-            </div>
-          </b-form>
-        </b-col>
     </b-row>
 
     <b-row>
-      <b-col cols="1"></b-col>
-      <b-col cols="4" class="col-md-offset-1">
-        <b-card no-body header="Janeiro">
-          <b-list-group flush>
+      <b-col cols="12">
+        <b-form>
+          <div class="panel panel-default">
+            <div class="panel-body">
+              <b-form-group id="dateHoliday"
+                            label="Ano:"
+                            label-for="year_holiday"
+                            label-class="col-md-6 col-sm-3 control-label pt-2"
+                            class="row">
+              <b-form-select id="year_holiday"
+                            :options="years"
+                            v-model="form.year"
+                            required />
+              </b-form-group>
+            </div>
+            <div class="panel-footer" style="background-color: #efefef;">
+              <b-button variant="secondary" @click.prevent="add()">Incluir</b-button>
+              <span class="separator"></span>
+              <b-button variant="primary" @click.prevent="doSearch()">Pesquisar</b-button>
+            </div>
+          </div>
+        </b-form>
+      </b-col>
+    </b-row>
+
+    <b-row>
+      <b-col cols="12" v-if="holidaysGroup != undefined && holidaysGroup.length > 0  ">
+        <b-card no-body header="Feriado">
+        <!-- <b-card no-body header="Janeiro"> -->
+          <b-list-group flush v-for="holiday in holidaysGroup" :key="holiday.id">
             <b-list-group-item class="flex-column align-items-start">
               <div class="d-flex w-100 justify-content-between">
-                <h5 class="mb-1">01 <i>Segunda-feira</i></h5>
-                <h5>Nacional</h5>
+                <h5 class="mb-1">{{holiday.day}}/{{holiday.month}} <i>{{holiday.dayOfWeek}}</i></h5>
               </div>
+              <h5>{{holiday.description}}</h5>
               <p class="mb-1">
-                Confraternização universal
+
               </p>
-              <span><b>Não haverá expediente</b></span>
+              <span><b>{{holiday.classification}} - {{holiday.daydescription}}</b></span>
             </b-list-group-item>
           </b-list-group>
         </b-card>
@@ -77,7 +80,6 @@
 
 <script>
 
-
 export default {
   name: 'Holiday',
   data() {
@@ -85,19 +87,31 @@ export default {
       form: {
         year: new Date().getFullYear(),
       },
-      years: ['2018', '2017', '2016'],
-      holidays: [
-        { id: '0', day: '01', month: 'Janeiro', dayOfWeek: 'Segunda-feira', classification: 'Nacional', description: 'Confraternização Universal', descriptionDayWork: 'Não haverá expediente' },
-        { id: '1', day: '12', month: 'Fevereiro', dayOfWeek: 'Segunda-feira', classification: 'Não é feriado', description: 'Carnaval', descriptionDayWork: 'Abono' },
-      ],
+      years: [],
+      holidaysGroup: [],
     };
   },
+  mounted() {
+    this.getInitialData();
+  },
   methods: {
-    doSearch() {
+    getInitialData() {
+      const url = 'holiday';
 
+      this.$http().get(url).then((response) => {
+        this.years = response.data.years;
+      });
     },
-    add() {
+    doSearch() {
+      const url = 'holiday/search';
 
+      this.$http().post(url, { year: this.form.year }).then((response) => {
+        console.log(response); // eslint-disable-line
+        this.holidaysGroup = response.data;
+      },
+      (err) => {
+        console.error('> sign-in.AllCenters() error!', err); // eslint-disable-line
+      });
     },
   },
 };

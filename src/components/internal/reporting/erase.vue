@@ -2,35 +2,44 @@
   <div>
     <b-btn class="btn btn-danger" @click="showModal">Excluir</b-btn>
     <!-- Modal Component -->
-    <b-modal ref="myModalRef"
+    <b-modal ref="eraseModal"
              centered title="Você deseja realmente excluir?"
              ok-title="Sim"
              cancel-title="Não"
              v-on:cancel="handleCancel"
-             v-on:ok="handleOk"
+             v-on:ok='handleOk'
              size="sm">
     </b-modal>
   </div>
 </template>
 
 <script>
-import index from './index';
 
 export default {
+
   components: {
-    index,
+
+  },
+  props: {
+    table: {
+      type: Array,
+      required: true,
+    },
+    row: {
+      required: true,
+    },
   },
   data() {
     return {
-      hours: '',
+
     };
   },
   methods: {
     showModal() {
-      this.$refs.myModalRef.show();
+      this.$refs.eraseModal.show();
     },
     hideModal() {
-      this.$refs.myModalRef.hide();
+      this.$refs.eraseModal.hide();
     },
     clearModal() {
       this.hours = '';
@@ -40,6 +49,7 @@ export default {
       this.hours = '';
     },
     handleOk() {
+      this.table.splice(this.row - 1, 1);
       this.$snotify.success('Reportagem excluída com sucesso', 'Sucesso', {
         timeout: 2000,
         showProgressBar: false,
