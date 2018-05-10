@@ -57,7 +57,7 @@ export default {
   },
   methods: {
     AllCenters() {
-      const url = 'getCoastCenters';
+      const url = 'coastcenter/getAll';
 
       this.$NProgress().start();
 

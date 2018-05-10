@@ -41,6 +41,15 @@ export default {
       this.$refs.removeCoastCenterModal.hide();
     },
     removeCenter() {
+      const center = this.table[this.row - 1];
+      const url = 'coastcenter/delete';
+
+      this.$http().post(url, { id: center._id }).then((response) => { // eslint-disable-line
+        console.log(response.data) // eslint-disable-line
+      },
+      (err) => {
+        console.error(response.data, err); // eslint-disable-line
+      });
       this.table.splice((this.row - 1), 1);
       this.$snotify.info('Deletado');
     },

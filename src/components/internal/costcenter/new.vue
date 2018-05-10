@@ -54,6 +54,14 @@ export default {
         code: this.code,
         description: this.description,
       };
+      const url = 'coastcenter/create';
+
+      this.$http().post(url, center).then((response) => {
+        console.log(response.data) // eslint-disable-line
+      },
+      (err) => {
+        console.error(response.data, err); // eslint-disable-line
+      });
       this.table.push(center);
       this.$snotify.info('Adicionado');
       this.clearModal();
