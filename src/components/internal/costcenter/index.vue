@@ -1,22 +1,23 @@
+coast center index
 <template>
   <b-row class="page">
     <b-col cols="12">
-      <h1 class="page--title"><span class="icon-money h4"></span> Centros de custo</h1>
+      <h1 class="page--title"><span class="icon-cog h4"></span> Centros de custo</h1>
+      <new-edit v-bind:table="tableCenter"></new-edit>
     </b-col>
-     <NewEdit style="margin:13px 12px 12px 10px"/>
 
     <b-col cols="12">
-      <v-client-table ref="grid" class="mt-5 mb-2" :data="tableCenter" :columns="columns" :options="options">
-          <span slot="h__codigo">Codigo</span>
-          <span slot="h__descricao">Centro de custo</span>
-          <span slot="h__Edit"></span>
-          <div slot="Edit" slot-scope="props" class="btn-group">
-            <button type="button" class="btn btn-primary" v-on:click="onChange(id)">Editar</button>
-            <button type="button" class="btn btn-danger" v-on:click="removeCenter(id)">Remover</button>
+      <v-client-table class="table mt-5 mb-2" ref="grid" :data="tableCenter" :columns="columns" :options="options">
+        <span slot="h__code">Codigo</span>
+        <span slot="h__description">Centro de custo</span>
+        <span slot="h__actions"></span>
+        <div slot="actions" slot-scope="props" class="btn-group">
+          <Editar :table="tableCenter" :row="props.index">Editar</Editar>
+          <Remove :table="tableCenter" :row="props.index">Remover</Remove>
         </div>
-
       </v-client-table>
     </b-col>
+
   </b-row>
 </template>
 
@@ -24,7 +25,9 @@
 import { ClientTable } from 'vue-tables-2';
 import Vue from 'vue';
 import options from './../../../commons/helpers/grid.config';
-import NewEdit from './newEdit';
+import NewEdit from './new';
+import Remove from './remove';
+import Editar from './edit';
 
 Vue.use(ClientTable, options, false, 'bootstrap4', 'default');
 
@@ -32,15 +35,20 @@ export default {
   name: 'CostCenter',
   components: {
     NewEdit,
+    Remove,
+    Editar,
   },
-  showLoading: true,
   data() {
     return {
-      columns: ['codigo', 'descricao', 'Edit'],
+      columns: ['code', 'description', 'actions'],
       tableCenter: [],
       options: {
-        sortable: ['codigo'],
-        filterable: ['codigo', 'descricao'],
+        sortable: ['code'],
+        filterable: ['code', 'description'],
+        columnsClasses: {
+          actions: 'action-column text-center',
+          code: 'code-column',
+        },
       },
     };
   },
@@ -56,10 +64,6 @@ export default {
       this.$http().get(url).then((response) => {
         this.tableCenter = response.data;
         this.$NProgress().done();
-      },
-      (err) => {
-        this.$NProgress().done();
-        console.error('> sign-in.AllCenters() error!', err); // eslint-disable-line
       });
     },
     getCenterData(id) {
@@ -69,14 +73,15 @@ export default {
       this.getCenterData(id)[prop] = value;
     },
     // TODO: metodo api remocao
-    removeCenter(index) {
-      this.tableCenter.splice(index, 1);
-    },
-
   },
 };
 </script>
 
 <style lang="scss" scoped>
-
+/deep/ td.action-column {
+  width: 200px;
+}
+/deep/ td.code-column {
+  width: 250px;
+}
 </style>
