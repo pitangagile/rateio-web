@@ -25,8 +25,8 @@
         <v-client-table ref="grid" class="mt-5 mb-2" :data="tableUserCenter" :columns="columns" :options="options">
         <span slot="h__code">Codigo</span>
         <span slot="h__description">Centro de custo</span>
-        <span slot="h__Edit"></span>
-        <div slot="Edit" slot-scope="props" class="btn-toolbar">
+        <span slot="h__actions"></span>
+        <div slot="actions" slot-scope="props">
           <remove v-bind:table="tableUserCenter" :row="props.index">Remover</remove>
         </div>
 
@@ -49,7 +49,7 @@
             >
           </multiselect></b-col>
         <b-col>
-          <b-button v-on:click="addCenter()" :size="lg">Adicionar</b-button>
+          <b-button v-on:click="addCenter()">Adicionar</b-button>
         </b-col>
       </b-row>
     </b-col>
@@ -80,12 +80,15 @@ export default {
   data() {
     return {
       tableCenter: [],
-      columns: ['code', 'description', 'Edit'],
+      columns: ['code', 'description', 'actions'],
       tableUserCenter: [],
       center: null,
       options: {
         sortable: ['code'],
         filterable: ['code', 'description'],
+        columnsClasses: {
+          actions: 'action-column text-center',
+        },
       },
     };
   },
@@ -184,6 +187,9 @@ export default {
   line-height: 23px;
   margin-top: 15px;
   text-align: justify;
+}
+/deep/ td.action-column {
+  width: 200px;
 }
 
 </style>

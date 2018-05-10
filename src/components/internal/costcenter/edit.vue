@@ -1,8 +1,8 @@
 <template>
-  <div>
-    <b-btn @click="showModal" class="btn btn-info" style="margin:13px 12px 12px 10px" >Editar</b-btn>
+  <a>
+    <b-button-group @click="showModal" class="icon-edit btn-info buttonStyle btn-sm" ></b-button-group>
     <!-- Modal Component -->
-    <b-modal ref="myModalRef"
+    <b-modal ref="editCoastCenterModal"
              centered title="Editar Centro de Custo"
              ok-title="Salvar"
              cancel-title="Cancelar"
@@ -16,7 +16,7 @@
                       v-model="description"></b-form-input>
       </form>
     </b-modal>
-  </div>
+  </a>
 </template>
 
 <script>
@@ -42,10 +42,10 @@ export default {
   },
   methods: {
     showModal() {
-      this.$refs.myModalRef.show();
+      this.$refs.editCoastCenterModal.show();
     },
     hideModal() {
-      this.$refs.myModalRef.hide();
+      this.$refs.editCoastCenterModal.hide();
     },
     editCenter() {
       const id = this.row - 1;
@@ -58,3 +58,13 @@ export default {
   },
 };
 </script>
+
+<style lang="scss" scoped>
+.buttonStyle
+{
+    padding: 5px 5px;
+    margin: 0px 0px;
+    margin-right: 10px;
+
+}
+</style>

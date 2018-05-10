@@ -1,14 +1,14 @@
 <template>
-  <div>
-    <b-btn @click="showModal" class="btn btn-danger" style="margin:13px 12px 12px 10px">Remover</b-btn>
+  <a>
+    <b-button-group @click="showModal" class="icon-trash btn-danger buttonStyle btn-sm" bsStyle="small"></b-button-group>
     <!-- Modal Component -->
-    <b-modal ref="myModalRef"
+    <b-modal ref="removeCoastCenterModal"
              centered title="Excluir Centro de Custo"
              ok-title="Ok"
              cancel-title="Cancelar"
              v-on:ok= 'removeCenter'>Deseja excluir o centro de custo?</b-modal>
 
-  </div>
+  </a>
 </template>
 
 <script>
@@ -34,10 +34,10 @@ export default {
   },
   methods: {
     showModal() {
-      this.$refs.myModalRef.show();
+      this.$refs.removeCoastCenterModal.show();
     },
     hideModal() {
-      this.$refs.myModalRef.hide();
+      this.$refs.removeCoastCenterModal.hide();
     },
     removeCenter() {
       this.table.splice((this.row - 1), 1);
@@ -46,3 +46,14 @@ export default {
   },
 };
 </script>
+
+<style lang="scss" scoped>
+.buttonStyle
+{
+
+    padding: 5px 5px;
+    margin: 0px 0px;
+    margin-right: 10px;
+
+}
+</style>

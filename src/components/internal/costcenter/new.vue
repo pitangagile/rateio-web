@@ -2,7 +2,7 @@
   <div>
     <b-btn @click="showModal" >Adicionar</b-btn>
     <!-- Modal Component -->
-    <b-modal ref="myModalRef"
+    <b-modal ref="addCoastCenterModal"
              centered title="Cadastro de Centro de Custo"
              ok-title="Salvar"
              cancel-title="Cancelar"
@@ -40,10 +40,10 @@ export default {
   },
   methods: {
     showModal() {
-      this.$refs.myModalRef.show();
+      this.$refs.addCoastCenterModal.show();
     },
     hideModal() {
-      this.$refs.myModalRef.hide();
+      this.$refs.addCoastCenterModal.hide();
     },
     clearModal() {
       this.code = '';

@@ -6,17 +6,17 @@
     </b-col>
 
     <b-col cols="12">
-      <v-client-table ref="grid" class="mt-5 mb-2" :data="tableCenter" :columns="columns" :options="options">
+      <v-client-table class="table mt-5 mb-2" ref="grid" :data="tableCenter" :columns="columns" :options="options">
         <span slot="h__code">Codigo</span>
         <span slot="h__description">Centro de custo</span>
-        <span slot="h__Edit"></span>
-        <div slot="Edit" slot-scope="props" class="btn-toolbar">
-          <Editar v-bind:table="tableCenter" :row="props.index">Editar</Editar>
-          <Remove v-bind:table="tableCenter" :row="props.index">Remover</Remove>
+        <span slot="h__actions"></span>
+        <div slot="actions" slot-scope="props" class="btn-group">
+          <Editar :table="tableCenter" :row="props.index">Editar</Editar>
+          <Remove :table="tableCenter" :row="props.index">Remover</Remove>
         </div>
-
       </v-client-table>
     </b-col>
+
   </b-row>
 </template>
 
@@ -39,11 +39,15 @@ export default {
   },
   data() {
     return {
-      columns: ['code', 'description', 'Edit'],
+      columns: ['code', 'description', 'actions'],
       tableCenter: [],
       options: {
         sortable: ['code'],
         filterable: ['code', 'description'],
+        columnsClasses: {
+          actions: 'action-column text-center',
+          code: 'code-column',
+        },
       },
     };
   },
@@ -73,5 +77,10 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-
+/deep/ td.action-column {
+  width: 200px;
+}
+/deep/ td.code-column {
+  width: 250px;
+}
 </style>
