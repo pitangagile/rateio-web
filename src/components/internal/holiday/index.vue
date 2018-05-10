@@ -96,7 +96,7 @@ export default {
   },
   methods: {
     getInitialData() {
-      const url = 'holiday';
+      const url = 'holiday/getAll';
 
       this.$http().get(url).then((response) => {
         this.years = response.data.years;
@@ -106,7 +106,7 @@ export default {
       const url = 'holiday/search';
 
       this.$http().post(url, { year: this.form.year }).then((response) => {
-        console.log(response); // eslint-disable-line
+        console.log('response'); // eslint-disable-line
         this.holidaysGroup = response.data;
       },
       (err) => {
