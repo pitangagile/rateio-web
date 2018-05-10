@@ -34,19 +34,18 @@
 
     <b-row>
       <b-col cols="12" v-if="holidaysGroup != undefined && holidaysGroup.length > 0  ">
-        <b-card no-body v-for="holiday in holidaysGroup" :key="holiday.id">
+        <b-card no-body header="Feriado">
         <!-- <b-card no-body header="Janeiro"> -->
-          <b-list-group flush>
+          <b-list-group flush v-for="holiday in holidaysGroup" :key="holiday.id">
             <b-list-group-item class="flex-column align-items-start">
               <div class="d-flex w-100 justify-content-between">
-                <h5 class="mb-1">01 <i>{{holiday.dayofweek}}</i></h5>
-
+                <h5 class="mb-1">{{holiday.day}}/{{holiday.month}} <i>{{holiday.dayOfWeek}}</i></h5>
               </div>
-              <h5>Nacional</h5>
+              <h5>{{holiday.description}}</h5>
               <p class="mb-1">
-                Confraternização universal
+
               </p>
-              <span><b>Não haverá expediente</b></span>
+              <span><b>{{holiday.classification}} - {{holiday.daydescription}}</b></span>
             </b-list-group-item>
           </b-list-group>
         </b-card>
@@ -88,36 +87,31 @@ export default {
       form: {
         year: new Date().getFullYear(),
       },
-      years: ['2018', '2017', '2016'],
+      years: [],
       holidaysGroup: [],
     };
   },
+  mounted() {
+    this.getInitialData();
+  },
   methods: {
-    doSearch() {
-      const url = 'getAllHolidays';
-
-      this.$NProgress().start();
+    getInitialData() {
+      const url = 'holiday';
 
       this.$http().get(url).then((response) => {
-        this.$NProgress().done();
-        debugger;
-        const months = {};
-        for (let i = 0; i < response.data.length; i += 1) {
-          const monthName = response.data[i].month;
-          if (!months[monthName]) {
-            months[monthName] = [];
-          }
-          months[monthName].push(response.data[i]);
-        }
-        this.holidaysGroup = months;
-      },
-      (err) => {
-        this.$NProgress().done();
-        console.error('> sign-in.AllCenters() error!', err); // eslint-disable-line
+        this.years = response.data.years;
       });
     },
-    add() {
+    doSearch() {
+      const url = 'holiday/search';
 
+      this.$http().post(url, { year: this.form.year }).then((response) => {
+        console.log(response); // eslint-disable-line
+        this.holidaysGroup = response.data;
+      },
+      (err) => {
+        console.error('> sign-in.AllCenters() error!', err); // eslint-disable-line
+      });
     },
   },
 };
