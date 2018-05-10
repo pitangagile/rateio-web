@@ -100,7 +100,7 @@ export default {
       this.$NProgress().start();
       hello(issuer).login({ scope: ['email'] }).then((auth) => {
         hello(auth.network).api('me').then((user) => {
-          const url = 'socialLogin';
+          const url = 'auth/socialLogin';
           this.$http().post(url, {
             username: undefined,
             email: user.email,

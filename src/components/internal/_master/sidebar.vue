@@ -48,7 +48,7 @@
         </li>
         <li class="nav-item">
           <router-link to="/internal/manage" class="nav-link" :class="{ 'active' : isActive('manage')}">
-            <span class="icon-crown mr-2"></span>
+            <span class="icon-archive mr-2"></span>
             Gerenciar Rateio
           </router-link>
         </li>
@@ -74,25 +74,31 @@
       <ul class="nav flex-column mb-2">
         <li class="nav-item">
           <router-link to="/internal/settings" class="nav-link" :class="{ 'active' : isActive('settings')}">
-            <span class="icon-cog mr-2"></span>
+            <span class="icon-vcard mr-2"></span>
             Colaborador
           </router-link>
         </li>
         <li class="nav-item">
           <router-link to="/internal/costcenter" class="nav-link" :class="{ 'active' : isActive('costcenter')}">
-            <span class="icon-user-o mr-2"></span>
+            <span class="icon-money mr-2"></span>
             Centros de custo
           </router-link>
         </li>
         <li class="nav-item">
+          <router-link to="/internal/holiday" class="nav-link" :class="{ 'active' : isActive('holiday')}">
+            <span class="icon-calendar-check-o mr-2"></span>
+            Feriados
+          </router-link>
+        </li>
+        <!-- <li class="nav-item">
           <router-link to="/internal/schedule" class="nav-link" :class="{ 'active' : isActive('schedule')}">
             <span class="icon-user-o mr-2"></span>
             Rotinas batch
           </router-link>
-        </li>
+        </li> -->
         <li class="nav-item">
-          <router-link to="/internal/support" class="nav-link" :class="{ 'active' : isActive('support')}">
-            <span class="icon-umbrella mr-2"></span>
+          <router-link to="/internal/help" class="nav-link" :class="{ 'active' : isActive('help')}">
+            <span class="icon-help-circled mr-2"></span>
             Ajuda
           </router-link>
         </li>
