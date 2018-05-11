@@ -3,7 +3,7 @@ coast center index
   <b-row class="page">
     <b-col cols="12">
       <h1 class="page--title"><span class="icon-cog h4"></span> Centros de custo</h1>
-      <new-edit v-bind:table="tableCenter"></new-edit>
+
     </b-col>
 
     <b-col cols="12">
@@ -12,8 +12,11 @@ coast center index
         <span slot="h__description">Centro de custo</span>
         <span slot="h__actions"></span>
         <div slot="actions" slot-scope="props" class="btn-group">
-          <Editar :table="tableCenter" :row="props.index">Editar</Editar>
+          <Editar :table="tableCenter" :row="props.index" >Editar</Editar>
           <Remove :table="tableCenter" :row="props.index">Remover</Remove>
+        </div>
+        <div slot="afterFilter" class="add-button">
+          <new-edit v-bind:table="tableCenter"></new-edit>
         </div>
       </v-client-table>
     </b-col>
@@ -78,6 +81,10 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.add-button {
+    float: left;
+    margin-left: 15px;
+}
 /deep/ td.action-column {
   width: 200px;
 }
