@@ -10,6 +10,7 @@ import ExternalSignIn from '@/components/external/sign-in/';
 
 // #region internal
 import InternalMaster from '@/components/internal/_master/';
+import InternalExamples from '@/components/internal/examples/';
 import InternalAllocation from '@/components/internal/allocation/';
 import InternalAllocationMap from '@/components/internal/allocationmap/';
 import InternalCostCenter from '@/components/internal/costcenter/';
@@ -64,6 +65,11 @@ const router = new Router({
       meta: { requiresAuth: true },
       props: true,
       children: [
+        {
+          path: 'examples',
+          name: 'examples',
+          component: InternalExamples,
+        },
         {
           path: '',
           name: 'dashboard',

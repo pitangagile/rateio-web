@@ -1,4 +1,3 @@
-settings index
 <template>
   <b-row class="page">
     <b-col cols="12">
