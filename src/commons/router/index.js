@@ -10,7 +10,6 @@ import ExternalSignIn from '@/components/external/sign-in/';
 
 // #region internal
 import InternalMaster from '@/components/internal/_master/';
-import InternalExamples from '@/components/internal/examples/';
 import InternalAllocation from '@/components/internal/allocation/';
 import InternalAllocationMap from '@/components/internal/allocationmap/';
 import InternalCostCenter from '@/components/internal/costcenter/';
@@ -21,6 +20,9 @@ import InternalHoliday from '@/components/internal/holiday/';
 import InternalSchedule from '@/components/internal/schedule';
 import InternalSettings from '@/components/internal/settings/';
 import InternalHelp from '@/components/internal/help/';
+
+import InternalExamples from '@/components/internal/examples/';
+import InternalExamplesServerTable from '@/components/internal/examples/server-table';
 
 // #endregion internal
 
@@ -65,11 +67,6 @@ const router = new Router({
       meta: { requiresAuth: true },
       props: true,
       children: [
-        {
-          path: 'examples',
-          name: 'examples',
-          component: InternalExamples,
-        },
         {
           path: '',
           name: 'dashboard',
@@ -119,6 +116,16 @@ const router = new Router({
           path: 'help',
           name: 'help',
           component: InternalHelp,
+        },
+        {
+          path: 'examples',
+          name: 'examples',
+          component: InternalExamples,
+        },
+        {
+          path: 'examples/servertable',
+          name: 'servertable',
+          component: InternalExamplesServerTable,
         },
       ],
     },
