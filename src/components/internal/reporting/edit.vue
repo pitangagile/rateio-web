@@ -1,6 +1,6 @@
 <template>
   <div>
-    <b-btn class="btn btn-info icon-edit" style="font-size: larger;" @click="showModal"></b-btn>
+    <b-button class="icon-edit" style="color: #3f3f40;" size="lg" variant="link" @click="showModal"></b-button>
     <!-- Modal Component -->
     <b-modal ref="editModal"
              centered title="Editar"

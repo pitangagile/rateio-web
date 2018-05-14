@@ -21,6 +21,9 @@ import InternalSchedule from '@/components/internal/schedule';
 import InternalSettings from '@/components/internal/settings/';
 import InternalHelp from '@/components/internal/help/';
 
+import InternalExamples from '@/components/internal/examples/';
+import InternalExamplesServerTable from '@/components/internal/examples/server-table';
+
 // #endregion internal
 
 import NavigationGuards from './navigations.guards';
@@ -113,6 +116,16 @@ const router = new Router({
           path: 'help',
           name: 'help',
           component: InternalHelp,
+        },
+        {
+          path: 'examples',
+          name: 'examples',
+          component: InternalExamples,
+        },
+        {
+          path: 'examples/servertable',
+          name: 'servertable',
+          component: InternalExamplesServerTable,
         },
       ],
     },
