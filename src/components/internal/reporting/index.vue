@@ -7,7 +7,7 @@
     <div>
       <b-form inline>
         <label class="mr-sm-2" for="inlineFormCustomSelectPref">Período</label>
-        <v-select label="text" v-model="selected" :options="months"></v-select>
+        <v-select label="text" v-model="selected" :options="periods"></v-select>
       </b-form>
     </div>
       <v-client-table ref="grid" class="mt-5 mb-2" :data="getCenterData(selected)" :columns="columns" :options="options">
@@ -16,8 +16,8 @@
         <span slot="h__hours">Horas</span>
         <span id="test" slot="h__buttons"></span>
         <div slot="buttons" slot-scope="props" class="btn-toolbar">
-          <edit v-bind:table="tableData" :row="props.index" style="margin:1px 1px 2px -5px"/>
-          <erase hidden=true v-bind:table="tableData" :row="props.index" style="margin:20px 12px 12px 10px"/>
+          <edit v-bind:table="reportingsList" :row="props.index" style="margin:1px 1px 2px -5px"/>
+          <erase hidden=true v-bind:table="reportingsList" :row="props.index" style="margin:20px 12px 12px 10px"/>
         </div>
       </v-client-table>
     </b-col>
@@ -47,37 +47,45 @@ export default {
     return {
       selected: null,
       columns: ['period', 'costCenter', 'hours', 'buttons'],
-      tableData: [],
-      months: ['January/2018', 'February/2018', 'March/2018'],
+      reportingsList: [],
+      periods: ['January/2018', 'February/2018', 'March/2018'],
       options: {
       },
     };
   },
   mounted() {
-    this.AllCenters();
+    this.getInitialData();
   },
   methods: {
-    AllCenters() {
-      const url = 'getReportings';
-
-      this.$NProgress().start();
-
-      this.$http().get(url).then((response) => {
-        this.tableData = response.data;
-        this.$NProgress().done();
-      });
-    },
     getCenterData(period) {
       let table;
       if (period === null) {
-        table = this.tableData;
+        table = this.reportingsList;
       } else {
-        table = this.tableData.filter(u => u.period === period);
+        table = this.reportingsList.filter(u => u.period === period);
       }
       return table;
     },
     getUserData(id) {
-      return this.tableData.filter(u => u.id === id)[0];
+      return this.reportingsList.filter(u => u.id === id)[0];
+    },
+    getInitialData() {
+      const url = 'reporting';
+
+      this.$http().get(url).then((response) => {
+        this.periods = response.data.periods;
+      });
+    },
+    doSearch() {
+      const url = 'reporting/search';
+
+      this.$http().post(url, { period: this.selected }).then((response) => {
+        console.log(response); // eslint-disable-line
+        this.reportingsList = response.data;
+      },
+      (err) => {
+        console.error('> sign-in.AllCenters() error!', err); // eslint-disable-line
+      });
     },
     changeValue(id, prop, value) {
       this.getUserData(id)[prop] = value;
