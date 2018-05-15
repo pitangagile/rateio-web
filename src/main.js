@@ -14,6 +14,7 @@ import './assets/styles/app.scss';
 
 import Vue from 'vue';
 import Vuex from 'vuex';
+import VueI18n from 'vue-i18n';
 import BootstrapVue from 'bootstrap-vue';
 import Snotify from 'vue-snotify';
 import ToggleButton from 'vue-js-toggle-button';
@@ -31,6 +32,7 @@ import AuthMixin from './commons/mixins/auth.mixin';
 
 // #region Usings
 Vue.use(Vuex);
+Vue.use(VueI18n);
 Vue.use(BootstrapVue);
 Vue.use(Snotify);
 Vue.use(ToggleButton);
