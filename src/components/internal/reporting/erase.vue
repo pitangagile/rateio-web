@@ -6,7 +6,7 @@
              centered title="Você deseja realmente excluir?"
              ok-title="Sim"
              cancel-title="Não"
-             v-on:cancel="handleCancel"
+             v-on:cancel="clearModal"
              v-on:ok='handleOk'
              size="sm">
     </b-modal>

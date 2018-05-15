@@ -12,7 +12,6 @@
         <div slot="buttons" slot-scope="props" class="btn-toolbar">
           <edit v-bind:table="reportingsList" :row="props.index" style="margin:1px 1px 2px -5px"/>
           <erase hidden=true v-bind:table="reportingsList" :row="props.index" style="margin:20px 12px 12px 10px"/>
-          <novo v-bind:table="reportingsList"/>
         </div>
         <div slot="afterFilter" style="margin-top: 7.4px;" class="column-period">
             <multiselect
@@ -22,6 +21,7 @@
               :searchable="true"
               placeholder="Selecione o Período">
             </multiselect>
+            <novo v-bind:table="reportingsList"/>
         </div>
       </v-client-table>
     </b-col>
@@ -53,11 +53,8 @@ export default {
     return {
       selected: null,
       columns: ['period', 'costCenter', 'hours', 'buttons'],
-      reportingsList: [
-        { period: 'January/2018', costCenter: '1.1.1.001 Centro de custo', hours: 10 },
-        { period: 'February/2018', costCenter: '1.1.1.002 Centro de custo 2', hours: 20 },
-        { period: 'March/2018', costCenter: '1.1.1.003 Centro de custo 3', hours: 30 }],
-      periods: ['January/2018', 'February/2018', 'March/2018'],
+      reportingsList: [],
+      periods: [],
       options: {
         sortable: [],
       },
@@ -65,6 +62,7 @@ export default {
   },
   mounted() {
     this.getInitialData();
+    this.getAll();
   },
   methods: {
     getCenterData(period) {
@@ -80,25 +78,33 @@ export default {
       return this.reportingsList.filter(u => u.id === id)[0];
     },
     getInitialData() {
-      const url = 'reporting';
+      const url = 'reportings';
 
       this.$http().get(url).then((response) => {
         this.periods = response.data.periods;
       });
     },
-    doSearch() {
-      const url = 'reporting/search';
+    getAll() {
+      const url = 'reportings/getAll';
 
-      this.$http().post(url, { period: 'April' }).then((response) => {
-        console.log(response); // eslint-disable-line
+      this.$http().get(url).then((response) => {
         this.reportingsList = response.data;
-      },
-      (err) => {
-        console.error('> sign-in.AllCenters() error!', err); // eslint-disable-line
+        console.log(this.reportingsList); // eslint-disable-line
       });
     },
-    changeValue(id, prop, value) {
-      this.getUserData(id)[prop] = value;
+    doSearch() {
+      const url = 'reportings/search';
+      const selected = this.selected;
+
+      if (selected != null) {
+        this.$http().post(url, { selected }).then((response) => {
+          console.log(response); // eslint-disable-line
+          this.reportingsList = response.data;
+        },
+        (err) => {
+          console.error('> sign-in.AllCenters() error!', err); // eslint-disable-line
+        });
+      }
     },
   },
 };

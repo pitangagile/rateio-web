@@ -60,13 +60,14 @@ export default {
         hours: this.hours,
       };
       const url = 'reportings/create';
-      this.$http().post(url, { period: center.period, costCenter: center.costCenter, hours: center.hours }).then((response) => { // eslint-disable-line
-        this.table.push(center);
-        this.$snotify.success('Adicionado');
-        this.clearModal();
+      this.$http().post(url, center).then((response) => { // eslint-disable-line
+        console.log(response.data) // eslint-disable-line
       }, (err) => {
         this.$snotify.error('Centro ja adicionado', err);
       });
+      this.table.push(center);
+      this.$snotify.success('Adicionado');
+      this.clearModal();
     },
   },
 };
