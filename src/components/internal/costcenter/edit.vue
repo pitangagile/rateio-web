@@ -1,5 +1,5 @@
 <template>
-  <a>
+  <div slot="afterFilter">
     <b-button-group @click="showModal" class="icon-edit btn-info buttonStyle btn-sm" ></b-button-group>
     <!-- Modal Component -->
     <b-modal ref="editCoastCenterModal"
@@ -16,7 +16,7 @@
                       v-model="description"></b-form-input>
       </form>
     </b-modal>
-  </a>
+  </div>
 </template>
 
 <script>
@@ -47,13 +47,24 @@ export default {
     hideModal() {
       this.$refs.editCoastCenterModal.hide();
     },
+    clearModal() {
+      this.code = '';
+      this.description = '';
+    },
     editCenter() {
-      const id = this.row - 1;
+      const centerid = this.table[this.row - 1];
       const newcenter = {
         code: this.code,
         description: this.description,
       };
-      this.table.splice(id, 1, newcenter);
+      const url = 'coastcenter/edit';
+      this.$http().post(url,{id: centerid._id, code: this.code, description: this.description}).then((response) => { // eslint-disable-line
+        this.table.splice((this.row - 1), 1, newcenter);
+        this.clearModal();
+        this.$snotify.success('Editado');
+      }, (err) => {
+        this.$snotify.error('Erro Centro de Custo', err);
+      });
     },
   },
 };

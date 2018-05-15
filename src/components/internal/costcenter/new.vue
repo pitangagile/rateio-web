@@ -1,6 +1,6 @@
 <template>
   <div>
-    <b-btn @click="showModal" >Adicionar</b-btn>
+    <b-btn @click="showModal" class="btn-success" >Adicionar</b-btn>
     <!-- Modal Component -->
     <b-modal ref="addCoastCenterModal"
              centered title="Cadastro de Centro de Custo"
@@ -56,15 +56,13 @@ export default {
       };
       const url = 'coastcenter/create';
 
-      this.$http().post(url, center).then((response) => {
-        console.log(response.data) // eslint-disable-line
-      },
-      (err) => {
-        console.error(response.data, err); // eslint-disable-line
+      this.$http().post(url, { code: center.code, description: center.description }).then((response) => { // eslint-disable-line
+        this.table.push(center);
+        this.$snotify.success('Adicionado');
+        this.clearModal();
+      }, (err) => {
+        this.$snotify.error('Centro ja adicionado', err);
       });
-      this.table.push(center);
-      this.$snotify.info('Adicionado');
-      this.clearModal();
     },
   },
 };
