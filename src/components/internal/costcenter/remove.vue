@@ -46,12 +46,12 @@ export default {
 
       this.$http().post(url, { id: center._id }).then((response) => { // eslint-disable-line
         console.log(response.data) // eslint-disable-line
+        this.table.splice((this.row - 1), 1);
+        this.$snotify.success('Deletado');
       },
       (err) => {
         console.error(response.data, err); // eslint-disable-line
       });
-      this.table.splice((this.row - 1), 1);
-      this.$snotify.info('Deletado');
     },
   },
 };
