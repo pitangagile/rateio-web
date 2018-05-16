@@ -10,7 +10,7 @@
         <span slot="h__hours">Horas</span>
         <span slot="h__actions"></span>
         <div slot="actions" slot-scope="props" class="btn-toolbar">
-          <edit v-bind:table="reportingsList" :row="props.index" style="margin:1px 1px 2px -5px"/>
+          <edit v-bind:table="reportingsList" :row="props.row" style="margin:1px 1px 2px -5px"/>
         </div>
         <div slot="afterFilter" style="margin-top: 7.4px;" class="column-period">
             <multiselect
@@ -20,6 +20,10 @@
               :searchable="true"
               placeholder="Selecione o Período">
             </multiselect>
+        </div>
+
+        <div slot="afterFilter" class="column-period">
+          <p>Horas reportadas: </p>
         </div>
       </v-client-table>
     </b-col>

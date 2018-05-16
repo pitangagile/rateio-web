@@ -9,7 +9,6 @@
              v-on:ok="handleOk(hours)">
       <form>
         <b-form-input type="number"
-                      min=0
                       placeholder="Horas"
                       v-model="hours"></b-form-input>
       </form>
@@ -29,23 +28,22 @@ export default {
       required: true,
     },
     row: {
+      type: Object,
       required: true,
     },
   },
   data() {
     return {
-      hours: '',
+      hours: this.row.hours,
     };
   },
   methods: {
     handleOk(hours) {
-      if (hours !== '' || hours > 0) {
-        const newReport = this.table[this.row - 1];
+      if (hours >= 0) {
         const url = 'reportings/update';
-        this.table[this.row - 1].hours = this.hours;
-
-        this.$http().post(url, {id: newReport._id, hours: this.hours}).then((response) => { // eslint-disable-line
-          console.log(newReport) // eslint-disable-line
+        console.log(this.row); // eslint-disable-line
+        this.row.hours = this.hours;
+        this.$http().post(url, {id: this.row._id, hours: this.hours}).then((response) => { // eslint-disable-line
         },
         (err) => {
           console.error(response.data, err); // eslint-disable-line
@@ -62,6 +60,7 @@ export default {
     },
     showModal() {
       this.$refs.editModal.show();
+      console.log(this.hours) // eslint-disable-line
     },
     hideModal() {
       this.$refs.editModal.hide();

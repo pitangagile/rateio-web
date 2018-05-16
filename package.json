@@ -24,6 +24,7 @@
     "vue": "^2.5.2",
     "vue-i18n": "^7.6.0",
     "vue-js-toggle-button": "^1.2.2",
+    "vue-multiselect": "^2.1.0",
     "vue-router": "^3.0.1",
     "vue-select": "^2.4.0",
     "vue-snotify": "^3.0.4",

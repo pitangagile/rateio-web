@@ -1,11 +1,6 @@
 <template>
-<<<<<<< HEAD
-  <a>
-    <b-button-group @click="showModal" class="icon-edit btn-info button Style btn-sm" ></b-button-group>
-=======
   <div slot="afterFilter">
     <b-button-group @click="showModal" class="icon-edit btn-info buttonStyle btn-sm" ></b-button-group>
->>>>>>> 49069ce3835d48a7c33497cfff011ec177cda13f
     <!-- Modal Component -->
     <b-modal ref="editCoastCenterModal"
              centered title="Editar Centro de Custo"
@@ -25,10 +20,8 @@
 </template>
 
 <script>
-
 export default {
   components: {
-
   },
   props: {
     table: {
@@ -81,6 +74,5 @@ export default {
     padding: 5px 5px;
     margin: 0px 0px;
     margin-right: 10px;
-
 }
 </style>
