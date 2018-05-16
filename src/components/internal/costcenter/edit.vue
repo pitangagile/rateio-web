@@ -1,6 +1,6 @@
 <template>
   <a>
-    <b-button-group @click="showModal" class="icon-edit btn-info buttonStyle btn-sm" ></b-button-group>
+    <b-button-group @click="showModal" class="icon-edit btn-info button Style btn-sm" ></b-button-group>
     <!-- Modal Component -->
     <b-modal ref="editCoastCenterModal"
              centered title="Editar Centro de Custo"

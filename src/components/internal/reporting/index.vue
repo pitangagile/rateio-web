@@ -8,10 +8,9 @@
         <span style="width: 2px; height: 2px; line-height: 2px; margin-right: 1px; margin-left: 1px" slot="h__period">Período</span>
         <span style="width: 2px; height: 2px; line-height: 2px; margin-right: 1px; margin-left: 1px" slot="h__costCenter">Centro de custo</span>
         <span slot="h__hours">Horas</span>
-        <span id="test" slot="h__buttons"></span>
-        <div slot="buttons" slot-scope="props" class="btn-toolbar">
+        <span slot="h__actions"></span>
+        <div slot="actions" slot-scope="props" class="btn-toolbar">
           <edit v-bind:table="reportingsList" :row="props.index" style="margin:1px 1px 2px -5px"/>
-          <erase hidden=true v-bind:table="reportingsList" :row="props.index" style="margin:20px 12px 12px 10px"/>
         </div>
         <div slot="afterFilter" style="margin-top: 7.4px;" class="column-period">
             <multiselect
@@ -21,7 +20,6 @@
               :searchable="true"
               placeholder="Selecione o Período">
             </multiselect>
-            <novo v-bind:table="reportingsList"/>
         </div>
       </v-client-table>
     </b-col>
@@ -34,29 +32,31 @@ import Vue from 'vue';
 import Multiselect from 'vue-multiselect';
 import options from './../../../commons/helpers/grid.config';
 import edit from './edit';
-import erase from './erase';
-import Novo from './novo';
 
 Vue.use(ClientTable, options, false, 'bootstrap4', 'default');
 Vue.component('multiselect', Multiselect);
-Vue.component('novo', Novo);
 
 export default {
   name: 'Reporting',
   removable: false,
   components: {
     edit,
-    erase,
   },
   showLoading: true,
   data() {
     return {
       selected: null,
-      columns: ['period', 'costCenter', 'hours', 'buttons'],
+      columns: ['period', 'costCenter', 'hours', 'actions'],
       reportingsList: [],
       periods: [],
       options: {
         sortable: [],
+        columnsClasses: {
+          actions: 'action-column text-center',
+          period: 'period-column',
+          costCenter: 'costCenter-Column',
+          hours: 'hours-column',
+        },
       },
     };
   },
@@ -89,7 +89,6 @@ export default {
 
       this.$http().get(url).then((response) => {
         this.reportingsList = response.data;
-        console.log(this.reportingsList); // eslint-disable-line
       });
     },
     doSearch() {
@@ -98,7 +97,6 @@ export default {
 
       if (selected != null) {
         this.$http().post(url, { selected }).then((response) => {
-          console.log(response); // eslint-disable-line
           this.reportingsList = response.data;
         },
         (err) => {
@@ -114,10 +112,13 @@ export default {
 @import '../../../assets/styles/variables.scss';
 
 /deep/ td.action-column {
-  width: 200px;
+  width: 100px;
 }
-/deep/ td.code-column {
-  width: 250px;
+/deep/ td.period-column {
+  width: 150px;
+}
+/deep/ td.hours-column {
+  width: 100px;
 }
 
 .column-period {

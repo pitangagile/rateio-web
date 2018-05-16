@@ -39,15 +39,17 @@ export default {
   },
   methods: {
     handleOk(hours) {
-      if (hours !== '' || hours < 0) {
-        const id = this.row - 1;
-        const oldReport = this.table[id];
-        const newReport = {
-          hours: this.hours,
-          costCenter: oldReport.costCenter,
-          period: oldReport.period,
-        };
-        this.table.splice(id, 1, newReport);
+      if (hours !== '' || hours > 0) {
+        const newReport = this.table[this.row - 1];
+        const url = 'reportings/update';
+        this.table[this.row - 1].hours = this.hours;
+
+        this.$http().post(url, {id: newReport._id, hours: this.hours}).then((response) => { // eslint-disable-line
+          console.log(newReport) // eslint-disable-line
+        },
+        (err) => {
+          console.error(response.data, err); // eslint-disable-line
+        });
         this.$snotify.success('Suas horas foram atualizadas', 'Sucesso', {
           timeout: 2000,
           showProgressBar: false,
