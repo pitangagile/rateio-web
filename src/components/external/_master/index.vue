@@ -1,3 +1,14 @@
+<i18n>
+{
+  "en": {
+    "about": "This is a {0}{1}{2} Lab app made with"
+  },
+  "pt": {
+    "about": "Este é um app {0}{1}{2} Lab feito com"
+  }
+}
+</i18n>
+
 <template>
   <b-row class="page-wrapper mx-0">
     <div class="cover">
@@ -9,7 +20,9 @@
       </transition>
       <div class="about">
         <div class="message">
-          This is a P<strong>it</strong>ang Lab app made with <span class="icon-heart"></span>
+          <i18n path="about" tag="span">
+            P<strong>it</strong>ang
+          </i18n> <span class="icon-heart"></span>
         </div>
       </div>
     </b-col>
@@ -63,11 +76,11 @@ html, body {
         font-size: .8rem;
         font-weight: $font-light;
 
-        strong, span {
+        /deep/ strong, span {
           color: $color-light;
         }
 
-        span {
+        span.icon-heart {
           color: $color-senescent;
           &:before {
             animation: beat .25s infinite alternate;
