@@ -1,3 +1,16 @@
+<i18n>
+{
+  "en": {
+    "subtitle": "Welcome to {0}, collaborator's time allocation system",
+    "enter": "Enter"
+  },
+  "pt": {
+    "subtitle": "Bem vindo ao {0}, sistema de rateio de horas do colaborador",
+    "enter": "Entrar"
+  }
+}
+</i18n>
+
 <template>
   <b-row class="page">
     <b-col cols="12" class="text-center">
@@ -7,9 +20,11 @@
           {{$env.app.name}}
         </h1>
       </div>
-      <h3 class="page--subtitle">Bem vindo ao {{$env.app.name}}, sistema de rateio de horas do colaborador</h3>
+      <i18n path="subtitle" tag="h3" class="page--subtitle">
+        {{$env.app.name}}
+      </i18n>
       <br>
-      <router-link to="/external/signin" class="btn btn-default btn-rounded">Entrar</router-link>
+      <router-link to="/external/signin" class="btn btn-default btn-rounded">{{$t('enter')}}</router-link>
     </b-col>
   </b-row>
 </template>

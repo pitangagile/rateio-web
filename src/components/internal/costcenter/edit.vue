@@ -1,6 +1,11 @@
 <template>
+<<<<<<< HEAD
   <a>
     <b-button-group @click="showModal" class="icon-edit btn-info button Style btn-sm" ></b-button-group>
+=======
+  <div slot="afterFilter">
+    <b-button-group @click="showModal" class="icon-edit btn-info buttonStyle btn-sm" ></b-button-group>
+>>>>>>> 49069ce3835d48a7c33497cfff011ec177cda13f
     <!-- Modal Component -->
     <b-modal ref="editCoastCenterModal"
              centered title="Editar Centro de Custo"
@@ -16,7 +21,7 @@
                       v-model="description"></b-form-input>
       </form>
     </b-modal>
-  </a>
+  </div>
 </template>
 
 <script>
@@ -47,13 +52,24 @@ export default {
     hideModal() {
       this.$refs.editCoastCenterModal.hide();
     },
+    clearModal() {
+      this.code = '';
+      this.description = '';
+    },
     editCenter() {
-      const id = this.row - 1;
+      const centerid = this.table[this.row - 1];
       const newcenter = {
         code: this.code,
         description: this.description,
       };
-      this.table.splice(id, 1, newcenter);
+      const url = 'coastcenter/edit';
+      this.$http().post(url,{id: centerid._id, code: this.code, description: this.description}).then((response) => { // eslint-disable-line
+        this.table.splice((this.row - 1), 1, newcenter);
+        this.clearModal();
+        this.$snotify.success('Editado');
+      }, (err) => {
+        this.$snotify.error('Erro Centro de Custo', err);
+      });
     },
   },
 };
