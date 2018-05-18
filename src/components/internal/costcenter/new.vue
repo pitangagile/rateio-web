@@ -55,11 +55,11 @@ export default {
         description: this.description,
       };
       const url = 'coastcenter/create';
-
-      this.$http().post(url, { code: center.code, description: center.description }).then((response) => { // eslint-disable-line
-        this.table.push(center);
+      this.$http().post(url,
+        { code: center.code, description: center.description }).then(() => {
         this.$snotify.success('Adicionado');
         this.clearModal();
+        window.location.reload();
       }, (err) => {
         this.$snotify.error('Centro ja adicionado', err);
       });

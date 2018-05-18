@@ -1,69 +1,46 @@
 <template>
-  <div slot="afterFilter">
-    <b-button-group @click="showModal" class="icon-edit btn-info buttonStyle btn-sm" ></b-button-group>
-    <!-- Modal Component -->
-    <b-modal ref="editCoastCenterModal"
-             centered title="Editar Centro de Custo"
-             ok-title="Salvar"
-             cancel-title="Cancelar"
-             v-on:ok= 'editCenter'>
-      <form>
-        <b-form-input type="text"
-                      placeholder="Código"
-                      v-model="code"></b-form-input>
-        <b-form-input type="text"
-                      placeholder="Descrição"
-                      v-model="description"></b-form-input>
-      </form>
-    </b-modal>
+  <div>
+    <b-button-group @click="editCenter()" class="icon-edit" size="lg" variant="link"></b-button-group>
   </div>
 </template>
 
 <script>
+import tableCenter from './index';
 
 export default {
   components: {
-
+    tableCenter,
   },
   props: {
-    table: {
-      type: Array,
-      required: true,
-    },
     row: {
       required: true,
     },
   },
   data() {
     return {
-      code: this.table[this.row - 1].code,
-      description: this.table[this.row - 1].description,
+      code: this.row.code,
+      description: this.row.description,
     };
   },
   methods: {
-    showModal() {
-      this.$refs.editCoastCenterModal.show();
-    },
-    hideModal() {
-      this.$refs.editCoastCenterModal.hide();
-    },
-    clearModal() {
-      this.code = '';
-      this.description = '';
-    },
     editCenter() {
-      const centerid = this.table[this.row - 1];
-      const newcenter = {
-        code: this.code,
-        description: this.description,
-      };
+      console.log(this.row); //eslint-disable-line
       const url = 'coastcenter/edit';
-      this.$http().post(url,{id: centerid._id, code: this.code, description: this.description}).then((response) => { // eslint-disable-line
-        this.table.splice((this.row - 1), 1, newcenter);
-        this.clearModal();
-        this.$snotify.success('Editado');
-      }, (err) => {
-        this.$snotify.error('Erro Centro de Custo', err);
+      this.$swal({
+        title: 'Edição de Centro de Custo',
+        html:
+          '<input id="code" class="swal2-input">' +
+          '<input id="description" class="swal2-input">',
+        focusConfirm: false,
+        preConfirm: () => { // eslint-disable-line
+          return [
+            this.$http().post(url,{id: this.row._id, code: document.getElementById('code').value, description: document.getElementById('description').value}).then(() => { // eslint-disable-line
+              this.$snotify.success('Editado');
+            }, (err) => {
+              this.$snotify.error('Erro Centro de Custo', err);
+            }),
+          ];
+        },
       });
     },
   },
@@ -71,11 +48,5 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.buttonStyle
-{
-    padding: 5px 5px;
-    margin: 0px 0px;
-    margin-right: 10px;
 
-}
 </style>
