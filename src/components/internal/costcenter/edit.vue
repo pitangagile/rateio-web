@@ -31,9 +31,15 @@ export default {
         html:
           '<input id="code" class="swal2-input">' +
           '<input id="description" class="swal2-input">',
+        inputValue: this.code,
         focusConfirm: false,
+        showCancelButton: true,
+        cancelButtonText: 'Não, cancele!',
         preConfirm: () => { // eslint-disable-line
           return [
+            Promise.resolve({
+              code: this.$('input').val(this.code),
+            }),
             this.$http().post(url,{id: this.row._id, code: document.getElementById('code').value, description: document.getElementById('description').value}).then(() => { // eslint-disable-line
               this.$snotify.success('Editado');
             }, (err) => {

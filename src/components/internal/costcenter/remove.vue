@@ -22,6 +22,7 @@ export default {
   },
   methods: {
     removeCenter() {
+      const url = 'coastcenter/delete';
       const swalWithBootstrapButtons = this.$swal.mixin({
         confirmButtonClass: 'btn btn-success',
         cancelButtonClass: 'btn btn-danger',

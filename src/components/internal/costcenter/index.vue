@@ -16,7 +16,7 @@
             <remove :row="props.row" >remover</remove>
           </div>
           <div slot="afterFilter" class="add-button">
-            <novo :table="tableCenter"></novo>
+            <novo @allCenters="AllCenters()"></novo>
           </div>
         </v-client-table>
       </div>

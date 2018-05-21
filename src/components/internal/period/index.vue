@@ -64,7 +64,4 @@ export default {
 /deep/ td.action-column {
   width: 200px;
 }
-/deep/ td.code-column {
-  width: 250px;
-}
 </style>
