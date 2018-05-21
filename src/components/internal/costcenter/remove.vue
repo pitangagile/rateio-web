@@ -22,7 +22,7 @@ export default {
   },
   methods: {
     removeCenter() {
-      const url = 'coastcenter/delete';
+      const url = 'coastcenter/Delete';
       const swalWithBootstrapButtons = this.$swal.mixin({
         confirmButtonClass: 'btn btn-success',
         cancelButtonClass: 'btn btn-danger',
@@ -44,6 +44,8 @@ export default {
               'Centro de custo deletado.',
               'success',
             );
+          }).then(() => {
+            this.$emit('allCenters');
           });
         } else if (
           result.dismiss === this.$swal.DismissReason.cancel

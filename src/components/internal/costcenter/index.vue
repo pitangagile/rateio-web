@@ -12,8 +12,8 @@
           <span slot="h__description">Centro de custo</span>
           <span slot="h__actions"></span>
           <div slot="actions" slot-scope="props" class="btn-group">
-            <editar :row="props.row">editar</editar>
-            <remove :row="props.row" >remover</remove>
+            <editar :row="props.row" @allCenters="AllCenters()">editar</editar>
+            <remove :row="props.row" @allCenters="AllCenters()">remover</remove>
           </div>
           <div slot="afterFilter" class="add-button">
             <novo @allCenters="AllCenters()"></novo>
