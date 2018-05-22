@@ -10,7 +10,7 @@
         <span slot="h__hours">Horas</span>
         <span slot="h__actions"></span>
         <div slot="actions" slot-scope="props" class="btn-toolbar">
-          <edit v-bind:table="reportingsList" :row="props.row" style="margin:1px 1px 2px -5px"/>
+          <edit v-bind:table="reportingsList" :row="props.row" :index="props.index" :totalHours="totalHours" @getAll="getAll()"  style="margin:1px 1px 2px -5px"/>
         </div>
         <div slot="afterFilter" style="margin-top: 7.4px;" class="column-period">
             <multiselect
@@ -23,7 +23,7 @@
         </div>
 
         <div slot="afterFilter" class="column-period">
-          <p>Horas reportadas: </p>
+          <p>Horas reportadas: {{this.totalHours}}</p>
         </div>
       </v-client-table>
     </b-col>
@@ -53,6 +53,7 @@ export default {
       columns: ['period', 'costCenter', 'hours', 'actions'],
       reportingsList: [],
       periods: [],
+      totalHours: 0,
       options: {
         sortable: [],
         columnsClasses: {
@@ -69,6 +70,13 @@ export default {
     this.getAll();
   },
   methods: {
+    getTotalHours(reportings) {
+      let result = 0;
+      for (let i = 0, length = reportings.length; i < length; i += 1) {
+        result += reportings[i].hours;
+      }
+      this.totalHours = result;
+    },
     getCenterData(period) {
       let table;
       if (period === null) {
@@ -85,7 +93,7 @@ export default {
       const url = 'reportings';
 
       this.$http().get(url).then((response) => {
-        this.periods = response.data.periods;
+        this.periods = response.data;
       });
     },
     getAll() {
@@ -93,6 +101,8 @@ export default {
 
       this.$http().get(url).then((response) => {
         this.reportingsList = response.data;
+      }).then(() => {
+        this.getTotalHours(this.reportingsList);
       });
     },
     doSearch() {

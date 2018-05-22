@@ -1,22 +1,6 @@
 <template>
   <div>
-    <b-btn @click="showModal" class="btn-success" >Adicionar</b-btn>
-    <!-- Modal Component -->
-    <b-modal ref="addCoastCenterModal"
-             centered title="Cadastro de Centro de Custo"
-             ok-title="Salvar"
-             cancel-title="Cancelar"
-             v-on:cancel="clearModal"
-             v-on:ok= 'addNewCenter'>
-      <form>
-        <b-form-input type="text"
-                      placeholder="Código"
-                      v-model="code"></b-form-input>
-        <b-form-input type="text"
-                      placeholder="Descrição"
-                      v-model="description"></b-form-input>
-      </form>
-    </b-modal>
+    <b-btn @click="addNewCenter" class="btn-success" >Adicionar</b-btn>
   </div>
 </template>
 
@@ -27,10 +11,7 @@ export default {
 
   },
   props: {
-    table: {
-      type: Array,
-      required: true,
-    },
+
   },
   data() {
     return {
@@ -39,29 +20,40 @@ export default {
     };
   },
   methods: {
-    showModal() {
-      this.$refs.addCoastCenterModal.show();
-    },
-    hideModal() {
-      this.$refs.addCoastCenterModal.hide();
-    },
-    clearModal() {
-      this.code = '';
-      this.description = '';
-    },
     addNewCenter() {
-      const center = {
-        code: this.code,
-        description: this.description,
-      };
       const url = 'coastcenter/create';
-
-      this.$http().post(url, { code: center.code, description: center.description }).then((response) => { // eslint-disable-line
-        this.table.push(center);
-        this.$snotify.success('Adicionado');
-        this.clearModal();
-      }, (err) => {
-        this.$snotify.error('Centro ja adicionado', err);
+      this.$swal({
+        title: 'Adição de Centro de Custo',
+        html:
+          '<input id="code" class="swal2-input">' +
+          '<input id="description" class="swal2-input">',
+        confirmButtonClass: 'btn btn-success',
+        cancelButtonClass: 'btn btn-danger',
+        confirmButtonText: 'Adicionar',
+        cancelButtonText: 'Cancelar',
+        focusConfirm: false,
+        showCancelButton: true,
+      }).then((result) => {
+        if (result.value) {
+          this.$http().post(url, { code: document.getElementById('code').value, description: document.getElementById('description').value }).then(() => { //eslint-disable-line
+            this.$swal(
+              'Adicionado',
+              'Centro de custo adicionado.',
+              'success',
+              this.$emit('allCenters'),
+            );
+          }, (err) => {
+            this.$snotify.error('Centro ja adicionado', err);
+          });
+        } else if (
+          result.dismiss === this.$swal.DismissReason.cancel
+        ) {
+          this.$swal(
+            'Cancelado',
+            '',
+            'error',
+          );
+        }
       });
     },
   },

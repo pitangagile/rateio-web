@@ -27,6 +27,7 @@ import variables from './commons/helpers/variables';
 import ConfigPlugin from './commons/plugins/config.plugin';
 import NProgressPlugin from './commons/plugins/nprogress.plugin';
 import AxiosPlugin from './commons/plugins/axios.plugin';
+import SwalPlugin from './commons/plugins/swal.plugin';
 
 import AuthMixin from './commons/mixins/auth.mixin';
 
@@ -36,6 +37,7 @@ Vue.use(VueI18n);
 Vue.use(BootstrapVue);
 Vue.use(Snotify);
 Vue.use(ToggleButton);
+Vue.use(SwalPlugin);
 Vue.use(NProgressPlugin, { showSpinner: true });
 Vue.use(AxiosPlugin, variables); // axios plugin depends on the Progress Bar
 Vue.use(ConfigPlugin, variables);

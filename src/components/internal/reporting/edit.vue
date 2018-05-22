@@ -1,18 +1,6 @@
 <template>
   <div>
-    <b-button class="icon-edit" style="color: #3f3f40;" size="lg" variant="link" @click="showModal"></b-button>
-    <!-- Modal Component -->
-    <b-modal ref="editModal"
-             centered title="Editar"
-             ok-title="Salvar"
-             cancel-title="Cancelar"
-             v-on:ok="handleOk(hours)">
-      <form>
-        <b-form-input type="number"
-                      placeholder="Horas"
-                      v-model="hours"></b-form-input>
-      </form>
-    </b-modal>
+    <b-button class="icon-edit" style="color: #3f3f40;" size="lg" variant="link" @click="handleOk"></b-button>
   </div>
 </template>
 
@@ -31,46 +19,67 @@ export default {
       type: Object,
       required: true,
     },
+    totalHours: {
+      type: Number,
+      required: true,
+    },
+    index: {
+      type: Number,
+      required: true,
+    },
+    total: {
+      required: true,
+    },
   },
   data() {
     return {
-      hours: this.row.hours,
+      hours: 0,
     };
   },
   methods: {
-    handleOk(hours) {
-      if (hours >= 0) {
-        const url = 'reportings/update';
-        console.log(this.row); // eslint-disable-line
-        this.row.hours = this.hours;
-        this.$http().post(url, {id: this.row._id, hours: this.hours}).then((response) => { // eslint-disable-line
+    handleOk() {
+      const url = 'reportings/update';
+      const oldHours = this.row.hours;
+      this.$swal({
+        title: 'Editar',
+        input: 'number',
+        confirmButtonClass: 'btn btn-success',
+        cancelButtonClass: 'btn btn-danger',
+        confirmButtonText: 'Confirmar',
+        cancelButtonText: 'Cancelar',
+        inputValue: oldHours,
+        focusConfirm: false,
+        reverseButtons: true,
+        showCancelButton: true,
+        inputAttributes: {
+          min: 0,
         },
-        (err) => {
-          console.error(response.data, err); // eslint-disable-line
-        });
-        this.$snotify.success('Suas horas foram atualizadas', 'Sucesso', {
-          timeout: 2000,
-          showProgressBar: false,
-          closeOnClick: false,
-          pauseOnHover: true,
-        });
-      } else {
-        this.$snotify.error('Digite um número válido');
-      }
-    },
-    showModal() {
-      this.$refs.editModal.show();
-      console.log(this.hours) // eslint-disable-line
-    },
-    hideModal() {
-      this.$refs.editModal.hide();
-    },
-    clearModal() {
-      this.hours = '';
-    },
-    onChange(e) {
-      this.tableCenter.map(item => item.id).indexOf(e);
-      this.hours = '';
+      }).then((result) => {
+        if (result.value) {
+          this.$http().post(url, { id: this.row._id, hours: document.getElementById('hours').value }).then(() => { //eslint-disable-line
+            if (document.getElementById('hours').value) {
+              this.$swal(
+                'Editado',
+                'Reportagem Editada.',
+                'success',
+                this.$emit('getAll'),
+              );
+            } else {
+              this.$snotify.error('Não foi possível editar, digite um número válido');
+            }
+          }, (err) => {
+            this.$snotify.error('Não foi possível editar, digite um número válido', err);
+          });
+        } else if (
+          result.dismiss === this.$swal.DismissReason.cancel
+        ) {
+          this.$swal(
+            'Cancelado',
+            '',
+            'error',
+          );
+        }
+      });
     },
   },
 };

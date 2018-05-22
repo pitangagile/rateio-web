@@ -173,6 +173,12 @@
       "css": "trash",
       "code": 61944,
       "src": "fontawesome"
+    },
+    {
+      "uid": "531bc468eecbb8867d822f1c11f1e039",
+      "css": "calendar-1",
+      "code": 59410,
+      "src": "fontawesome"
     }
   ]
 }

@@ -96,7 +96,7 @@ export default {
   },
   methods: {
     getInitialData() {
-      const url = 'holiday/getAll';
+      const url = 'holiday';
 
       this.$http().get(url).then((response) => {
         this.years = response.data.years;
