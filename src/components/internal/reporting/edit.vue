@@ -11,23 +11,8 @@ export default {
 
   },
   props: {
-    table: {
-      type: Array,
-      required: true,
-    },
     row: {
       type: Object,
-      required: true,
-    },
-    totalHours: {
-      type: Number,
-      required: true,
-    },
-    index: {
-      type: Number,
-      required: true,
-    },
-    total: {
       required: true,
     },
   },
@@ -39,7 +24,6 @@ export default {
   methods: {
     handleOk() {
       const url = 'reportings/update';
-      const oldHours = this.row.hours;
       this.$swal({
         title: 'Editar',
         input: 'number',
@@ -47,17 +31,19 @@ export default {
         cancelButtonClass: 'btn btn-danger',
         confirmButtonText: 'Confirmar',
         cancelButtonText: 'Cancelar',
-        inputValue: oldHours,
         focusConfirm: false,
         reverseButtons: true,
         showCancelButton: true,
+        inputValue: this.row.hours,
         inputAttributes: {
           min: 0,
+          id: 'hours',
         },
       }).then((result) => {
         if (result.value) {
-          this.$http().post(url, { id: this.row._id, hours: document.getElementById('hours').value }).then(() => { //eslint-disable-line
-            if (document.getElementById('hours').value) {
+          const newHours = document.getElementById('hours').value;
+          this.$http().post(url, { id: this.row._id, hours: newHours }).then(() => { //eslint-disable-line
+            if (newHours >= 0 && newHours != null) {
               this.$swal(
                 'Editado',
                 'Reportagem Editada.',
