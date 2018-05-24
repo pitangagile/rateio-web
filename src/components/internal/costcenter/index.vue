@@ -63,14 +63,10 @@ export default {
     AllCenters() {
       const url = 'coastcenter/getAll';
 
-      this.$NProgress().start();
-
       this.$http().get(url).then((response) => {
         this.tableCenter = response.data;
-        this.$NProgress().done();
       });
     },
-    // TODO: metodo api remocao
   },
 };
 </script>

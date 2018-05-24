@@ -25,7 +25,9 @@ export default {
       this.$swal({
         title: 'Adição de Centro de Custo',
         html:
+          '<a style="float: left;" autofocus>Codigo:<a/>' +
           '<input id="code" class="swal2-input">' +
+          '<a style="float: left;" autofocus>Descrição:<a/>' +
           '<input id="description" class="swal2-input">',
         confirmButtonClass: 'btn btn-success',
         cancelButtonClass: 'btn btn-danger',
@@ -33,6 +35,7 @@ export default {
         cancelButtonText: 'Cancelar',
         focusConfirm: false,
         showCancelButton: true,
+        reverseButtons: true,
       }).then((result) => {
         if (result.value) {
           this.$http().post(url, { code: document.getElementById('code').value, description: document.getElementById('description').value }).then(() => { //eslint-disable-line
