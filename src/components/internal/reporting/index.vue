@@ -10,7 +10,7 @@
         <span slot="h__hours">Horas</span>
         <span slot="h__actions"></span>
         <div slot="actions" slot-scope="props" class="btn-toolbar">
-          <edit v-bind:table="reportingsList" :row="props.row" :index="props.index" :totalHours="totalHours" @getAll="getAll()"  style="margin:1px 1px 2px -5px"/>
+          <edit v-bind:table="reportingsList" :row="props.row" :index="props.index" :totalHours="totalHours" @getAll="getAll()"/>
         </div>
         <div slot="afterFilter" style="margin-top: 7.4px;" class="column-period">
             <multiselect

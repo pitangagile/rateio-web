@@ -5,8 +5,8 @@
     </b-col>
     <b-col cols="12">
       <v-client-table ref="grid" class="mt-5 mb-2" :data="collaboratorsList" :columns="columns" :options="options">
-        <span style="width: 2px; height: 2px; line-height: 2px; margin-right: 1px; margin-left: 1px" slot="h__photo">#</span>
-        <span style="width: 2px; height: 2px; line-height: 2px; margin-right: 1px; margin-left: 1px" slot="h__collaborator">Colaborador</span>
+        <span slot="h__photo">#</span>
+        <span slot="h__collaborator">Colaborador</span>
         <span slot="h__progress">Progresso</span>
         <span slot="h__actions"></span>
         <div slot="progress" slot-scope="props">
@@ -16,7 +16,7 @@
           <img :src="props.row.photo" class="user-picture">
         </div>
         <div slot="actions" slot-scope="props" class="btn-toolbar">
-          <edit v-bind:table="collaboratorsList"  style="margin:1px 1px 2px -5px"/>
+          <edit v-bind:table="collaboratorsList"/>
         </div>
         <div slot="collaborator" slot-scope="props">
           <div class="user-info">
@@ -32,14 +32,14 @@
               placeholder="Selecione o Período">
             </multiselect>
         </div>
-        <div slot="afterFilter" style="margin-top: 7.4px;" class="column-period">
+        <div slot="afterFilter" class="column-period">
           <p>Data de início: 22/05/2018</p>
         </div>
-        <div slot="afterFilter" style="margin-top: 7.4px;" class="column-period">
+        <div slot="afterFilter" class="column-period">
           <p>Data de fim: 21/06/2018</p>
         </div>
-        <div slot="afterFilter" style="margin-top: 0px;" class="column-period">
-          <button class="btn-danger">Fechar</button>
+        <div slot="afterFilter">
+          <b-button class="btn-danger">Fechar</b-button>
         </div>
       </v-client-table>
     </b-col>
@@ -117,6 +117,7 @@ export default {
 .column-period {
     float: left;
     margin-left: 15px;
+    margin-top: 7.4px;
 
     /deep/ .select-period {
       .multiselect__tags {
