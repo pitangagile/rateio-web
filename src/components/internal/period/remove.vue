@@ -1,6 +1,6 @@
 <template>
   <div>
-    <b-button-group @click="removeCenter" class="icon-trash" size="lg" variant="link"></b-button-group>
+    <b-button-group @click="removePeriod" class="icon-trash" size="lg" variant="link"></b-button-group>
   </div>
 </template>
 
@@ -21,12 +21,12 @@ export default {
     };
   },
   methods: {
-    removeCenter() {
+    removePeriod() {
       const url = 'period/delete';
       this.$http().post(url, { id: this.row._id }).then(() => { //eslint-disable-line
 
       }).then(() => {
-
+        this.$emit('allPeriods');
       });
     },
   },

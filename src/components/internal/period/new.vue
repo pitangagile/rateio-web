@@ -5,7 +5,7 @@
              centered title="Excluir Centro de Custo"
              ok-title="Ok"
              cancel-title="Cancelar"
-             v-on:ok= adicionarDatas>Adição de Centro de Custo
+             v-on:ok= addDates>Adição de Centro de Custo
         <v-date-picker
         mode='range'
         v-model='selectedDate'
@@ -46,6 +46,10 @@ export default {
       },
     };
   },
+  mounted() {
+    this.sugestedIncialDate();
+    this.sugestedFinalDate();
+  },
   methods: {
     showModal() {
       this.$refs.datePickerModal.show();
@@ -53,19 +57,38 @@ export default {
     hideModal() {
       this.$refs.datePickerModal.hide();
     },
-    adicionarDatas() {
+    addDates() {
       const initialdate = moment(this.selectedDate.start).format('D M YYYY');
       const finaldate = moment(this.selectedDate.end).format('D M YYYY');
       const url = 'period/create';
-      this.$http().post(url, { initialdate: initialdate, finaldate: finaldate }).then(() => { //eslint-disable-line
+      this.$http().post(url, { initialdate: initialdate, finaldate: finaldate, description: this.selectedDate.end }).then(() => { //eslint-disable-line
 
+      }).then(() => {
+        this.$emit('allPeriods');
       });
     },
     sugestedIncialDate() {
-
+      const sugestedIncialDate = new Date();
+      const sugesteddate = moment(sugestedIncialDate).format('D M YYYY');
+      const date = sugesteddate.split(' ');
+      if (parseInt(date[0], 10) > 20 && parseInt(date[1], 10) < 12) {
+        this.selectedDate.start = new Date(parseInt(date[2], 10), parseInt(date[1], 10), 21);
+      } else
+      if (parseInt(date[0], 10) > 20 && parseInt(date[1], 10) === 12) {
+        this.selectedDate.start = new Date(parseInt(date[2], 10) + 1, 1, 21);
+      } else {
+        this.selectedDate.start = new Date(parseInt(date[2], 10), parseInt(date[1], 10) - 1, 21);
+      }
     },
     sugestedFinalDate() {
-
+      const sugesteddate = moment(this.selectedDate.start).format('D M YYYY');
+      const date = sugesteddate.split(' ');
+      if (parseInt(date[1], 10) === 1) {
+        this.selectedDate.end = new Date(parseInt(date[2], 10) + 1, parseInt(date[1], 10), 20);
+      } else
+      if (parseInt(date[1], 10) !== 1) {
+        this.selectedDate.end = new Date(parseInt(date[2], 10), parseInt(date[1], 10), 20);
+      }
     },
   },
 };
