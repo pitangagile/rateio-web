@@ -1,6 +1,6 @@
 <template>
   <div>
-    <b-button-group @click="editCenter()" class="icon-edit" size="lg" variant="link"></b-button-group>
+    <b-button-group @click="editCenter()" class="icon-edit" size="lg" variant="link" onmouseover="title='Editar'"></b-button-group>
   </div>
 </template>
 
@@ -42,10 +42,18 @@ export default {
               { id: this.row._id, // eslint-disable-line
                 code: document.getElementById('code').value,
                 description: document.getElementById('description').value }).then(() => {
-              this.$snotify.success('Editado');
-              this.$emit('allCenters');
-            }, (err) => {
-              this.$snotify.error('Erro Centro de Custo', err);
+              this.$swal(
+                'Adicionado',
+                'Centro de custo adicionado.',
+                'success',
+                this.$emit('allCenters'),
+              );
+            }, () => {
+              this.$swal(
+                'Erro',
+                '',
+                'error',
+              );
             }),
           ];
         },
@@ -56,4 +64,5 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+
 </style>

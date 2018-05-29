@@ -179,6 +179,12 @@
       "css": "calendar-1",
       "code": 59410,
       "src": "fontawesome"
+    },
+    {
+      "uid": "5211af474d3a9848f67f945e2ccaf143",
+      "css": "cancel",
+      "code": 59411,
+      "src": "fontawesome"
     }
   ]
 }

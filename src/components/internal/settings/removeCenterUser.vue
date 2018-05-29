@@ -1,7 +1,7 @@
 settings remove
 <template>
   <div>
-    <b-btn @click="showModal" class="icon-trash btn btn-danger buttonStyle btn-sm"></b-btn>
+    <b-btn @click="showModal" class="icon-trash" size="lg" variant="link" onmouseover="title='Remover'"></b-btn>
     <!-- Modal Component -->
     <b-modal ref="removeCoastCenterUserModal"
              centered title="Excluir Centro de Custo"
@@ -49,11 +49,5 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.buttonStyle
-{
 
-    margin: 0px 0px;
-    margin-right: 10px;
-
-}
 </style>

@@ -15,6 +15,7 @@
           <div slot="action" slot-scope="props" class="btn-group">
             <remove :row="props.row"  @allPeriods="allPeriods()"></remove>
             <close :row="props.row" @allPeriods="allPeriods()"></close>
+            <generation :row="props.row" @allPeriods="allPeriods()"></generation>
           </div>
           <div slot="afterFilter" class="add-button">
             <novo @allPeriods="allPeriods()"></novo>
@@ -33,6 +34,7 @@ import options from './../../../commons/helpers/grid.config';
 import novo from './new';
 import remove from './remove';
 import close from './close';
+import generation from './generation';
 
 Vue.use(ClientTable, options, false, 'bootstrap4', 'default');
 
@@ -42,6 +44,7 @@ export default {
     novo,
     remove,
     close,
+    generation,
   },
   data() {
     return {
@@ -72,10 +75,6 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.add-button {
-    float: left;
-    margin-left: 15px;
-}
 /deep/ td.action-column {
   width: 200px;
 }
