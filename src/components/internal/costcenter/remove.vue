@@ -1,6 +1,6 @@
 <template>
   <div>
-    <b-button-group @click="removeCenter" class="icon-trash" size="lg" variant="link"></b-button-group>
+    <b-button-group @click="removeCenter" class="icon-trash" size="lg" variant="link" onmouseover="title='Remover'"></b-button-group>
   </div>
 </template>
 
@@ -23,34 +23,36 @@ export default {
   methods: {
     removeCenter() {
       const url = 'coastcenter/Delete';
-      const swalWithBootstrapButtons = this.$swal.mixin({
-        confirmButtonClass: 'btn btn-success',
-        cancelButtonClass: 'btn btn-danger',
-        buttonsStyling: false,
-      });
-      swalWithBootstrapButtons({
+      this.$swal({
         title: 'Remoção de Centro de Custo',
         text: 'Tem certeza que deseja remover o centro de custo',
         type: 'warning',
         showCancelButton: true,
+        confirmButtonClass: 'btn btn-success',
         confirmButtonText: 'Sim, remova!',
         cancelButtonText: 'Não, cancele!',
+        cancelButtonClass: 'btn btn-danger',
         reverseButtons: true,
       }).then((result) => {
         if (result.value) {
           this.$http().post(url, { id: this.row._id }).then(() => { //eslint-disable-line
-            swalWithBootstrapButtons(
+            this.$swal(
               'Deletado!',
               'Centro de custo deletado.',
               'success',
             );
-          }).then(() => {
             this.$emit('allCenters');
+          }).catch((err) => { //eslint-disable-line
+            this.$swal(
+              'Erro',
+              '',
+              'error',
+            );
           });
         } else if (
           result.dismiss === this.$swal.DismissReason.cancel
         ) {
-          swalWithBootstrapButtons(
+          this.$swal(
             'Cancelado',
             '',
             'error',

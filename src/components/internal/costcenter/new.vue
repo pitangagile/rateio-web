@@ -45,8 +45,13 @@ export default {
               'success',
               this.$emit('allCenters'),
             );
-          }, (err) => {
-            this.$snotify.error('Centro ja adicionado', err);
+          }, () => {
+            this.$swal(
+              'Erro',
+              '',
+              'error',
+              this.$emit('allCenters'),
+            );
           });
         } else if (
           result.dismiss === this.$swal.DismissReason.cancel

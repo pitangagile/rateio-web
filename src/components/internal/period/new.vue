@@ -1,14 +1,16 @@
 <template>
   <div>
-    <b-btn @click="showModal" class="btn btn-danger" >Adicionar</b-btn>
+    <b-btn @click="showModal" class="btn-success" >Adicionar</b-btn>
         <b-modal ref ="datePickerModal"
-             centered title="Excluir Centro de Custo"
+             centered title="Adicionar Periodo"
              ok-title="Ok"
              cancel-title="Cancelar"
              v-on:ok= addDates>Adição de Centro de Custo
         <v-date-picker
         mode='range'
         v-model='selectedDate'
+        is-double-paned
+        :min-date= this.minimal
         show-caps>
         </v-date-picker>
     </b-modal>
@@ -40,6 +42,7 @@ export default {
   },
   data() {
     return {
+      minimal: new Date(),
       selectedDate: {
         start: new Date(),
         end: new Date(),
@@ -49,6 +52,7 @@ export default {
   mounted() {
     this.sugestedIncialDate();
     this.sugestedFinalDate();
+    this.getMinimalDate();
   },
   methods: {
     showModal() {
@@ -81,14 +85,20 @@ export default {
       }
     },
     sugestedFinalDate() {
-      const sugesteddate = moment(this.selectedDate.start).format('D M YYYY');
-      const date = sugesteddate.split(' ');
+      const sugestedFinaldate = moment(this.selectedDate.start).format('D M YYYY');
+      const date = sugestedFinaldate.split(' ');
       if (parseInt(date[1], 10) === 1) {
         this.selectedDate.end = new Date(parseInt(date[2], 10) + 1, parseInt(date[1], 10), 20);
       } else
       if (parseInt(date[1], 10) !== 1) {
         this.selectedDate.end = new Date(parseInt(date[2], 10), parseInt(date[1], 10), 20);
       }
+    },
+    getMinimalDate() {
+      const date = new Date();
+      const minDate = moment(date).format('D M YYYY');
+      const minimalspltDate = minDate.split(' ');
+      this.minimal = new Date(parseInt(minimalspltDate[2], 10), parseInt((minimalspltDate[1] - 1), 10), 20); //eslint-disable-line
     },
   },
 };

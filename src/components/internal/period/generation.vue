@@ -1,6 +1,6 @@
 <template>
   <div>
-    <b-button-group @click="closeCenter" class="icon-cancel" size="lg" variant="link" onmouseover="title='Fechar'"></b-button-group>
+    <b-button-group @click="closeCenter" class="icon-edit" size="lg" variant="link" onmouseover="title='Gerar'"></b-button-group>
   </div>
 </template>
 
@@ -18,29 +18,29 @@ export default {
   },
   data() {
     return {
-      closureDate: new Date(),
+      generationDate: new Date(),
     };
   },
   methods: {
     closeCenter() {
-      const url = 'period/closuredate';
+      const url = 'period/generationdate';
       this.$swal({
-        title: 'Fechar Periodo',
-        text: 'Tem certeza que deseja fechar o periodo',
+        title: 'Gerar Rateio',
+        text: 'Tem certeza que deseja gera rateio',
         type: 'warning',
         showCancelButton: true,
         confirmButtonClass: 'btn btn-success',
-        confirmButtonText: 'Sim, feche!',
+        confirmButtonText: 'Sim, gere!',
         cancelButtonText: 'Não, cancele!',
         cancelButtonClass: 'btn btn-danger',
         reverseButtons: true,
       }).then((result) => {
         if (result.value) {
-          const closure = moment(this.closureDate).format('D M YYYY');
-          this.$http().post(url, { id: this.row._id, closuredate: closure}).then(() => { //eslint-disable-line
+          const generation = moment(this.generationDate).format('D M YYYY');
+          this.$http().post(url, { id: this.row._id, generationdate: generation}).then(() => { //eslint-disable-line
             this.$swal(
               'Sucesso!',
-              'Periodo fechado.',
+              'Rateio gerado.',
               'success',
             );
           }).then(() => {
