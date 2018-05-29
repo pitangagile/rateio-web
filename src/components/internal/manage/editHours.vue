@@ -23,7 +23,6 @@ export default {
   },
   methods: {
     handleOk() {
-      const url = 'reportings/update';
       this.$swal({
         title: 'Editar',
         input: 'number',
@@ -42,21 +41,18 @@ export default {
       }).then((result) => {
         if (result.value) {
           const newHours = document.getElementById('hours').value;
-          this.$http().post(url, { id: this.row._id, hours: newHours }).then(() => { //eslint-disable-line
-            if (newHours >= 0 && newHours != null) {
-              this.$swal(
-                'Editado',
-                'Reportagem Editada.',
-                'success',
-                this.$emit('getAll'),
-              );
-            } else {
-              this.$snotify.error('Não foi possível editar, digite um número válido');
-            }
-          }, (err) => {
-            this.$snotify.error('Não foi possível editar, digite um número válido', err);
-          });
-        } else if (
+          this.row.hours = newHours;
+          if (newHours >= 0 && newHours != null) {
+            this.$swal(
+              'Editado',
+              'Reportagem Editada.',
+              'success',
+              this.$emit('getAll'),
+            );
+          } else {
+            this.$snotify.error('Não foi possível editar, digite um número válido');
+          }
+        } else if (// end
           result.dismiss === this.$swal.DismissReason.cancel
         ) {
           this.$swal(

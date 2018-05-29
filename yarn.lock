@@ -7832,10 +7832,6 @@ vue-loader@^13.3.0:
     vue-style-loader "^3.0.0"
     vue-template-es2015-compiler "^1.6.0"
 
-vue-multiselect@^2.1.0:
-  version "2.1.0"
-  resolved "https://registry.yarnpkg.com/vue-multiselect/-/vue-multiselect-2.1.0.tgz#9e8ee7087658f029d06778cdb8da0b34ee3f1e28"
-
 vue-pagination-2@^1.6:
   version "1.6.1"
   resolved "https://registry.yarnpkg.com/vue-pagination-2/-/vue-pagination-2-1.6.1.tgz#df28a0d629ccc4a3898a7f30555d6260372c49f1"
@@ -7851,10 +7847,6 @@ vue-resource@^0.9.0:
 vue-router@^3.0.1:
   version "3.0.1"
   resolved "https://registry.yarnpkg.com/vue-router/-/vue-router-3.0.1.tgz#d9b05ad9c7420ba0f626d6500d693e60092cc1e9"
-
-vue-select@^2.4.0:
-  version "2.4.0"
-  resolved "https://registry.yarnpkg.com/vue-select/-/vue-select-2.4.0.tgz#ef06547fe857f3259841ab2f3d29c5d8a1e52630"
 
 vue-snotify@^3.0.4:
   version "3.0.4"
