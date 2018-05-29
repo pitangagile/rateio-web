@@ -1,28 +1,15 @@
-coast center remove
 <template>
-  <a>
-    <b-button-group @click="showModal" class="icon-trash btn-danger buttonStyle btn-sm" bsStyle="small"></b-button-group>
-    <!-- Modal Component -->
-    <b-modal ref="removeCoastCenterModal"
-             centered title="Excluir Centro de Custo"
-             ok-title="Ok"
-             cancel-title="Cancelar"
-             v-on:ok= 'removeCenter'>Deseja excluir o centro de custo?</b-modal>
-
-  </a>
+  <div>
+    <b-button-group @click="removeCenter" class="icon-trash" size="lg" variant="link"></b-button-group>
+  </div>
 </template>
 
 <script>
-
 export default {
   components: {
 
   },
   props: {
-    table: {
-      type: Array,
-      required: true,
-    },
     row: {
       required: true,
     },
@@ -34,23 +21,41 @@ export default {
     };
   },
   methods: {
-    showModal() {
-      this.$refs.removeCoastCenterModal.show();
-    },
-    hideModal() {
-      this.$refs.removeCoastCenterModal.hide();
-    },
     removeCenter() {
-      const center = this.table[this.row - 1];
-      const url = 'coastcenter/delete';
-
-      this.$http().post(url, { id: center._id }).then((response) => { // eslint-disable-line
-        console.log(response.data) // eslint-disable-line
-        this.table.splice((this.row - 1), 1);
-        this.$snotify.success('Deletado');
-      },
-      (err) => {
-        console.error(response.data, err); // eslint-disable-line
+      const url = 'coastcenter/Delete';
+      const swalWithBootstrapButtons = this.$swal.mixin({
+        confirmButtonClass: 'btn btn-success',
+        cancelButtonClass: 'btn btn-danger',
+        buttonsStyling: false,
+      });
+      swalWithBootstrapButtons({
+        title: 'Remoção de Centro de Custo',
+        text: 'Tem certeza que deseja remover o centro de custo',
+        type: 'warning',
+        showCancelButton: true,
+        confirmButtonText: 'Sim, remova!',
+        cancelButtonText: 'Não, cancele!',
+        reverseButtons: true,
+      }).then((result) => {
+        if (result.value) {
+          this.$http().post(url, { id: this.row._id }).then(() => { //eslint-disable-line
+            swalWithBootstrapButtons(
+              'Deletado!',
+              'Centro de custo deletado.',
+              'success',
+            );
+          }).then(() => {
+            this.$emit('allCenters');
+          });
+        } else if (
+          result.dismiss === this.$swal.DismissReason.cancel
+        ) {
+          swalWithBootstrapButtons(
+            'Cancelado',
+            '',
+            'error',
+          );
+        }
       });
     },
   },
@@ -58,12 +63,5 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.buttonStyle
-{
 
-    padding: 5px 5px;
-    margin: 0px 0px;
-    margin-right: 10px;
-
-}
 </style>

@@ -20,6 +20,7 @@ import InternalHoliday from '@/components/internal/holiday/';
 import InternalSchedule from '@/components/internal/schedule';
 import InternalSettings from '@/components/internal/settings/';
 import InternalHelp from '@/components/internal/help/';
+import InternalPeriod from '@/components/internal/period/';
 
 import InternalExamples from '@/components/internal/examples/';
 import InternalExamplesServerTable from '@/components/internal/examples/server-table';
@@ -126,6 +127,11 @@ const router = new Router({
           path: 'examples/servertable',
           name: 'servertable',
           component: InternalExamplesServerTable,
+        },
+        {
+          path: 'period',
+          name: 'period',
+          component: InternalPeriod,
         },
       ],
     },

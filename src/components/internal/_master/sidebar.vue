@@ -78,6 +78,13 @@
             Colaborador
           </router-link>
         </li>
+          </li>
+        <li class="nav-item">
+          <router-link to="/internal/period" class="nav-link" :class="{ 'active' : isActive('period')}">
+            <span class="icon-calendar-1 mr-2"></span>
+            Período
+          </router-link>
+        </li>
         <li class="nav-item">
           <router-link to="/internal/costcenter" class="nav-link" :class="{ 'active' : isActive('costcenter')}">
             <span class="icon-money mr-2"></span>

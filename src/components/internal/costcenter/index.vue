@@ -1,4 +1,3 @@
-coast center index
 <template>
   <b-row class="page">
     <b-col cols="12">
@@ -7,18 +6,20 @@ coast center index
     </b-col>
 
     <b-col cols="12">
-      <v-client-table class="table mt-5 mb-2" ref="grid" :data="tableCenter" :columns="columns" :options="options">
-        <span slot="h__code">Codigo</span>
-        <span slot="h__description">Centro de custo</span>
-        <span slot="h__actions"></span>
-        <div slot="actions" slot-scope="props" class="btn-group">
-          <Editar :table="tableCenter" :row="props.index" >Editar</Editar>
-          <Remove :table="tableCenter" :row="props.index">Remover</Remove>
-        </div>
-        <div slot="afterFilter" class="add-button">
-          <new-edit v-bind:table="tableCenter"></new-edit>
-        </div>
-      </v-client-table>
+      <div id="coastCenters">
+        <v-client-table class="table mt-5 mb-2" ref="grid" :data="tableCenter" :columns="columns" :options="options">
+          <span slot="h__code">Codigo</span>
+          <span slot="h__description">Centro de custo</span>
+          <span slot="h__actions"></span>
+          <div slot="actions" slot-scope="props" class="btn-group">
+            <editar :row="props.row" @allCenters="AllCenters()">editar</editar>
+            <remove :row="props.row" @allCenters="AllCenters()">remover</remove>
+          </div>
+          <div slot="afterFilter" class="add-button">
+            <novo @allCenters="AllCenters()"></novo>
+          </div>
+        </v-client-table>
+      </div>
     </b-col>
 
   </b-row>
@@ -28,25 +29,25 @@ coast center index
 import { ClientTable } from 'vue-tables-2';
 import Vue from 'vue';
 import options from './../../../commons/helpers/grid.config';
-import NewEdit from './new';
-import Remove from './remove';
-import Editar from './edit';
+import novo from './new';
+import remove from './remove';
+import editar from './edit';
 
 Vue.use(ClientTable, options, false, 'bootstrap4', 'default');
 
 export default {
   name: 'CostCenter',
   components: {
-    NewEdit,
-    Remove,
-    Editar,
+    novo,
+    remove,
+    editar,
   },
   data() {
     return {
       columns: ['code', 'description', 'actions'],
       tableCenter: [],
       options: {
-        sortable: ['code'],
+        sortable: [],
         filterable: ['code', 'description'],
         columnsClasses: {
           actions: 'action-column text-center',
@@ -62,20 +63,10 @@ export default {
     AllCenters() {
       const url = 'coastcenter/getAll';
 
-      this.$NProgress().start();
-
       this.$http().get(url).then((response) => {
         this.tableCenter = response.data;
-        this.$NProgress().done();
       });
     },
-    getCenterData(id) {
-      return this.tableCenter.filter(u => u.id === id)[0];
-    },
-    changeValue(id, prop, value) {
-      this.getCenterData(id)[prop] = value;
-    },
-    // TODO: metodo api remocao
   },
 };
 </script>
