@@ -83,12 +83,24 @@ export default {
       },
     };
   },
+  mounted() {
+    this.getInitialData();
+  },
+  methods: {
+    getInitialData() {
+      const url = 'period/getAll';
+
+      this.$http().get(url).then((response) => {
+        this.periods = response.data.map(data => data.description);
+        this.selected = this.periods[this.periods.length - 1];
+      });
+    },
+  },
 };
 </script>
 
 <style lang="scss" scoped>
 @import '../../../assets/styles/variables.scss';
-
   /deep/ .user-progress {
     &.success { .progress-bar { background-color: $color-success ; } }
     &.danger { .progress-bar { background-color: $color-danger; } }
@@ -96,7 +108,6 @@ export default {
     &.info { .progress-bar { background-color: $color-info; } }
     width: 50%
   }
-
 /deep/ td.action-column {
   width: 100px;
 }
@@ -106,19 +117,16 @@ export default {
 /deep/ td.progress-Column {
   width: 100px;
 }
-
 .user-picture {
     border-radius: 10cm;
     border: 1px solid $color-gray-1;
     max-width: 35px;
     padding: 3px;
   }
-
 .column-period {
     float: left;
     margin-left: 15px;
     margin-top: 7.4px;
-
     /deep/ .select-period {
       .multiselect__tags {
         border-color: #ced4da;
@@ -126,16 +134,13 @@ export default {
         padding-top: 5px;
         min-height: 32px;
         font-size: .9rem;
-
         .multiselect__input {
           font-size: .9rem;
         }
       }
-
       .multiselect__select {
         height: 32px;
       }
-
       .multiselect__single{
         font-size: .9rem;
         margin: 0;

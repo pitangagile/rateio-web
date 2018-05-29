@@ -90,11 +90,15 @@ export default {
       return this.reportingsList.filter(u => u.id === id)[0];
     },
     getInitialData() {
-      const url = 'reportings';
+      const url = 'period/getAll';
 
       this.$http().get(url).then((response) => {
-        this.periods = response.data;
+        this.periods = response.data.map(data => this.capitalizeFirstLetter(data.description));
+        this.selected = this.periods[this.periods.length - 1];
       });
+    },
+    capitalizeFirstLetter(string) {
+      return string.charAt(0).toUpperCase() + string.slice(1);
     },
     getAll() {
       const url = 'reportings/getAll';

@@ -35,7 +35,7 @@ export default {
         showCancelButton: true,
         confirmButtonText: 'Sim, remova!',
         cancelButtonText: 'Não, cancele!',
-        reverseButtons: false,
+        reverseButtons: true,
       }).then((result) => {
         if (result.value) {
           this.$http().post(url, { id: this.row._id }).then(() => { //eslint-disable-line

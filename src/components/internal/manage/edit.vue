@@ -11,7 +11,7 @@
                     <span slot="h__actions"></span>
                     <div slot="actions" slot-scope="props" class="btn-toolbar">
 
-                      <editHours v-bind:table="reportingsList" :row="props.row"></editHours>
+                      <editHours v-bind:table="myCenters" :row="props.row"></editHours>
                     </div>
                     <div slot="afterFilter" class="add-button">
                         <multiselect
@@ -38,7 +38,6 @@ import options from './../../../commons/helpers/grid.config';
 import editHours from './editHours';
 
 Vue.use(ClientTable, options, false, 'bootstrap4', 'default');
-
 export default {
   components: {
     editHours,

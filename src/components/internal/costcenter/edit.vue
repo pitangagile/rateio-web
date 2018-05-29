@@ -24,21 +24,24 @@ export default {
   },
   methods: {
     editCenter() {
-      console.log(this.row); //eslint-disable-line
       const url = 'coastcenter/edit';
       this.$swal({
         title: 'Edição de Centro de Custo',
         html:
-          '<p style="float: left;" autofocus>Codigo :<p/>' +
+          '<a style="float: left;" autofocus>Codigo :<a/>' +
           '<input id="code" class="swal2-input">' +
-          '<p style="float: left;" >Descrição :<p/>' +
+          '<a style="float: left;" >Descrição :<a/>' +
           '<input id="description" class="swal2-input">',
         focusConfirm: false,
         showCancelButton: true,
         cancelButtonText: 'Cancelar',
+        reverseButtons: true,
         preConfirm: () => { // eslint-disable-line
           return [
-            this.$http().post(url,{id: this.row._id, code: document.getElementById('code').value, description: document.getElementById('description').value}).then(() => { // eslint-disable-line
+            this.$http().post(url,
+              { id: this.row._id, // eslint-disable-line
+                code: document.getElementById('code').value,
+                description: document.getElementById('description').value }).then(() => {
               this.$snotify.success('Editado');
               this.$emit('allCenters');
             }, (err) => {
