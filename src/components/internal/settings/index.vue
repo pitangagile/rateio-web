@@ -43,6 +43,8 @@
           :options="tableCenter"
           track-by="code"
           :searchable="true"
+          :show-labels="false"
+          :allow-empty="false"
           placeholder="Selecione o Centro de Custo"
           selectLabel = ''
           value = ''
