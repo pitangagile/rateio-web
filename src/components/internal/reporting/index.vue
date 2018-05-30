@@ -12,7 +12,7 @@
         <div slot="actions" slot-scope="props" class="btn-toolbar">
           <edit v-bind:table="reportingsList" :row="props.row" :index="props.index" :totalHours="totalHours" @getAll="getAll()"/>
         </div>
-        <div slot="afterFilter" style="margin-top: 7.4px;" class="column-period">
+        <div slot="afterFilter" class="column-period">
             <multiselect
               class="select-period"
               v-model="selected"
@@ -23,7 +23,7 @@
         </div>
 
         <div slot="afterFilter" class="column-period">
-          <p>Horas reportadas: {{this.totalHours}}</p>
+          <p class="reportedHours">Horas reportadas: {{this.totalHours}}</p>
         </div>
       </v-client-table>
     </b-col>
@@ -93,12 +93,9 @@ export default {
       const url = 'period/getAll';
 
       this.$http().get(url).then((response) => {
-        this.periods = response.data.map(data => this.capitalizeFirstLetter(data.description));
+        this.periods = response.data.map(data => data.description);
         this.selected = this.periods[this.periods.length - 1];
       });
-    },
-    capitalizeFirstLetter(string) {
-      return string.charAt(0).toUpperCase() + string.slice(1);
     },
     getAll() {
       const url = 'reportings/getAll';
@@ -138,10 +135,17 @@ export default {
 /deep/ td.hours-column {
   width: 100px;
 }
+.reportedHours{
+  margin-left: 7.4px;
+  margin-top: 14px;
+  margin-right: 7px;
+}
+
 
 .column-period {
     float: left;
     margin-left: 15px;
+    margin-top: 7.4px;
 
     /deep/ .select-period {
       .multiselect__tags {

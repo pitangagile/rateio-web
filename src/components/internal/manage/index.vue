@@ -52,6 +52,9 @@
         <div slot="afterFilter">
           <b-button class="btn-danger">Fechar</b-button>
         </div>
+        <div slot="afterFilter" class="checkbox">
+          <b-form-checkbox class="checkbox">Colaboradores com percentual abaixo do ideal</b-form-checkbox>
+        </div>
       </v-client-table>
     </b-col>
   </b-row>
@@ -108,13 +111,14 @@ export default {
 
       this.$http().get(url).then((response) => {
         this.periods = response.data;
-        this.selectedPeriod = this.periods[this.periods.length - 1];
+        this.selectedPeriod = this.periods[this.periods.length - 1].description;
+        this.selectPeriod(this.selectedPeriod);
       });
     },
     selectPeriod(selectedPeriod) {
-      const data = this.periods.filter(period => period.description === selectedPeriod);
-      this.initialdate = data.initialdate;
-      this.finaldate = data.finaldate;
+      let data = this.periods.filter(period => period.description === selectedPeriod); //eslint-disable-line
+      this.initialdate = data[0].initialdate;
+      this.finaldate = data[0].finaldate;
     },
     getAllCostCenters() {
       const url = 'coastcenter/getAll';
@@ -153,6 +157,9 @@ export default {
 }
 /deep/ td.progress-Column {
   width: 100px;
+}
+.checkbox{
+  margin-left: 7.4px;
 }
 .date{
   margin-left: 7.4px;
