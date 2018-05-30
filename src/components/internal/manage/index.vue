@@ -7,6 +7,8 @@
       <v-client-table ref="grid" class="mt-5 mb-2" :data="getAllCollaborators(selectedCenter)" :columns="columns" :options="options">
         <span slot="h__photo">#</span>
         <span slot="h__collaborator">Colaborador</span>
+        <span slot="h__originCostCenter">Centro de Custo Origem</span>
+        <span slot="h__costCenter">Centro de Custo</span>
         <span slot="h__progress">Progresso</span>
         <span slot="h__actions"></span>
         <div slot="progress" slot-scope="props">
@@ -43,6 +45,9 @@
               placeholder="Selecione o Período">
             </multiselect>
         </div>
+        <div slot="afterFilter" class="checkbox">
+          <b-form-checkbox class="checkbox">Colaboradores c/ percentual abaixo do ideal</b-form-checkbox>
+        </div>
         <div slot="afterFilter" class="column-period">
           <p class="date">Data de início: {{this.initialdate}}</p>
         </div>
@@ -51,9 +56,6 @@
         </div>
         <div slot="afterFilter">
           <b-button class="btn-danger">Fechar</b-button>
-        </div>
-        <div slot="afterFilter" class="checkbox">
-          <b-form-checkbox class="checkbox">Colaboradores com percentual abaixo do ideal</b-form-checkbox>
         </div>
       </v-client-table>
     </b-col>
@@ -83,10 +85,13 @@ export default {
       selectedCenter: null,
       initialdate: 'DD/MM/AAAA',
       finaldate: 'DD/MM/AAAA',
-      columns: ['photo', 'collaborator', 'progress', 'actions'],
-      collaboratorsList: [{ photo: '/static/img/avatars/1.jpg', collaborator: 'Igor Formiga', progress: 100, costCenters: [{ description: 'Centro de Custo 1', hours: 16, progress: 50 }] },
-        { photo: '/static/img/avatars/2.jpg', collaborator: 'Ivaldo Barbosa', progress: 90, costCenters: [{ description: 'Centro de Custo 10', hours: 11, progress: 12 }] },
-        { photo: '/static/img/avatars/3.jpg', collaborator: 'Thiago Ferreira', progress: 70, costCenters: [{ description: 'Centro de Custo 2', hours: 13, progress: 1 }] }],
+      columns: ['photo', 'collaborator', 'originCostCenter', 'costCenter', 'progress', 'actions'],
+      collaboratorsList: [{ photo: '/static/img/avatars/1.jpg', collaborator: 'Igor Formiga', progress: 100, costCenter: 'Centro de Custo 1', originCostCenter: 'Centro de Custo 1' },
+        { photo: '/static/img/avatars/2.jpg', collaborator: 'Ivaldo Barbosa', progress: 60, costCenter: 'Centro de Custo 10', originCostCenter: 'Centro de Custo 2' },
+        { photo: '/static/img/avatars/2.jpg', collaborator: 'Ivaldo Barbosa', progress: 40, costCenter: 'Centro de Custo 2', originCostCenter: 'Centro de Custo 2' },
+        { photo: '/static/img/avatars/3.jpg', collaborator: 'Thiago Ferreira', progress: 70, costCenter: 'Centro de Custo 1', originCostCenter: 'Centro de Custo 1' },
+        { photo: '/static/img/avatars/3.jpg', collaborator: 'Thiago Ferreira', progress: 20, costCenter: 'Centro de Custo 2', originCostCenter: 'Centro de Custo 1' },
+        { photo: '/static/img/avatars/3.jpg', collaborator: 'Thiago Ferreira', progress: 10, costCenter: 'Centro de Custo 10', originCostCenter: 'Centro de Custo 1' }],
       costCenters: [],
       periods: [],
       totalHours: 0,
@@ -95,6 +100,8 @@ export default {
         columnsClasses: {
           actions: 'action-column text-center',
           photo: 'photo-column',
+          originCostCenter: 'origin-column',
+          costCenter: 'costCenter-column',
           collaborator: 'collaborator-column',
           progress: 'progress-column',
         },
@@ -153,10 +160,16 @@ export default {
   width: 100px;
 }
 /deep/ td.photo-column {
-  width: 150px;
+  width: 50px;
 }
 /deep/ td.progress-Column {
   width: 100px;
+}
+/deep/ td.costCenter-column {
+  width: 500px;
+}
+/deep/ td.origin-column {
+  width: 500px;
 }
 .checkbox{
   margin-left: 7.4px;
