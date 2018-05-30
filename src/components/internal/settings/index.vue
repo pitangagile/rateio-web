@@ -5,18 +5,35 @@
     </b-col>
 
     <b-col cols="12">
-      <div class="profile-container">
-        <div class="profile-header">
-          <b-col cols="2" class="text-center header-box">
-            <img :src="user.PictureUrl" class="header-avatar">
-          </b-col>
-
-          <b-col cols="5" class="profile-info">
-            <div class="header-fullname">{{user.DisplayName}}</div>
-            <div class="header-information">
-              Desenvolvedor
+      <div class="card active-bg text-white">
+        <div class="body profile-header">
+          <img :src="user.PictureUrl" class="user_pic rounded img-raised" alt="User">
+          <div class="detail">
+            <div class="u_name">
+              <h4><strong>{{user.FirstName}}</strong> {{user.LastName}}</h4>
             </div>
-          </b-col>
+            <div class="user_information">
+              <form class="form-horizontal" role="form">
+                <div class="form-group">
+                  <label for="txtWorkedHours" class="control-label col-sm-3">Horas de trabalho por dia:</label>
+                  <div class="col-sm-1">
+                    <input id="txtWorkedHours" type="number" v-model="hoursOfWork" class="form-control">
+                  </div>
+                </div>
+                <div class="form-group">
+                  <div class="checkbox">
+                    <label>
+                      <input type="checkbox">
+                      <span class="text"> Colaborador PJ</span>
+                    </label>
+                  </div>
+                </div>
+              </form>
+              <div class="form-group">
+              </div>
+            </div>
+
+          </div>
         </div>
       </div>
     </b-col>
@@ -29,7 +46,9 @@
         <div slot="actions" slot-scope="props">
           <remove v-bind:table="tableUserCenter" :row="props.index">Remover</remove>
         </div>
-
+        <div slot="afterFilter" class="add-button">
+          <b-button v-on:click="addCenter()">Adicionar</b-button>
+        </div>
       </v-client-table>
     </b-col>
 
@@ -79,6 +98,7 @@ export default {
   },
   data() {
     return {
+      hoursOfWork: 8,
       tableCenter: [],
       columns: ['code', 'description', 'actions'],
       tableUserCenter: [],
@@ -93,17 +113,14 @@ export default {
     };
   },
   mounted() {
-    this.AllCenters();
+    // this.AllCenters(); // eslint-disable-line
   },
   methods: {
     AllCenters() {
       const url = 'coastcenter/getAll';
 
-      this.$NProgress().start();
-
       this.$http().get(url).then((response) => {
         this.tableCenter = response.data;
-        this.$NProgress().done();
       });
     },
     addCenter() {
@@ -137,57 +154,71 @@ export default {
 </script>
 
 <style lang="scss" scoped >
-.profile-container {
-  box-sizing: border-box;
+
+.card {
+  background: #fff;
+  margin-bottom: 30px;
+  transition: .5s;
+  border: 0;
+  border-radius: .55rem;
+  position: relative;
+  width: 100%;
+  box-shadow: 0 1px 2px 0 rgba(0,0,0,0.1);
+  margin-top: 20px;
 }
 
-.profile-header {
-  min-height: 175px;
-  margin: 15px 15px 0;
-  -webkit-box-shadow: 0 1px 2px rgba(0,0,0,.35);
-  -moz-box-shadow: 0 1px 2px rgba(0,0,0,.35);
-  box-shadow: 0 1px 2px rgba(0,0,0,.35);
-  background-color: #fbfbfb;
+.card .body {
+  font-size: 14px;
+  color: #424242;
+  padding: 20px;
+  font-weight: 400;
+  height: 225px;
 }
 
-.header-box {
+.profile-header .user_pic {
+  position: absolute;
+  bottom: -13px;
+  z-index: 99;
+}
+
+.img-raised {
+  box-shadow: 0px 10px 25px 0px rgba(0,0,0,0.3);
+}
+
+img {
+  max-width: 100%;
+  border-radius: 1px;
+  width: 250px;
+}
+
+.profile-header .detail {
+  margin-left: 250px;
+}
+
+.profile-header .detail .u_name {
+  margin-left: 20px;
+}
+
+.profile-header .detail .user_information {
+  margin-left: 20px;
+}
+
+h4 {
+  font-size: 1.714em;
+  line-height: 1.45em;
+  margin-bottom: 15px;
+}
+
+.add-button {
   float: left;
+  margin-left: 15px;
 }
 
-.header-avatar {
-  width: 125px;
-  height: 125px;
-  -webkit-border-radius: 50%;
-  -webkit-background-clip: padding-box;
-  -moz-border-radius: 50%;
-  -moz-background-clip: padding;
-  border-radius: 50%;
-  background-clip: padding-box;
-  border: 5px solid #f5f5f5;
-  -webkit-box-shadow: 0 0 10px rgba(0,0,0,.15);
-  -moz-box-shadow: 0 0 10px rgba(0,0,0,.15);
-  box-shadow: 0 0 10px rgba(0,0,0,.15);
-  margin: 25px auto;
+/deep/ strong {
+  font-weight: bolder;
+  font-size: inherit;
 }
 
-.profile-info {
-  min-height: 175px;
-  border-right: 1px solid #eee;
-  padding: 15px 40px 35px 0;
-}
-
-.header-fullname {
-  font-size: 21px;
-  font-weight: bold;
-  margin-top: 27px;
-  display: inline-block;
-}
-
-.header-information {
-  line-height: 23px;
-  margin-top: 15px;
-  text-align: justify;
-}
 /deep/ td.action-column {
   width: 200px;
 }
