@@ -4,7 +4,7 @@
       <h1 class="page--title"><span class="icon-cog h4"></span> Gerenciar Rateio</h1>
     </b-col>
     <b-col cols="12">
-      <v-client-table ref="grid" class="mt-5 mb-2" :data="collaboratorsList" :columns="columns" :options="options">
+      <v-client-table ref="grid" class="mt-5 mb-2" :data="getAllCollaborators(selectedCenter)" :columns="columns" :options="options">
         <span slot="h__photo">#</span>
         <span slot="h__collaborator">Colaborador</span>
         <span slot="h__progress">Progresso</span>
@@ -23,23 +23,37 @@
             <strong>{{props.row.collaborator}}</strong>
           </div>
         </div>
-        <div slot="afterFilter" style="margin-top: 7.4px;" class="column-period">
+        <div slot="afterFilter" class="column-period">
             <multiselect
               class="select-period"
-              v-model="selected"
-              :options="periods"
+              v-model="selectedCenter"
+              :options="costCenters"
               :searchable="true"
+              placeholder="Selecione o Centro">
+            </multiselect>
+        </div>
+        <div slot="afterFilter" class="column-period">
+            <multiselect
+              class="select-period"
+              v-model="selectedPeriod"
+              :options="periods.map(data => data.description)"
+              :searchable="true"
+              :allow-empty="false"
+              @input="selectPeriod(selectedPeriod)"
               placeholder="Selecione o Período">
             </multiselect>
         </div>
         <div slot="afterFilter" class="column-period">
-          <p>Data de início: 22/05/2018</p>
+          <p class="date">Data de início: {{this.initialdate}}</p>
         </div>
         <div slot="afterFilter" class="column-period">
-          <p>Data de fim: 21/06/2018</p>
+          <p class="date">Data de fim: {{this.finaldate}}</p>
         </div>
         <div slot="afterFilter">
           <b-button class="btn-danger">Fechar</b-button>
+        </div>
+        <div slot="afterFilter" class="checkbox">
+          <b-form-checkbox class="checkbox">Colaboradores com percentual abaixo do ideal</b-form-checkbox>
         </div>
       </v-client-table>
     </b-col>
@@ -65,11 +79,15 @@ export default {
 
   data() {
     return {
-      selected: null,
+      selectedPeriod: null,
+      selectedCenter: null,
+      initialdate: 'DD/MM/AAAA',
+      finaldate: 'DD/MM/AAAA',
       columns: ['photo', 'collaborator', 'progress', 'actions'],
-      collaboratorsList: [{ photo: '/static/img/avatars/1.jpg', collaborator: 'Igor Formiga', progress: 100 },
-        { photo: '/static/img/avatars/2.jpg', collaborator: 'Ivaldo Barbosa', progress: 90 },
-        { photo: '/static/img/avatars/3.jpg', collaborator: 'Thiago Ferreira', progress: 70 }],
+      collaboratorsList: [{ photo: '/static/img/avatars/1.jpg', collaborator: 'Igor Formiga', progress: 100, costCenters: [{ description: 'Centro de Custo 1', hours: 16, progress: 50 }] },
+        { photo: '/static/img/avatars/2.jpg', collaborator: 'Ivaldo Barbosa', progress: 90, costCenters: [{ description: 'Centro de Custo 10', hours: 11, progress: 12 }] },
+        { photo: '/static/img/avatars/3.jpg', collaborator: 'Thiago Ferreira', progress: 70, costCenters: [{ description: 'Centro de Custo 2', hours: 13, progress: 1 }] }],
+      costCenters: [],
       periods: [],
       totalHours: 0,
       options: {
@@ -84,16 +102,39 @@ export default {
     };
   },
   mounted() {
-    this.getInitialData();
+    this.getAllPeriods();
+    this.getAllCostCenters();
   },
   methods: {
-    getInitialData() {
+    getAllPeriods() {
       const url = 'period/getAll';
 
       this.$http().get(url).then((response) => {
-        this.periods = response.data.map(data => data.description);
-        this.selected = this.periods[this.periods.length - 1];
+        this.periods = response.data;
+        this.selectedPeriod = this.periods[this.periods.length - 1].description;
+        this.selectPeriod(this.selectedPeriod);
       });
+    },
+    selectPeriod(selectedPeriod) {
+      let data = this.periods.filter(period => period.description === selectedPeriod); //eslint-disable-line
+      this.initialdate = data[0].initialdate;
+      this.finaldate = data[0].finaldate;
+    },
+    getAllCostCenters() {
+      const url = 'coastcenter/getAll';
+
+      this.$http().get(url).then((response) => {
+        this.costCenters = response.data.map(data => data.description);
+      });
+    },
+    getAllCollaborators(selectedCenter) {
+      let response;
+      if (selectedCenter != null) {
+        response = this.collaboratorsList.filter(data => data.costCenters.filter(center => center.description === selectedCenter).length > 0); // eslint-disable-line
+      } else {
+        response = this.collaboratorsList;
+      }
+      return response;
     },
   },
 };
@@ -116,6 +157,14 @@ export default {
 }
 /deep/ td.progress-Column {
   width: 100px;
+}
+.checkbox{
+  margin-left: 7.4px;
+}
+.date{
+  margin-left: 7.4px;
+  margin-top: 7.4px;
+  margin-right: 7px;
 }
 .user-picture {
     border-radius: 10cm;
