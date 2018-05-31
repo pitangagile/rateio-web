@@ -6,7 +6,7 @@
     <b-col cols="12">
       <v-client-table ref="grid" class="mt-5 mb-2" :data="filterCollaborators(selectedCenter)" :columns="columns" :options="options">
         <span slot="h__photo">#</span>
-        <span slot="h__collaborator">Colaborador</span>
+        <span slot="h__name">Colaborador</span>
         <span slot="h__originCostCenter">Centro de Custo Origem</span>
         <span slot="h__costCenter">Centro de Custo</span>
         <span slot="h__progress">Progresso</span>
@@ -18,7 +18,7 @@
           <img :src="props.row.photo" class="user-picture">
         </div>
         <div slot="actions" slot-scope="props" class="btn-toolbar">
-          <edit v-bind:table="collaboratorsList"/>
+          <editPercentage v-bind:row="props.row"/>
         </div>
         <div slot="collaborator" slot-scope="props">
           <div class="user-info">
@@ -47,7 +47,7 @@
             </multiselect>
         </div>
         <div slot="afterFilter" class="checkbox">
-          <b-form-checkbox class="checkbox">Colaboradores c/ percentual abaixo do ideal</b-form-checkbox>
+          <b-form-checkbox class="checkbox">Apenas percentual abaixo do ideal</b-form-checkbox>
         </div>
         <div slot="afterFilter" class="column-period">
           <p class="date">Data de início: {{this.initialdate}}</p>
@@ -57,6 +57,9 @@
         </div>
         <div slot="afterFilter">
           <b-button class="btn-danger">Fechar</b-button>
+        </div>
+        <div slot="afterFilter" class="add-button">
+          <add v-bind:collaboratorsList="collaboratorsList" :costCenters="costCenters"></add>
         </div>
       </v-client-table>
     </b-col>
@@ -68,7 +71,8 @@ import { ClientTable } from 'vue-tables-2';
 import Vue from 'vue';
 import Multiselect from 'vue-multiselect';
 import options from './../../../commons/helpers/grid.config';
-import edit from './edit';
+import editPercentage from './editPercentage';
+import add from './add';
 
 Vue.use(ClientTable, options, false, 'bootstrap4', 'default');
 Vue.component('multiselect', Multiselect);
@@ -77,7 +81,8 @@ export default {
   name: 'Manage',
   showLoading: true,
   components: {
-    edit,
+    editPercentage,
+    add,
   },
 
   data() {
@@ -86,13 +91,13 @@ export default {
       selectedCenter: null,
       initialdate: 'DD/MM/AAAA',
       finaldate: 'DD/MM/AAAA',
-      columns: ['photo', 'collaborator', 'originCostCenter', 'costCenter', 'progress', 'actions'],
-      collaboratorsList: [{ photo: '/static/img/avatars/1.jpg', collaborator: 'Igor Formiga', progress: 100, costCenter: 'Centro de Custo 1', originCostCenter: 'Centro de Custo 1' },
-        { photo: '/static/img/avatars/2.jpg', collaborator: 'Ivaldo Barbosa', progress: 60, costCenter: 'Centro de Custo 10', originCostCenter: 'Centro de Custo 2' },
-        { photo: '/static/img/avatars/2.jpg', collaborator: 'Ivaldo Barbosa', progress: 40, costCenter: 'Centro de Custo 2', originCostCenter: 'Centro de Custo 2' },
-        { photo: '/static/img/avatars/3.jpg', collaborator: 'Thiago Ferreira', progress: 70, costCenter: 'Centro de Custo 1', originCostCenter: 'Centro de Custo 1' },
-        { photo: '/static/img/avatars/3.jpg', collaborator: 'Thiago Ferreira', progress: 20, costCenter: 'Centro de Custo 2', originCostCenter: 'Centro de Custo 1' },
-        { photo: '/static/img/avatars/3.jpg', collaborator: 'Thiago Ferreira', progress: 10, costCenter: 'Centro de Custo 10', originCostCenter: 'Centro de Custo 1' }],
+      columns: ['photo', 'name', 'originCostCenter', 'costCenter', 'progress', 'actions'],
+      collaboratorsList: [{ photo: '/static/img/avatars/1.jpg', name: 'Igor Formiga', progress: 100, costCenter: 'Centro de Custo 1', originCostCenter: 'Centro de Custo 1' },
+        { photo: '/static/img/avatars/2.jpg', name: 'Ivaldo Barbosa', progress: 60, costCenter: 'Centro de Custo 10', originCostCenter: 'Centro de Custo 2' },
+        { photo: '/static/img/avatars/2.jpg', name: 'Ivaldo Barbosa', progress: 40, costCenter: 'Centro de Custo 2', originCostCenter: 'Centro de Custo 2' },
+        { photo: '/static/img/avatars/3.jpg', name: 'Thiago Ferreira', progress: 70, costCenter: 'Centro de Custo 1', originCostCenter: 'Centro de Custo 1' },
+        { photo: '/static/img/avatars/3.jpg', name: 'Thiago Ferreira', progress: 20, costCenter: 'Centro de Custo 2', originCostCenter: 'Centro de Custo 1' },
+        { photo: '/static/img/avatars/3.jpg', name: 'Thiago Ferreira', progress: 10, costCenter: 'Centro de Custo 10', originCostCenter: 'Centro de Custo 1' }],
       costCenters: [],
       periods: [],
       totalHours: 0,
@@ -103,7 +108,7 @@ export default {
           photo: 'photo-column',
           originCostCenter: 'origin-column',
           costCenter: 'costCenter-column',
-          collaborator: 'collaborator-column',
+          name: 'name-column',
           progress: 'progress-column',
         },
       },
@@ -171,6 +176,9 @@ export default {
 }
 /deep/ td.origin-column {
   width: 400px;
+}
+.btn-secondary{
+  margin-left: 15px;
 }
 .checkbox{
   margin-left: 7.4px;
