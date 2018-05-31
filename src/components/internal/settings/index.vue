@@ -47,30 +47,26 @@
           <remove v-bind:table="tableUserCenter" :row="props.index">Remover</remove>
         </div>
         <div slot="afterFilter" class="add-button">
+          <multiselect
+            class="multiselect--active"
+            label="description"
+            :custom-label="codeWithDescription"
+            v-model="center"
+            :options="tableCenter"
+            track-by="code"
+            :searchable="true"
+            :show-labels="false"
+            :allow-empty="false"
+            placeholder="Selecione o Centro de Custo"
+            selectLabel = ''
+            value = ''
+              >
+          </multiselect>
+        </div>
+        <div slot="afterFilter" class="add-button">
           <b-button v-on:click="addCenter()">Adicionar</b-button>
         </div>
       </v-client-table>
-    </b-col>
-
-    <b-col cols="6">
-      <b-row>
-        <b-col>
-          <multiselect
-          label="description"
-          :custom-label="codeWithDescription"
-          v-model="center"
-          :options="tableCenter"
-          track-by="code"
-          :searchable="true"
-          placeholder="Selecione o Centro de Custo"
-          selectLabel = ''
-          value = ''
-            >
-          </multiselect></b-col>
-        <b-col>
-          <b-button v-on:click="addCenter()">Adicionar</b-button>
-        </b-col>
-      </b-row>
     </b-col>
   </b-row>
 </template>
@@ -113,7 +109,7 @@ export default {
     };
   },
   mounted() {
-    // this.AllCenters(); // eslint-disable-line
+    this.AllCenters();
   },
   methods: {
     AllCenters() {
@@ -221,6 +217,9 @@ h4 {
 
 /deep/ td.action-column {
   width: 200px;
+}
+.multiselect--active {
+  z-index: 100;
 }
 
 </style>
