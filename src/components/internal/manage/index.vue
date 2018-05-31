@@ -4,7 +4,7 @@
       <h1 class="page--title"><span class="icon-cog h4"></span> Gerenciar Rateio</h1>
     </b-col>
     <b-col cols="12">
-      <v-client-table ref="grid" class="mt-5 mb-2" :data="getAllCollaborators(selectedCenter)" :columns="columns" :options="options">
+      <v-client-table ref="grid" class="mt-5 mb-2" :data="filterCollaborators(selectedCenter)" :columns="columns" :options="options">
         <span slot="h__photo">#</span>
         <span slot="h__collaborator">Colaborador</span>
         <span slot="h__originCostCenter">Centro de Custo Origem</span>
@@ -31,6 +31,7 @@
               v-model="selectedCenter"
               :options="costCenters"
               :searchable="true"
+              @input="filterCollaborators(selectedCenter)"
               placeholder="Selecione o Centro">
             </multiselect>
         </div>
@@ -134,10 +135,10 @@ export default {
         this.costCenters = response.data.map(data => data.description);
       });
     },
-    getAllCollaborators(selectedCenter) {
+    filterCollaborators(selectedCenter) {
       let response;
       if (selectedCenter != null) {
-        response = this.collaboratorsList.filter(data => data.costCenters.filter(center => center.description === selectedCenter).length > 0); // eslint-disable-line
+        response = this.collaboratorsList.filter(collaborator => collaborator.costCenter === selectedCenter || collaborator.originCostCenter === selectedCenter); // eslint-disable-line
       } else {
         response = this.collaboratorsList;
       }
@@ -163,19 +164,19 @@ export default {
   width: 50px;
 }
 /deep/ td.progress-Column {
-  width: 100px;
+  width: 300px;
 }
 /deep/ td.costCenter-column {
-  width: 500px;
+  width: 400px;
 }
 /deep/ td.origin-column {
-  width: 500px;
+  width: 400px;
 }
 .checkbox{
   margin-left: 7.4px;
 }
 .date{
-  margin-left: 7.4px;
+  margin-left: 0.4px;
   margin-top: 7.4px;
   margin-right: 7px;
 }
