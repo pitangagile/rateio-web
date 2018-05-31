@@ -155,31 +155,6 @@ export default {
 
 <style lang="scss" scoped>
 @import '../../../assets/styles/variables.scss';
-  /deep/ .user-progress {
-    &.success { .progress-bar { background-color: $color-success ; } }
-    &.danger { .progress-bar { background-color: $color-danger; } }
-    &.warning { .progress-bar { background-color: $color-warning; } }
-    &.info { .progress-bar { background-color: $color-info; } }
-    width: 50%
-  }
-/deep/ td.action-column {
-  width: 100px;
-}
-/deep/ td.photo-column {
-  width: 50px;
-}
-/deep/ td.progress-Column {
-  width: 300px;
-}
-/deep/ td.costCenter-column {
-  width: 400px;
-}
-/deep/ td.origin-column {
-  width: 400px;
-}
-.btn-secondary{
-  margin-left: 15px;
-}
 .checkbox{
   margin-left: 7.4px;
 }
@@ -194,10 +169,29 @@ export default {
     max-width: 35px;
     padding: 3px;
   }
+.user-progress {
+  color: darkblue;
+  background-color: grey;
+}
 .column-period {
     float: left;
     margin-left: 15px;
     margin-top: 7.4px;
+    /deep/ td.action-column {
+      width: 100px;
+    }
+    /deep/ td.photo-column {
+      width: 50px;
+    }
+    /deep/ td.progress-Column {
+       width: 300px;
+    }
+    /deep/ td.costCenter-column {
+      width: 400px;
+    }
+    /deep/ td.origin-column {
+      width: 400px;
+    }
     /deep/ .select-period {
       .multiselect__tags {
         border-color: #ced4da;
