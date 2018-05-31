@@ -16,8 +16,7 @@ export default {
   },
   data() {
     return {
-      code: '',
-      description: '',
+
     };
   },
   methods: {
@@ -32,6 +31,7 @@ export default {
         confirmButtonText: 'Sim, remova!',
         cancelButtonText: 'Não, cancele!',
         cancelButtonClass: 'btn btn-danger',
+        allowOutsideClick: false,
         reverseButtons: true,
       }).then((result) => {
         if (result.value) {
@@ -49,14 +49,6 @@ export default {
               'error',
             );
           });
-        } else if (
-          result.dismiss === this.$swal.DismissReason.cancel
-        ) {
-          this.$swal(
-            'Cancelado',
-            '',
-            'error',
-          );
         }
       });
     },

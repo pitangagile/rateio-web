@@ -36,6 +36,7 @@ export default {
         focusConfirm: false,
         showCancelButton: true,
         reverseButtons: true,
+        allowOutsideClick: false,
       }).then((result) => {
         if (result.value) {
           this.$http().post(url, { code: document.getElementById('code').value, description: document.getElementById('description').value }).then(() => { //eslint-disable-line
@@ -53,14 +54,6 @@ export default {
               this.$emit('allCenters'),
             );
           });
-        } else if (
-          result.dismiss === this.$swal.DismissReason.cancel
-        ) {
-          this.$swal(
-            'Cancelado',
-            '',
-            'error',
-          );
         }
       });
     },
