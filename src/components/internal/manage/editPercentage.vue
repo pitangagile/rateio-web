@@ -1,6 +1,6 @@
 <template>
   <div>
-    <b-button class="icon-edit" style="color: #3f3f40;" size="lg" variant="link" @click="handleOk"></b-button>
+    <b-button class="icon-edit" style="color: #3f3f40;" size="lg" variant="link" @click="openEditModal"></b-button>
   </div>
 </template>
 
@@ -22,7 +22,7 @@ export default {
     };
   },
   methods: {
-    handleOk() {
+    openEditModal() {
       this.$swal({
         title: 'Editar',
         input: 'number',
