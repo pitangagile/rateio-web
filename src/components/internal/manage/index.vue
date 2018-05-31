@@ -31,6 +31,7 @@
               v-model="selectedCenter"
               :options="costCenters"
               :searchable="true"
+              :show-labels="false"
               @input="filterCollaborators(selectedCenter)"
               placeholder="Selecione o Centro">
             </multiselect>
@@ -41,6 +42,7 @@
               v-model="selectedPeriod"
               :options="periods.map(data => data.description)"
               :searchable="true"
+              :show-labels="false"
               :allow-empty="false"
               @input="selectPeriod(selectedPeriod)"
               placeholder="Selecione o Período">
