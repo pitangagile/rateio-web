@@ -8,6 +8,10 @@
 import WindowMixin from './../../../commons/mixins/window.mixin';
 import { addClass, removeClass } from '../../../commons/helpers/dom.helper';
 
+let intervalOne;
+let intervalTwo;
+let intervalThree;
+
 export default {
   name: 'Mansory',
   mixins: [WindowMixin],
@@ -21,10 +25,8 @@ export default {
     };
   },
   mounted() {
-    this.contributors = this.generateSources();
-    setInterval(() => { this.currentHover1 = this.hoverRandom(this.currentHover1); }, 1000);
-    setInterval(() => { this.currentHover2 = this.hoverRandom(this.currentHover2); }, 1400);
-    setInterval(() => { this.currentHover3 = this.hoverRandom(this.currentHover3); }, 1800);
+    this.start();
+    window.onresize = () => { setTimeout(this.start, 100); };
   },
   methods: {
     generateSources() {
@@ -56,6 +58,29 @@ export default {
       addClass(next, 'hover');
 
       return next;
+    },
+    start() {
+      if (intervalOne) clearInterval(intervalOne);
+      if (intervalTwo) clearInterval(intervalTwo);
+      if (intervalThree) clearInterval(intervalThree);
+      if (this.currentHover1) removeClass(this.currentHover1, 'hover');
+      if (this.currentHover2) removeClass(this.currentHover2, 'hover');
+      if (this.currentHover3) removeClass(this.currentHover3, 'hover');
+
+      this.contributors = this.generateSources();
+
+      intervalOne = setInterval(
+        () => { this.currentHover1 = this.hoverRandom(this.currentHover1); },
+        1000,
+      );
+      intervalTwo = setInterval(
+        () => { this.currentHover2 = this.hoverRandom(this.currentHover2); },
+        1400,
+      );
+      intervalThree = setInterval(
+        () => { this.currentHover3 = this.hoverRandom(this.currentHover3); },
+        1800,
+      );
     },
   },
 };
