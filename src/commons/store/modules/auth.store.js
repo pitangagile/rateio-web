@@ -10,7 +10,7 @@ const AuthModule = {
       if (newUser) {
         const userDTO = {
           Id: newUser.id,
-          FistName: newUser.first_name,
+          FirstName: newUser.first_name,
           LastName: newUser.last_name,
           DisplayName: newUser.displayName,
           Email: newUser.email,

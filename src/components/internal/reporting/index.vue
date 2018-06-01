@@ -17,7 +17,9 @@
               class="select-period"
               v-model="selected"
               :options="periods"
-              :searchable="true"
+              searchable="false"
+              :show-labels="false"
+              :allow-empty="false"
               placeholder="Selecione o Período">
             </multiselect>
         </div>

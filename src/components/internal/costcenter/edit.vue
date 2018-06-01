@@ -1,11 +1,33 @@
 <template>
   <div>
-    <b-button-group @click="editCenter()" class="icon-edit" size="lg" variant="link" onmouseover="title='Editar'"></b-button-group>
+    <b-button-group @click="showModal()" class="icon-edit" size="lg" variant="link" onmouseover="title='Editar'" ></b-button-group>
+    <!-- Modal Component -->
+    <b-modal ref="myModalRef"
+             centered title="Editar Centro de Custo"
+             ok-title="Ok"
+             cancel-title="Cancelar"
+             v-on:ok= editCenter
+             no-close-on-backdrop>
+       <form>
+        <b-form-input type="text"
+                      placeholder="Código"
+                      v-model="code"
+                      class="mb-2"
+                      ></b-form-input>
+        <b-form-input type="text"
+                      placeholder="Descrição"
+                      v-model="description"
+                      class="mb-2"
+                      ></b-form-input>
+      </form>
+    </b-modal>
   </div>
 </template>
 
 <script>
+
 import tableCenter from './index';
+
 
 export default {
   components: {
@@ -18,51 +40,46 @@ export default {
   },
   data() {
     return {
-      code: this.row.code,
-      description: this.row.description,
+      code: String,
+      description: String,
     };
   },
+
   methods: {
+    showModal() {
+      this.$refs.myModalRef.show();
+      this.code = this.row.code;
+      this.description = this.row.description;
+    },
+    hideModal() {
+      this.cancelSwal();
+      this.$refs.myModalRef.hide();
+    },
     editCenter() {
+      const center = {
+        code: this.code,
+        description: this.description,
+      };
       const url = 'coastcenter/edit';
-      this.$swal({
-        title: 'Edição de Centro de Custo',
-        html:
-          '<a style="float: left;" autofocus>Codigo :<a/>' +
-          '<input id="code" class="swal2-input">' +
-          '<a style="float: left;" >Descrição :<a/>' +
-          '<input id="description" class="swal2-input">',
-        focusConfirm: false,
-        showCancelButton: true,
-        cancelButtonText: 'Cancelar',
-        reverseButtons: true,
-        preConfirm: () => { // eslint-disable-line
-          return [
-            this.$http().post(url,
-              { id: this.row._id, // eslint-disable-line
-                code: document.getElementById('code').value,
-                description: document.getElementById('description').value }).then(() => {
-              this.$swal(
-                'Adicionado',
-                'Centro de custo adicionado.',
-                'success',
-                this.$emit('allCenters'),
-              );
-            }, () => {
-              this.$swal(
-                'Erro',
-                '',
-                'error',
-              );
-            }),
-          ];
-        },
+      this.$http().post(url,
+      { id: this.row._id, // eslint-disable-line
+          code: center.code,
+          description: center.description }).then(() => {
+        this.$swal(
+          'Editado',
+          'Centro de custo Editado.',
+          'success',
+          this.$emit('allCenters'),
+        );
+      }, () => {
+        this.$swal(
+          'Erro',
+          '',
+          'error',
+        );
       });
     },
   },
 };
+
 </script>
-
-<style lang="scss" scoped>
-
-</style>

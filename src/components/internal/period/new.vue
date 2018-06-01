@@ -69,6 +69,12 @@ export default {
 
       }).then(() => {
         this.$emit('allPeriods');
+      }).catch(err => { //eslint-disable-line
+        this.$swal(
+          'Erro',
+          '',
+          'error',
+        );
       });
     },
     sugestedIncialDate() {
