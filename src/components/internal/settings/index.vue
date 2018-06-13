@@ -15,10 +15,8 @@
             <div class="user_information">
               <form class="form-horizontal" role="form">
                 <div class="form-group">
-                  <label for="txtWorkedHours" class="control-label col-sm-3">Horas de trabalho por dia:</label>
-                  <div class="col-sm-1">
-                    <input id="txtWorkedHours" type="number" v-model="hoursOfWork" class="form-control">
-                  </div>
+                  <label for="txtWorkedHours" class="control-label col-sm-3" >Horas de trabalho por dia:</label>
+                  <input id="txtWorkedHours" type="number" v-model="hoursOfWork" class="form-control col-sm-1" >
                 </div>
                 <div class="form-group">
                   <div class="checkbox">
@@ -222,5 +220,18 @@ h4 {
   z-index: 100;
 }
 
+.control-label{
+  float: left;
+  width: 155px;
+  top: 7px;
+  padding-left: 0px;
+  padding-right: 0px;
+}
+
+.form-control{
+  width: 60px;
+  padding-bottom: 4px;
+  padding-top: 4px;
+}
 </style>
 <style src="vue-multiselect/dist/vue-multiselect.min.css"></style>

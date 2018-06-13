@@ -4,20 +4,19 @@
       <h1 class="page--title"><span class="icon-cog h4"></span> Reportagem</h1>
     </b-col>
     <b-col cols="12">
-      <v-client-table ref="grid" class="mt-5 mb-2" :data="getCenterData(selected)" :columns="columns" :options="options">
+      <v-client-table ref="grid" class="mt-1 mb-2" :data="getCenterData(selected)" :columns="columns" :options="options">
         <span style="width: 2px; height: 2px; line-height: 2px; margin-right: 1px; margin-left: 1px" slot="h__period">Período</span>
         <span style="width: 2px; height: 2px; line-height: 2px; margin-right: 1px; margin-left: 1px" slot="h__costCenter">Centro de custo</span>
         <span slot="h__hours">Horas</span>
         <span slot="h__actions"></span>
         <div slot="actions" slot-scope="props" class="btn-toolbar">
-          <edit v-bind:table="reportingsList" :row="props.row" :index="props.index" :totalHours="totalHours" @getAll="getAll()"/>
+          <edit v-bind:table="reportingsList" :row="props.row" :index="props.index" :totalHours="totalHours"/>
         </div>
         <div slot="afterFilter" class="column-period">
             <multiselect
               class="select-period"
               v-model="selected"
               :options="periods"
-              searchable="false"
               :show-labels="false"
               :allow-empty="false"
               placeholder="Selecione o Período">
@@ -25,7 +24,7 @@
         </div>
 
         <div slot="afterFilter" class="column-period">
-          <p class="reportedHours">Horas reportadas: {{this.totalHours}}</p>
+          <p class="reportedHours">Reportado: {{this.totalHours}} de {{this.idealHours}} horas para o período</p>
         </div>
       </v-client-table>
     </b-col>
@@ -56,6 +55,7 @@ export default {
       reportingsList: [],
       periods: [],
       totalHours: 0,
+      idealHours: 0,
       options: {
         sortable: [],
         columnsClasses: {
@@ -69,7 +69,6 @@ export default {
   },
   mounted() {
     this.getInitialData();
-    this.getAll();
   },
   methods: {
     getTotalHours(reportings) {
@@ -92,20 +91,24 @@ export default {
       return this.reportingsList.filter(u => u.id === id)[0];
     },
     getInitialData() {
-      const url = 'period/getAll';
+      const url = 'reporting/getIndexData';
 
       this.$http().get(url).then((response) => {
-        this.periods = response.data.map(data => data.description);
+        console.log(response); // eslint-disable-line
+        this.periods = response.data.periods.map(data => data.description);
         this.selected = this.periods[this.periods.length - 1];
-      });
-    },
-    getAll() {
-      const url = 'reportings/getAll';
 
-      this.$http().get(url).then((response) => {
-        this.reportingsList = response.data;
-      }).then(() => {
-        this.getTotalHours(this.reportingsList);
+        this.idealHours = response.data.idealHours;
+
+        this.reportingsList = response.data.reportings;
+
+        if (this.reportingsList.length === 0) {
+          this.$swal(
+            'Nenhum centro de curto encontrado',
+            'Deseja ir para página de configurações?',
+            'warning',
+          );
+        }
       });
     },
     doSearch() {
@@ -139,7 +142,7 @@ export default {
 }
 .reportedHours{
   margin-left: 7.4px;
-  margin-top: 14px;
+  margin-top: 7px;
   margin-right: 7px;
 }
 

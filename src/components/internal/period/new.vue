@@ -2,10 +2,10 @@
   <div>
     <b-btn @click="showModal" class="btn-success" >Adicionar</b-btn>
         <b-modal ref ="datePickerModal"
-             centered title="Adicionar Periodo"
+             centered title="Novo Período"
              ok-title="Ok"
              cancel-title="Cancelar"
-             v-on:ok= addDates>Adição de Centro de Custo
+             v-on:ok= addDates>Início - Término
         <v-date-picker
         mode='range'
         v-model='selectedDate'
@@ -64,7 +64,7 @@ export default {
     addDates() {
       const initialdate = moment(this.selectedDate.start).format('D M YYYY');
       const finaldate = moment(this.selectedDate.end).format('D M YYYY');
-      const url = 'period/create';
+      const url = 'period';
       this.$http().post(url, { initialdate: initialdate, finaldate: finaldate, description: this.selectedDate.end }).then(() => { //eslint-disable-line
 
       }).then(() => {

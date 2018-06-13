@@ -14,18 +14,12 @@ export default {
       required: true,
     },
   },
-  data() {
-    return {
-      code: '',
-      description: '',
-    };
-  },
   methods: {
     removePeriod() {
       const url = 'period/delete';
       this.$swal({
-        title: 'Remoção de Periodo',
-        text: 'Tem certeza que deseja remover o periodo',
+        title: 'Remoção de Período',
+        text: 'Tem certeza que deseja remover o período?',
         type: 'warning',
         showCancelButton: true,
         confirmButtonClass: 'btn btn-success',
@@ -35,23 +29,11 @@ export default {
         reverseButtons: true,
       }).then((result) => {
         if (result.value) {
-          this.$http().post(url, { id: this.row._id }).then(() => { //eslint-disable-line
-            this.$swal(
-              'Deletado!',
-              'Periodo deletado.',
-              'success',
-            );
+          this.$http().delete(url, { id: this.row._id }).then(() => { //eslint-disable-line
+            this.$swal('Deletado!', 'Periodo deletado.', 'success');
           }).then(() => {
             this.$emit('allPeriods');
           });
-        } else if (
-          result.dismiss === this.$swal.DismissReason.cancel
-        ) {
-          this.$swal(
-            'Cancelado',
-            '',
-            'error',
-          );
         }
       });
     },

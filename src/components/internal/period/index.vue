@@ -5,12 +5,13 @@
     </b-col>
  <b-col cols="12">
       <div id="coastCenters">
-        <v-client-table class="table mt-5 mb-2" ref="grid" :data="reporting" :columns="columns" :options="options">
+        <v-client-table class="table mt-4 mb-2" ref="grid" :data="reporting" :columns="columns" :options="options">
           <span slot="h__description">Descrição</span>
-          <span slot="h__initialdate">Data Inicial</span>
-          <span slot="h__finaldate">Data Final</span>
-          <span slot="h__closuredate">Data Fechamento</span>
-          <span slot="h__generationdate">Data Geração Rateio</span>
+          <span slot="h__initialDate">Início</span>
+          <span slot="h__finalDate">Término</span>
+          <span slot="h__closuredate">Fechamento reportagem</span>
+          <span slot="h__closuremanagers">Fechamento gerentes</span>
+          <span slot="h__generationdate">Geração consolidada  </span>
           <span slot="h__action"></span>
           <div slot="action" slot-scope="props" class="btn-group">
             <remove :row="props.row"  @allPeriods="allPeriods()"></remove>
@@ -48,7 +49,7 @@ export default {
   },
   data() {
     return {
-      columns: ['description', 'initialdate', 'finaldate', 'closuredate', 'generationdate', 'action'],
+      columns: ['description', 'initialDate', 'finalDate', 'closuredate', 'closuremanagers', 'generationdate', 'action'],
       reporting: [],
       options: {
         sortable: [],
@@ -64,7 +65,7 @@ export default {
   },
   methods: {
     allPeriods() {
-      const url = 'period/getAll';
+      const url = 'period';
 
       this.$http().get(url).then((response) => {
         this.reporting = response.data;
