@@ -9,6 +9,7 @@
                   class="select-center"
                   v-model="selectedCenter"
                   :options="costCenters"
+                  :show-labels="false"
                   :searchable="true"
                   placeholder="Centros de Custo">
                   </multiselect>
@@ -19,6 +20,7 @@
                   v-model="selectedCollaborator"
                   :options="collaboratorsList.map(collaborator => collaborator.name)"
                   :searchable="true"
+                  :show-labels="false"
                   placeholder="Colaboradores">
                   </multiselect>
               </div>

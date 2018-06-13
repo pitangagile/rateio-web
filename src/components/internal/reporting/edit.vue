@@ -1,6 +1,6 @@
 <template>
   <div>
-    <b-button class="icon-edit" style="color: #3f3f40;" size="lg" variant="link" @click="handleOk"></b-button>
+    <b-button class="icon-edit" style="color: #3f3f40;" variant="link" @click="handleOk"></b-button>
   </div>
 </template>
 
@@ -56,14 +56,6 @@ export default {
           }, (err) => {
             this.$snotify.error('Não foi possível editar, digite um número válido', err);
           });
-        } else if (
-          result.dismiss === this.$swal.DismissReason.cancel
-        ) {
-          this.$swal(
-            'Cancelado',
-            '',
-            'error',
-          );
         }
       });
     },

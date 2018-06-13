@@ -17,7 +17,7 @@
               class="select-period"
               v-model="selected"
               :options="periods"
-              searchable="false"
+              :searchable="false"
               :show-labels="false"
               :allow-empty="false"
               placeholder="Selecione o Período">
@@ -139,7 +139,7 @@ export default {
 }
 .reportedHours{
   margin-left: 7.4px;
-  margin-top: 14px;
+  margin-top: 9px;
   margin-right: 7px;
 }
 
