@@ -61,7 +61,7 @@ export default {
   },
   methods: {
     AllCenters() {
-      const url = 'coastcenter/getAll';
+      const url = 'coastcenter';
 
       this.$http().get(url).then((response) => {
         this.tableCenter = response.data;
