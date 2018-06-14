@@ -4,21 +4,21 @@
       <h1 class="page--title"><span class="icon-cog h4"></span> Gerenciar Rateio</h1>
     </b-col>
     <b-col cols="12">
-      <v-client-table ref="grid" class="mt-5 mb-2" :data="filterCollaborators(selectedCenter)" :columns="columns" :options="options">
-        <span slot="h__photo">#</span>
+      <v-client-table ref="grid" class="mt-5 mb-2" :data="filterCollaborators(selectedCenter, incompletePercentage)" :columns="columns" :options="options">
+        <span class="column-" slot="h__photo">#</span>
         <span slot="h__name">Colaborador</span>
         <span slot="h__originCostCenter">Centro de Custo Origem</span>
         <span slot="h__costCenter">Centro de Custo</span>
-        <span slot="h__progress">Progresso</span>
+        <span slot="h__percentage">Porcentagem</span>
         <span slot="h__actions"></span>
-        <div slot="progress" slot-scope="props">
-          <b-progress :value="props.row.progress" :max="100" class="user-progress" show-progress></b-progress>
+        <div slot="percentage" slot-scope="props">
+          <b-progress :value="props.row.percentage" :max="100" class="user-progress" show-progress></b-progress>
         </div>
         <div slot="photo" slot-scope="props">
           <img :src="props.row.photo" class="user-picture">
         </div>
         <div slot="actions" slot-scope="props" class="btn-toolbar">
-          <editPercentage v-bind:row="props.row"/>
+          <editPercentage v-bind:row="props.row" :table="collaboratorsList"/>
         </div>
         <div slot="collaborator" slot-scope="props">
           <div class="user-info">
@@ -50,7 +50,7 @@
             </multiselect>
         </div>
         <div slot="afterFilter" class="checkbox">
-          <b-form-checkbox class="checkbox">Apenas percentual abaixo do ideal</b-form-checkbox>
+          <b-form-checkbox v-model="incompletePercentage" class="checkbox">Apenas percentual abaixo do ideal</b-form-checkbox>
         </div>
         <div slot="afterFilter" class="column-period">
           <p class="date">Data de início: {{this.initialdate}}</p>
@@ -92,15 +92,16 @@ export default {
     return {
       selectedPeriod: null,
       selectedCenter: null,
+      incompletePercentage: false,
       initialdate: 'DD/MM/AAAA',
       finaldate: 'DD/MM/AAAA',
-      columns: ['photo', 'name', 'originCostCenter', 'costCenter', 'progress', 'actions'],
-      collaboratorsList: [{ photo: '/static/img/avatars/1.jpg', name: 'Igor Formiga', progress: 100, costCenter: 'Centro de Custo 1', originCostCenter: 'Centro de Custo 1' },
-        { photo: '/static/img/avatars/2.jpg', name: 'Ivaldo Barbosa', progress: 60, costCenter: 'Centro de Custo 10', originCostCenter: 'Centro de Custo 2' },
-        { photo: '/static/img/avatars/2.jpg', name: 'Ivaldo Barbosa', progress: 40, costCenter: 'Centro de Custo 2', originCostCenter: 'Centro de Custo 2' },
-        { photo: '/static/img/avatars/3.jpg', name: 'Thiago Ferreira', progress: 70, costCenter: 'Centro de Custo 1', originCostCenter: 'Centro de Custo 1' },
-        { photo: '/static/img/avatars/3.jpg', name: 'Thiago Ferreira', progress: 20, costCenter: 'Centro de Custo 2', originCostCenter: 'Centro de Custo 1' },
-        { photo: '/static/img/avatars/3.jpg', name: 'Thiago Ferreira', progress: 10, costCenter: 'Centro de Custo 10', originCostCenter: 'Centro de Custo 1' }],
+      columns: ['photo', 'name', 'originCostCenter', 'costCenter', 'percentage', 'actions'],
+      collaboratorsList: [{ photo: '/static/img/avatars/1.jpg', name: 'Igor Formiga', percentage: 100, costCenter: 'Centro de Custo 1', originCostCenter: 'Centro de Custo 1' },
+        { photo: '/static/img/avatars/2.jpg', name: 'Ivaldo Barbosa', percentage: 60, costCenter: 'Centro de Custo 10', originCostCenter: 'Centro de Custo 2' },
+        { photo: '/static/img/avatars/2.jpg', name: 'Ivaldo Barbosa', percentage: 40, costCenter: 'Centro de Custo 2', originCostCenter: 'Centro de Custo 2' },
+        { photo: '/static/img/avatars/3.jpg', name: 'Thiago Ferreira', percentage: 70, costCenter: 'Centro de Custo 1', originCostCenter: 'Centro de Custo 1' },
+        { photo: '/static/img/avatars/3.jpg', name: 'Thiago Ferreira', percentage: 20, costCenter: 'Centro de Custo 2', originCostCenter: 'Centro de Custo 1' },
+        { photo: '/static/img/avatars/3.jpg', name: 'Thiago Ferreira', percentage: 10, costCenter: 'Centro de Custo 10', originCostCenter: 'Centro de Custo 1' }],
       costCenters: [],
       periods: [],
       totalHours: 0,
@@ -112,7 +113,7 @@ export default {
           originCostCenter: 'origin-column',
           costCenter: 'costCenter-column',
           name: 'name-column',
-          progress: 'progress-column',
+          percentage: 'percentage-column',
         },
       },
     };
@@ -143,12 +144,15 @@ export default {
         this.costCenters = response.data.map(data => data.description);
       });
     },
-    filterCollaborators(selectedCenter) {
+    filterCollaborators(selectedCenter, incompletePercentage) {
       let response;
       if (selectedCenter != null) {
         response = this.collaboratorsList.filter(collaborator => collaborator.costCenter === selectedCenter || collaborator.originCostCenter === selectedCenter); // eslint-disable-line
       } else {
         response = this.collaboratorsList;
+      }
+      if (incompletePercentage === true) {
+        response = response.filter(collaborator => collaborator.percentage < 100);
       }
       return response;
     },
@@ -176,25 +180,26 @@ export default {
   color: darkblue;
   background-color: grey;
 }
+/deep/ td.action-column {
+      width: 10px;
+}
+/deep/ td.photo-column {
+      width: 50px;
+}
+/deep/ td.percentage-column {
+    width: 150px;
+}
+/deep/ td.costCenter-column {
+  width: 400px;
+}
+/deep/ td.origin-column {
+  width: 400px;
+}
 .column-period {
     float: left;
     margin-left: 15px;
     margin-top: 7.4px;
-    /deep/ td.action-column {
-      width: 100px;
-    }
-    /deep/ td.photo-column {
-      width: 50px;
-    }
-    /deep/ td.progress-Column {
-       width: 300px;
-    }
-    /deep/ td.costCenter-column {
-      width: 400px;
-    }
-    /deep/ td.origin-column {
-      width: 400px;
-    }
+
     /deep/ .select-period {
       .multiselect__tags {
         border-color: #ced4da;

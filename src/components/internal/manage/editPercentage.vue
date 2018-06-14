@@ -1,6 +1,6 @@
 <template>
   <div>
-    <b-button class="icon-edit" style="color: #3f3f40;" size="lg" variant="link" @click="openEditModal"></b-button>
+    <b-button class="icon-edit" style="color: #3f3f40;" variant="link" @click="openEditModal"></b-button>
   </div>
 </template>
 
@@ -15,10 +15,13 @@ export default {
       type: Object,
       required: true,
     },
+    table: {
+      required: true,
+    },
   },
   data() {
     return {
-      hours: 0,
+      percentage: 0,
     };
   },
   methods: {
@@ -33,16 +36,16 @@ export default {
         focusConfirm: false,
         reverseButtons: true,
         showCancelButton: true,
-        inputValue: this.row.hours,
+        inputValue: this.row.percentage,
         inputAttributes: {
           min: 0,
-          id: 'hours',
+          id: 'percentage',
         },
       }).then((result) => {
         if (result.value) {
-          const newHours = document.getElementById('hours').value;
-          this.row.hours = newHours;
-          if (newHours >= 0 && newHours != null) {
+          const newPercentage = document.getElementById('percentage').value;
+          this.row.percentage = newPercentage;
+          if (newPercentage >= 0 && newPercentage != null) {
             this.$swal(
               'Editado',
               'Reportagem Editada.',
@@ -52,14 +55,6 @@ export default {
           } else {
             this.$snotify.error('Não foi possível editar, digite um número válido');
           }
-        } else if (// end
-          result.dismiss === this.$swal.DismissReason.cancel
-        ) {
-          this.$swal(
-            'Cancelado',
-            '',
-            'error',
-          );
         }
       });
     },
