@@ -17,10 +17,6 @@
               class="select-period"
               v-model="selected"
               :options="periods"
-<<<<<<< HEAD
-              :searchable="false"
-=======
->>>>>>> 38755cbf24a93fdd79036f5610f080c2bdfc6cf3
               :show-labels="false"
               :allow-empty="false"
               placeholder="Selecione o Período">
@@ -146,11 +142,7 @@ export default {
 }
 .reportedHours{
   margin-left: 7.4px;
-<<<<<<< HEAD
-  margin-top: 9px;
-=======
   margin-top: 7px;
->>>>>>> 38755cbf24a93fdd79036f5610f080c2bdfc6cf3
   margin-right: 7px;
 }
 
