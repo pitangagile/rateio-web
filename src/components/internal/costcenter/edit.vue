@@ -60,8 +60,8 @@ export default {
         code: this.code,
         description: this.description,
       };
-      const url = 'coastcenter/edit';
-      this.$http().post(url,
+      const url = 'coastcenter';
+      this.$http().put(url,
       { id: this.row._id, // eslint-disable-line
           code: center.code,
           description: center.description }).then(() => {

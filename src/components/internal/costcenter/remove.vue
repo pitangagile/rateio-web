@@ -21,7 +21,7 @@ export default {
   },
   methods: {
     removeCenter() {
-      const url = 'coastcenter/Delete';
+      const url = 'coastcenter';
       this.$swal({
         title: 'Remoção de Centro de Custo',
         text: 'Tem certeza que deseja remover o centro de custo',
@@ -35,7 +35,7 @@ export default {
         reverseButtons: true,
       }).then((result) => {
         if (result.value) {
-          this.$http().post(url, { id: this.row._id }).then(() => { //eslint-disable-line
+          this.$http().post(`${url}/${this.row._id}`).then(() => { //eslint-disable-line
             this.$swal(
               'Deletado!',
               'Centro de custo deletado.',
