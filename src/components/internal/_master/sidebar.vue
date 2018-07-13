@@ -53,18 +53,18 @@
           </router-link>
         </li>
 
-        <li class="nav-item">
+        <!-- <li class="nav-item">
           <router-link to="/internal/allocation" class="nav-link" :class="{ 'active' : isActive('allocation')}">
             <span class="icon-calendar mr-2"></span>
             Alocação
           </router-link>
-        </li>
-        <li class="nav-item">
+        </li> -->
+        <!-- <li class="nav-item">
           <router-link to="/internal/allocationmap" class="nav-link" :class="{ 'active' : isActive('allocationmap')}">
             <span class="icon-calendar mr-2"></span>
             Mapa alocação
           </router-link>
-        </li>
+        </li> -->
       </ul>
 
       <h6 class="sidebar-heading d-flex justify-content-between align-items-center px-3 mt-4 mb-3 text-muted">
@@ -74,11 +74,10 @@
       <ul class="nav flex-column mb-2">
         <li class="nav-item">
           <router-link to="/internal/settings" class="nav-link" :class="{ 'active' : isActive('settings')}">
-            <span class="icon-vcard mr-2"></span>
-            Colaborador
+            <span class="icon-cog mr-2"></span>
+            Configurações
           </router-link>
         </li>
-          </li>
         <li class="nav-item">
           <router-link to="/internal/period" class="nav-link" :class="{ 'active' : isActive('period')}">
             <span class="icon-calendar-1 mr-2"></span>
@@ -89,6 +88,12 @@
           <router-link to="/internal/costcenter" class="nav-link" :class="{ 'active' : isActive('costcenter')}">
             <span class="icon-money mr-2"></span>
             Centros de custo
+          </router-link>
+        </li>
+        <li class="nav-item">
+          <router-link to="/internal/employee" class="nav-link" :class="{ 'active' : isActive('employee')}">
+            <span class="icon-vcard mr-2"></span>
+            Colaboradores
           </router-link>
         </li>
         <li class="nav-item">

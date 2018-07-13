@@ -69,7 +69,7 @@ export default {
           'Editado',
           'Centro de custo Editado.',
           'success',
-          this.$emit('allCenters'),
+          this.$emit('refreshGrid'),
         );
       }, () => {
         this.$swal(

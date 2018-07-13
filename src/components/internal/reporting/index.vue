@@ -104,7 +104,7 @@ export default {
 
         if (this.reportingsList.length === 0) {
           this.$swal(
-            'Nenhum centro de curto encontrado',
+            'Nenhum centro de custo encontrado',
             'Deseja ir para página de configurações?',
             'warning',
           );

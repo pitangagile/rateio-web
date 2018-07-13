@@ -131,7 +131,7 @@ export default {
             this.$store.dispatch('auth/setUser', user);
             this.$store.dispatch('auth/setToken', response.data);
             this.$NProgress().done();
-            this.$router.push({ name: 'dashboard' });
+            this.$router.push({ name: 'reporting' });
           }, (err) => {
             this.$NProgress().done();
             console.log('> sign-in.social() error! (2)', err);  // eslint-disable-line

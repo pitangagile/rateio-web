@@ -21,7 +21,7 @@ export default {
   },
   methods: {
     addNewCenter() {
-      const url = 'coastcenter/create';
+      const url = 'coastcenter';
       this.$swal({
         title: 'Adição de Centro de Custo',
         html:
@@ -44,14 +44,14 @@ export default {
               'Adicionado',
               'Centro de custo adicionado.',
               'success',
-              this.$emit('allCenters'),
+              this.$emit('refreshGrid'),
             );
           }, () => {
             this.$swal(
               'Erro',
               '',
               'error',
-              this.$emit('allCenters'),
+              this.$emit('refreshGrid'),
             );
           });
         }

@@ -46,7 +46,7 @@
         </div>
         <div slot="afterFilter" class="add-button">
           <multiselect
-            class="multiselect--active"
+            class="multiselect--active coastcenter"
             label="description"
             :custom-label="codeWithDescription"
             v-model="center"
@@ -111,7 +111,7 @@ export default {
   },
   methods: {
     AllCenters() {
-      const url = 'coastcenter/getAll';
+      const url = 'coastcenter';
 
       this.$http().get(url).then((response) => {
         this.tableCenter = response.data;
@@ -232,6 +232,10 @@ h4 {
   width: 60px;
   padding-bottom: 4px;
   padding-top: 4px;
+}
+
+.coastcenter{
+  width:550px;
 }
 </style>
 <style src="vue-multiselect/dist/vue-multiselect.min.css"></style>

@@ -21,6 +21,7 @@ import InternalSchedule from '@/components/internal/schedule';
 import InternalSettings from '@/components/internal/settings/';
 import InternalHelp from '@/components/internal/help/';
 import InternalPeriod from '@/components/internal/period/';
+import InternalEmployee from '@/components/internal/employee';
 
 import InternalExamples from '@/components/internal/examples/';
 import InternalExamplesServerTable from '@/components/internal/examples/server-table';
@@ -132,6 +133,11 @@ const router = new Router({
           path: 'period',
           name: 'period',
           component: InternalPeriod,
+        },
+        {
+          path: 'employee',
+          name: 'employee',
+          component: InternalEmployee,
         },
       ],
     },

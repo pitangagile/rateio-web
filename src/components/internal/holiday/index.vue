@@ -7,27 +7,18 @@
     </b-row>
 
     <b-row>
-      <b-col cols="12">
+      <b-col cols=12>
         <b-form>
-          <div class="panel panel-default">
-            <div class="panel-body">
-              <b-form-group id="dateHoliday"
+          <b-form-group id="dateHoliday"
                             label="Ano:"
                             label-for="year_holiday"
-                            label-class="col-md-6 col-sm-3 control-label pt-2"
+                            label-class="sr-only pt-2"
                             class="row">
               <b-form-select id="year_holiday"
                             :options="years"
                             v-model="form.year"
                             required />
-              </b-form-group>
-            </div>
-            <div class="panel-footer" style="background-color: #efefef;">
-              <b-button variant="secondary" @click.prevent="add()">Incluir</b-button>
-              <span class="separator"></span>
-              <b-button variant="primary" @click.prevent="doSearch()">Pesquisar</b-button>
-            </div>
-          </div>
+          </b-form-group>
         </b-form>
       </b-col>
     </b-row>
@@ -100,12 +91,13 @@ export default {
 
       this.$http().get(url).then((response) => {
         this.years = response.data.years;
+        this.holidaysGroup = response.data.holidays;
       });
     },
     doSearch() {
       const url = 'holiday/search';
 
-      this.$http().post(url, { year: this.form.year }).then((response) => {
+      this.$http().get(url, { year: this.form.year }).then((response) => {
         console.log('response'); // eslint-disable-line
         this.holidaysGroup = response.data;
       },

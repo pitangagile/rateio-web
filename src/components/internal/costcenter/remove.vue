@@ -35,16 +35,16 @@ export default {
         reverseButtons: true,
       }).then((result) => {
         if (result.value) {
-          this.$http().post(`${url}/${this.row._id}`).then(() => { //eslint-disable-line
+          this.$http().delete(`${url}/${this.row._id}`).then(() => { //eslint-disable-line
             this.$swal(
               'Deletado!',
               'Centro de custo deletado.',
               'success',
             );
-            this.$emit('allCenters');
+            this.$emit('refreshGrid');
           }).catch((err) => { //eslint-disable-line
             this.$swal(
-              'Erro',
+              'Falha na remoção do Centro selecionado',
               '',
               'error',
             );
