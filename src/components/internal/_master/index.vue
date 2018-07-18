@@ -12,6 +12,7 @@
 </template>
 
 <script>
+/* eslint-disable */
 import sidebar from './sidebar';
 import topbar from './topbar';
 

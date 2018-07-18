@@ -185,6 +185,12 @@
       "css": "cancel",
       "code": 59411,
       "src": "fontawesome"
+    },
+    {
+      "uid": "f761c3bbe16ba2d332914ecb28e7a042",
+      "css": "file-excel",
+      "code": 61891,
+      "src": "fontawesome"
     }
   ]
 }

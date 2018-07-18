@@ -1,3 +1,4 @@
+/* eslint-disable */
 import Vue from 'vue';
 import Router from 'vue-router';
 
@@ -22,12 +23,12 @@ import InternalSettings from '@/components/internal/settings/';
 import InternalHelp from '@/components/internal/help/';
 import InternalPeriod from '@/components/internal/period/';
 import InternalEmployee from '@/components/internal/employee';
+import InternalFileUpload from '@/components/internal/fileupload';
 
 import InternalExamples from '@/components/internal/examples/';
 import InternalExamplesServerTable from '@/components/internal/examples/server-table';
 
 // #endregion internal
-
 import NavigationGuards from './navigations.guards';
 
 Vue.use(Router);
@@ -73,6 +74,11 @@ const router = new Router({
           path: '',
           name: 'dashboard',
           component: InternalDashboard,
+        },
+        {
+          path: 'fileupload',
+          name: 'fileupload',
+          component: InternalFileUpload,
         },
         {
           path: 'allocation',

@@ -102,6 +102,12 @@
             Feriados
           </router-link>
         </li>
+        <li class="nav-item">
+          <router-link to="/internal/fileupload" class="nav-link" :class="{ 'active' : isActive('fileupload')}">
+            <span class="icon-file-excel mr-2"></span>
+            Planilhas
+          </router-link>
+        </li>
         <!-- <li class="nav-item">
           <router-link to="/internal/schedule" class="nav-link" :class="{ 'active' : isActive('schedule')}">
             <span class="icon-user-o mr-2"></span>
@@ -121,13 +127,16 @@
             Sair
           </a>
         </li>
+        <hr>
       </ul>
     </div>
   </nav>
 </template>
 
 <script>
+/* eslint-disable */
 export default {
+
   name: 'Sidebar',
   data() {
     return {
