@@ -17,8 +17,13 @@
     </b-row>
     <b-row>
       <b-col cols="12">
-        <v-client-table striped hover ref="grid" class="mt-5 mb-2" :data="dataSource" :columns="columns"
-                        :options="options"/>
+        <v-server-table striped hover class="grid mt-3 mb-2" :url="urlApiGrid" :columns="columns" :options="options">
+          <div slot="actions" slot-scope="props" class="btn-group">
+            <b-button id="downloadButton" :variant="'primary'" size="" @click="downloadFile(props.row)">
+              <i class="icon-download"/>
+            </b-button>
+          </div>
+        </v-server-table>
       </b-col>
     </b-row>
   </div>
@@ -26,81 +31,72 @@
 
 <script>
   /* eslint-disable */
-
   import Vue from 'vue';
   import {ServerTable} from 'vue-tables-2';
   import options from './../../../commons/helpers/grid.config';
+  import variables from './../../../commons/helpers/variables';
 
   Vue.use(ServerTable, options, false, 'bootstrap4', 'default');
 
-  const url = 'fileupload';
-
   export default {
     name: 'FileUpload',
+    showLoading: true,
     data() {
+      const self = this;
       return {
-        titulo_pagina: 'Registro de Planilhas',
+        urlApiGrid: `${variables.http.root}fileupload/gridlist`,
         file: null,
-        dismissSecs: 5,
-        dismissCountDown: 0,
-        dataSource: [],
-        columns: ['name_file', 'responsable', 'insertion_date'],
+        titulo_pagina: 'Registro de Planilhas',
+        columns: ['name_file', 'responsable', 'insertion_date', 'actions'],
         options: {
           headings: {
-            name_file: 'Nome Arquivo',
+            name_file: 'Nome do Arquivo',
             responsable: 'Responsável',
-            insertion_date: 'Data Inserção',
+            insertion_date: 'Data de Inserção',
+            actions: 'Download'
           },
           sortable: ['insertion_date'],
           requestFunction(data) {
-            return self.$http().get('fileupload')
+            return self.$http().get('fileupload/gridlist', {params: data})
               .catch((e) => {
                 this.dispatch('error', e);
               });
           },
           responseAdapter(response) {
             console.log(response); // eslint-disable-line
-            // return { data: response.data.data, count: response.data.count };
+            return {data: response.data.data, count: response.data.count};
           },
         }
       };
     },
-    mounted() {
-      this.AllData();
-    },
     methods: {
-      AllData() {
-        this.$http().get(url).then((response) => {
-          this.dataSource = response.data;
-        });
-      },
       armazenarArquivo() {
-        console.log(this.file)
-        if (this.file === undefined || this.file === null) {
-          this.$snotify.info('Selecione um arquivo');
+
+        var file = this.file;
+        console.log(file);
+        if (file === undefined || file === null) {
+          this.$snotify.warning('Selecione um arquivo');
         } else {
-          this.$http().post(url, {params : getBase64()}).then((response) => {
-            this.dataSource = response.data;
+          this.$http().post('fileupload', {name : file.name, data: this.convertFileToBinary()}).then(() => { //eslint-disable-line
+            this.$swal(
+              'Adicionado',
+              'Planilha adicionada com sucesso.',
+              'success'
+            );
+          }, () => {
+            this.$swal(
+              'Erro',
+              '',
+              'error'
+            );
           });
-          this.dataSource.push(inserir);
         }
       },
-      getBase64() {
-        var reader = new FileReader();
-        reader.readAsDataURL(this.file);
-        reader.onload = function () {
-          return reader.result;
-        };
-        reader.onerror = function (error) {
-          console.log('Error: ', error);
-        };
+      convertFileToBinary(){
       },
-      countDownChanged (dismissCountDown) {
-        this.dismissCountDown = dismissCountDown
+      downloadFile(file) {
+        console.log("Clicou")
       },
-      showAlert () {
-        this.dismissCountDown = this.dismissSecs
-      }
     }
   };
 </script>

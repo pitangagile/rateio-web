@@ -19,6 +19,7 @@
 .icon-trash-empty:before { content: '\e811'; } /* '' */
 .icon-calendar-1:before { content: '\e812'; } /* '' */
 .icon-cancel:before { content: '\e813'; } /* '' */
+.icon-download:before { content: '\e814'; } /* '' */
 .icon-twitter:before { content: '\f099'; } /* '' */
 .icon-facebook:before { content: '\f09a'; } /* '' */
 .icon-tasks:before { content: '\f0ae'; } /* '' */
