@@ -29,6 +29,7 @@
 </template>
 
 <script>
+  /* eslint-disable */
 import { ClientTable } from 'vue-tables-2';
 import Vue from 'vue';
 import options from './../../../commons/helpers/grid.config';
