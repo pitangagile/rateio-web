@@ -3,6 +3,8 @@
     <b-col cols="12">
       <div id="element">
         <vue-single-select
+          ref="select"
+          option-key="code"
           option-label="description"
           v-model="selectedCoastCenter"
           :options="coastCenters"
@@ -46,14 +48,16 @@
           this.$snotify.warning('Selecione um centro de custo');
         }else{
           this.$http().post('employee/addCoastCenter', {params: {'user_id': user_id, 'coastCenter' : this.selectedCoastCenter}}).then(() =>{
-            this.selectedCoastCenter = null;
             this.$swal(
               'Adicionado',
               'Centro de custo adicionado.',
               'success',
               this.$emit('refreshGrid'),
             );
+            this.selectedCoastCenter = null;
+            this.findCoastCentersWithoutUserId();
           }, () => {
+            this.refreshSelect();
             this.$swal(
               'Erro',
               '',
