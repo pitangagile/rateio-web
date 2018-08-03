@@ -12,7 +12,7 @@
           :required="true">
         </vue-single-select>
       </div>
-      <b-button v-on:click="addCoastCenter">Adicionar</b-button>
+      <b-button variant="primary" v-on:click="addCoastCenter">Adicionar</b-button>
     </b-col>
   </b-row>
 </template>
@@ -24,8 +24,8 @@
 
   // FIXME: Buscar usuário da sessão
   const user_id = '5b6240f74855b1272d7d500e';
-
   export default {
+    name: 'AddCC',
     components: {
       VueSingleSelect,
     },
@@ -43,18 +43,22 @@
           this.coastCenters = response.data;
         });
       },
-      addCoastCenter(){
-        if (this.selectedCoastCenter === null || this.selectedCoastCenter === undefined){
+      addCoastCenter() {
+        if (this.selectedCoastCenter === null || this.selectedCoastCenter === undefined) {
           this.$snotify.warning('Selecione um centro de custo');
-        }else{
-          this.$http().post('employee/addCoastCenter', {params: {'user_id': user_id, 'coastCenter' : this.selectedCoastCenter}}).then(() =>{
+        } else {
+          this.$http().post('employee/addCoastCenter', {
+            params: {
+              'user_id': user_id,
+              'coastCenter': this.selectedCoastCenter
+            }
+          }).then(() => {
             this.$swal(
               'Adicionado',
               'Centro de custo adicionado.',
               'success',
               this.$emit('refreshGrid'),
             );
-            this.selectedCoastCenter = null;
             this.findCoastCentersWithoutUserId();
           }, () => {
             this.refreshSelect();
@@ -71,7 +75,7 @@
     mounted() {
       this.findCoastCentersWithoutUserId();
     },
-  }
+  };
 </script>
 
 <style lang="scss" scoped>

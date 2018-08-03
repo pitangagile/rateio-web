@@ -2,17 +2,17 @@
   <div>
     <b-row nam="title" class="page">
       <b-col cols="12">
-        <h1 class="page--title">Configurações do colaborador</h1>
+        <h1 class="page--title">{{title}}</h1>
       </b-col>
     </b-row>
     <b-row nam="basic_information">
       <b-col cols="12">
-        <BasicUserInformation v-bind:user="user"></BasicUserInformation>
+        <basic v-bind:user="user"></basic>
       </b-col>
     </b-row>
     <b-row name="coast_centers">
       <b-col cols="12">
-        <CoastCenters></CoastCenters>
+        <cc></cc>
       </b-col>
     </b-row>
   </div>
@@ -20,85 +20,27 @@
 
 <script>
   /* eslint-disable */
-  // import {ClientTable} from 'vue-tables-2';
   import Vue from 'vue';
-  // import Multiselect from 'vue-multiselect';
-  // import options from './../../../commons/helpers/grid.config';
-  import remove from './removeCenterUser';
-  import BasicUserInformation from './basicUserInformation';
-  import CoastCenters from './coastCenters';
-
-  // Vue.use(ClientTable, options, false, 'bootstrap4', 'default');
-  // Vue.component('multiselect', Multiselect);
+  import Basic from './basic';
+  import Cc from './cc';
 
   export default {
     components: {
-      remove,
-      BasicUserInformation,
-      CoastCenters,
+      Basic,
+      Cc,
     },
     name: 'Settings',
     showLoading: true,
+    data() {
+      return {
+        title: 'Configurações do colaborador',
+      }
+    },
     computed: {
       user() {
         return this.$store.getters['auth/user'];
       },
     },
-    // data() {
-    //   return {
-    //     // hoursOfWork: 8,
-    //     allCoastCenters: [],
-    //     tableUserCoastCenters: [],
-    //     columns: ['code', 'description', 'actions'],
-    //     center: null,
-    //     options: {
-    //       sortable: ['code'],
-    //       filterable: ['code', 'description'],
-    //       columnsClasses: {
-    //         actions: 'action-column text-center',
-    //       },
-    //     },
-    //   };
-    // },
-    // mounted() {
-    //   this.AllCenters();
-    // },
-    // methods: {
-    //   AllCenters() {
-    //     const url = 'coastcenter';
-    //
-    //     this.$http().get(url).then((response) => {
-    //       console.log('response > ', response);
-    //       this.allCoastCenters = response.data;
-    //     });
-    //   },
-    //   addCenter() {
-    //     if (this.center === undefined || this.center === null) {
-    //       this.$snotify.info('Centro nulo');
-    //     } else {
-    //       const centerToAdd = {
-    //         code: this.center.code,
-    //         description: this.center.description,
-    //       };
-    //       if (this.checkingList(centerToAdd.code)) {
-    //         this.$snotify.info('Centro ja adicionado');
-    //       } else {
-    //         this.tableUserCoastCenters.push(centerToAdd);
-    //       }
-    //     }
-    //   },
-    //   checkingList(code) {
-    //     for (let i = 0; i < this.tableUserCoastCenters.length; i += 1) {
-    //       if (this.tableUserCoastCenters[i].code === code) {
-    //         return true;
-    //       }
-    //     }
-    //     return false;
-    //   },
-    //   codeWithDescription({code, description}) {
-    //     return `${code} — ${description}`;
-    //   },
-    // },
   };
 </script>
 
