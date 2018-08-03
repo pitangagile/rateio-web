@@ -15,7 +15,8 @@
     </b-row>
     <b-row>
       <b-col cols="12">
-        <v-server-table striped hover class="grid mt-3 mb-2" :url="urlApiGrid" :columns="columns" :options="options">
+        <v-server-table striped hover class="grid mt-3 mb-2" :url="urlApiGrid" :columns="columns" :options="options"
+                        ref="planilhas">
           <div slot="createdAt" slot-scope="props">
             <span>{{props.row.createdAt | formatarDateTime}}</span>
           </div>
@@ -29,7 +30,6 @@
     </b-row>
   </div>
 </template>
-
 <script>
   /* eslint-disable */
   import Vue from 'vue';
@@ -44,6 +44,12 @@
   export default {
     name: 'FileUpload',
     showLoading: true,
+
+    computed: {
+      user() {
+        return this.$store.getters['auth/user'];
+      },
+    },
     data() {
       const self = this;
       return {
@@ -56,7 +62,7 @@
             name: 'Nome do Arquivo',
             responsable: 'Responsável',
             createdAt: 'Data de Inserção',
-            actions: 'Download'
+            actions: 'Ações',
           },
           sortable: ['insertion_date'],
           requestFunction(data) {
@@ -66,7 +72,6 @@
               });
           },
           responseAdapter(response) {
-            console.log(response); // eslint-disable-line
             return {data: response.data.data, count: response.data.count};
           },
         }
@@ -79,12 +84,15 @@
       },
       validarArquivo: function () {
         if (this.file === undefined || this.file === null) {
-          this.$snotify.warning('Selecione um arquivo');
+          return this.$snotify.warning('Selecione um arquivo');
         }
       },
       create: function () {
         var formData = new FormData();
-        formData.append("data", this.file);
+        formData.append('name', this.file.name);
+        formData.append("file", this.file);
+        // formData.append("contentType", this.file.type);
+        formData.append("responsable", this.user.DisplayName);
         axios.post(`${variables.http.root}fileupload`,
           formData,
           {
@@ -98,6 +106,7 @@
             'Planilha adicionada com sucesso.',
             'success'
           );
+          this.onUpdate();
         }, error => {
           this.$swal(
             'Erro',
@@ -106,6 +115,28 @@
           );
         });
       },
+      downloadFile(row) {
+        axios({
+          url: `${variables.http.root}fileupload/getById`,
+          method: 'GET',
+          responseType: 'blob',
+          headers: {
+            'Content-Type' : row.file.contentType,
+            'Accept': row.file.contentType
+          },
+          params: {
+            ID: row._id
+          },
+        }).then((response) => {
+          console.log('response > ', response);
+          var buffer = new Uint8Array(response.data);
+          var blob = new Blob([response.data], {type: row.file.contentType+';charset=utf-8'});
+          require('downloadjs')(blob, 'response.xls', row.file.contentType);
+        });
+      },
+      onUpdate() {
+        this.$refs.planilhas.refresh();
+      }
     },
     filters: {
       formatarDateTime: function (value) {
@@ -113,7 +144,7 @@
           return moment(String(value)).format('DD/MM/YYYY - hh:mm')
         }
       }
-    }
+    },
   };
 </script>
 

@@ -4,7 +4,8 @@
       <h1 class="page--title"><span class="icon-cog h4"></span> Gerenciar Rateio</h1>
     </b-col>
     <b-col cols="12">
-      <v-client-table ref="grid" class="mt-5 mb-2" :data="filterCollaborators(selectedCenter, incompletePercentage)" :columns="columns" :options="options">
+      <v-client-table ref="grid" class="mt-5 mb-2" :data="filterCollaborators(selectedCenter, incompletePercentage)"
+                      :columns="columns" :options="options">
         <span class="column-" slot="h__photo">#</span>
         <span slot="h__name">Colaborador</span>
         <span slot="h__originCostCenter">Centro de Custo Origem</span>
@@ -26,31 +27,32 @@
           </div>
         </div>
         <div slot="afterFilter" class="column-period">
-            <multiselect
-              class="select-period"
-              v-model="selectedCenter"
-              :options="costCenters"
-              :searchable="true"
-              :show-labels="false"
-              @input="filterCollaborators(selectedCenter)"
+          <multiselect
+            class="select-period"
+            v-model="selectedCenter"
+            :options="costCenters"
+            :searchable="true"
+            :show-labels="false"
+            @input="filterCollaborators(selectedCenter)"
 
-              placeholder="Selecione o Centro">
-            </multiselect>
+            placeholder="Selecione o Centro">
+          </multiselect>
         </div>
         <div slot="afterFilter" class="column-period">
-            <multiselect
-              class="select-period"
-              v-model="selectedPeriod"
-              :options="periods.map(data => data.description)"
-              :searchable="false"
-              :show-labels="false"
-              :allow-empty="false"
-              @input="selectPeriod(selectedPeriod)"
-              placeholder="Selecione o Período">
-            </multiselect>
+          <multiselect
+            class="select-period"
+            v-model="selectedPeriod"
+            :options="periods.map(data => data.description)"
+            :searchable="false"
+            :show-labels="false"
+            :allow-empty="false"
+            @input="selectPeriod(selectedPeriod)"
+            placeholder="Selecione o Período">
+          </multiselect>
         </div>
         <div slot="afterFilter" class="checkbox">
-          <b-form-checkbox v-model="incompletePercentage" class="checkbox">Apenas percentual abaixo do ideal</b-form-checkbox>
+          <b-form-checkbox v-model="incompletePercentage" class="checkbox">Apenas percentual abaixo do ideal
+          </b-form-checkbox>
         </div>
         <div slot="afterFilter" class="column-period">
           <p class="date">Data de início: {{this.initialdate}}</p>
@@ -70,132 +72,179 @@
 </template>
 
 <script>
-import { ClientTable } from 'vue-tables-2';
-import Vue from 'vue';
-import Multiselect from 'vue-multiselect';
-import options from './../../../commons/helpers/grid.config';
-import editPercentage from './editPercentage';
-import add from './add';
+  /* eslint-disable */
+  import {ClientTable} from 'vue-tables-2';
+  import Vue from 'vue';
+  import Multiselect from 'vue-multiselect';
+  import options from './../../../commons/helpers/grid.config';
+  import editPercentage from './editPercentage';
+  import add from './add';
 
-Vue.use(ClientTable, options, false, 'bootstrap4', 'default');
-Vue.component('multiselect', Multiselect);
+  Vue.use(ClientTable, options, false, 'bootstrap4', 'default');
+  Vue.component('multiselect', Multiselect);
 
-export default {
-  name: 'Manage',
-  showLoading: true,
-  components: {
-    editPercentage,
-    add,
-  },
+  export default {
+    name: 'Manage',
+    showLoading: true,
+    components: {
+      editPercentage,
+      add,
+    },
 
-  data() {
-    return {
-      selectedPeriod: null,
-      selectedCenter: null,
-      incompletePercentage: false,
-      initialdate: 'DD/MM/AAAA',
-      finaldate: 'DD/MM/AAAA',
-      columns: ['photo', 'name', 'originCostCenter', 'costCenter', 'percentage', 'actions'],
-      collaboratorsList: [{ photo: '/static/img/avatars/1.jpg', name: 'Igor Formiga', percentage: 100, costCenter: 'Centro de Custo 1', originCostCenter: 'Centro de Custo 1' },
-        { photo: '/static/img/avatars/2.jpg', name: 'Ivaldo Barbosa', percentage: 60, costCenter: 'Centro de Custo 10', originCostCenter: 'Centro de Custo 2' },
-        { photo: '/static/img/avatars/2.jpg', name: 'Ivaldo Barbosa', percentage: 40, costCenter: 'Centro de Custo 2', originCostCenter: 'Centro de Custo 2' },
-        { photo: '/static/img/avatars/3.jpg', name: 'Thiago Ferreira', percentage: 70, costCenter: 'Centro de Custo 1', originCostCenter: 'Centro de Custo 1' },
-        { photo: '/static/img/avatars/3.jpg', name: 'Thiago Ferreira', percentage: 20, costCenter: 'Centro de Custo 2', originCostCenter: 'Centro de Custo 1' },
-        { photo: '/static/img/avatars/3.jpg', name: 'Thiago Ferreira', percentage: 10, costCenter: 'Centro de Custo 10', originCostCenter: 'Centro de Custo 1' }],
-      costCenters: [],
-      periods: [],
-      totalHours: 0,
-      options: {
-        sortable: [],
-        columnsClasses: {
-          actions: 'action-column text-center',
-          photo: 'photo-column',
-          originCostCenter: 'origin-column',
-          costCenter: 'costCenter-column',
-          name: 'name-column',
-          percentage: 'percentage-column',
+    data() {
+      return {
+        selectedPeriod: null,
+        selectedCenter: null,
+        incompletePercentage: false,
+        initialdate: 'DD/MM/AAAA',
+        finaldate: 'DD/MM/AAAA',
+        columns: ['photo', 'name', 'originCostCenter', 'costCenter', 'percentage', 'actions'],
+        collaboratorsList: [{
+          photo: '/static/img/avatars/1.jpg',
+          name: 'Igor Formiga',
+          percentage: 100,
+          costCenter: 'Centro de Custo 1',
+          originCostCenter: 'Centro de Custo 1'
         },
+          {
+            photo: '/static/img/avatars/2.jpg',
+            name: 'Ivaldo Barbosa',
+            percentage: 60,
+            costCenter: 'Centro de Custo 10',
+            originCostCenter: 'Centro de Custo 2'
+          },
+          {
+            photo: '/static/img/avatars/2.jpg',
+            name: 'Ivaldo Barbosa',
+            percentage: 40,
+            costCenter: 'Centro de Custo 2',
+            originCostCenter: 'Centro de Custo 2'
+          },
+          {
+            photo: '/static/img/avatars/3.jpg',
+            name: 'Thiago Ferreira',
+            percentage: 70,
+            costCenter: 'Centro de Custo 1',
+            originCostCenter: 'Centro de Custo 1'
+          },
+          {
+            photo: '/static/img/avatars/3.jpg',
+            name: 'Thiago Ferreira',
+            percentage: 20,
+            costCenter: 'Centro de Custo 2',
+            originCostCenter: 'Centro de Custo 1'
+          },
+          {
+            photo: '/static/img/avatars/3.jpg',
+            name: 'Thiago Ferreira',
+            percentage: 10,
+            costCenter: 'Centro de Custo 10',
+            originCostCenter: 'Centro de Custo 1'
+          }],
+        costCenters: [],
+        periods: [],
+        totalHours: 0,
+        options: {
+          sortable: [],
+          columnsClasses: {
+            actions: 'action-column text-center',
+            photo: 'photo-column',
+            originCostCenter: 'origin-column',
+            costCenter: 'costCenter-column',
+            name: 'name-column',
+            percentage: 'percentage-column',
+          },
+        },
+      };
+    },
+    mounted() {
+      this.getAllPeriods();
+      this.getAllCostCenters();
+    },
+    methods: {
+      getAllPeriods() {
+        const url = 'period/getAll';
+
+        this.$http().get(url).then((response) => {
+          this.periods = response.data;
+          this.selectedPeriod = this.periods[this.periods.length - 1].description;
+          this.selectPeriod(this.selectedPeriod);
+        });
       },
-    };
-  },
-  mounted() {
-    this.getAllPeriods();
-    this.getAllCostCenters();
-  },
-  methods: {
-    getAllPeriods() {
-      const url = 'period/getAll';
+      selectPeriod(selectedPeriod) {
+        let data = this.periods.filter(period => period.description === selectedPeriod); //eslint-disable-line
+        this.initialdate = data[0].initialdate;
+        this.finaldate = data[0].finaldate;
+      },
+      getAllCostCenters() {
+        const url = 'coastcenter/getAll';
 
-      this.$http().get(url).then((response) => {
-        this.periods = response.data;
-        this.selectedPeriod = this.periods[this.periods.length - 1].description;
-        this.selectPeriod(this.selectedPeriod);
-      });
+        this.$http().get(url).then((response) => {
+          this.costCenters = response.data.map(data => data.description);
+        });
+      },
+      filterCollaborators(selectedCenter, incompletePercentage) {
+        let response;
+        if (selectedCenter != null) {
+          response = this.collaboratorsList.filter(collaborator => collaborator.costCenter === selectedCenter || collaborator.originCostCenter === selectedCenter); // eslint-disable-line
+        } else {
+          response = this.collaboratorsList;
+        }
+        if (incompletePercentage === true) {
+          response = response.filter(collaborator => collaborator.percentage < 100);
+        }
+        return response;
+      },
     },
-    selectPeriod(selectedPeriod) {
-      let data = this.periods.filter(period => period.description === selectedPeriod); //eslint-disable-line
-      this.initialdate = data[0].initialdate;
-      this.finaldate = data[0].finaldate;
-    },
-    getAllCostCenters() {
-      const url = 'coastcenter/getAll';
-
-      this.$http().get(url).then((response) => {
-        this.costCenters = response.data.map(data => data.description);
-      });
-    },
-    filterCollaborators(selectedCenter, incompletePercentage) {
-      let response;
-      if (selectedCenter != null) {
-        response = this.collaboratorsList.filter(collaborator => collaborator.costCenter === selectedCenter || collaborator.originCostCenter === selectedCenter); // eslint-disable-line
-      } else {
-        response = this.collaboratorsList;
-      }
-      if (incompletePercentage === true) {
-        response = response.filter(collaborator => collaborator.percentage < 100);
-      }
-      return response;
-    },
-  },
-};
+  };
 </script>
 
 <style lang="scss" scoped>
-@import '../../../assets/styles/variables.scss';
-.checkbox{
-  margin-left: 7.4px;
-}
-.date{
-  margin-left: 0.4px;
-  margin-top: 7.4px;
-  margin-right: 7px;
-}
-.user-picture {
+  @import '../../../assets/styles/variables.scss';
+
+  .checkbox {
+    margin-left: 7.4px;
+  }
+
+  .date {
+    margin-left: 0.4px;
+    margin-top: 7.4px;
+    margin-right: 7px;
+  }
+
+  .user-picture {
     border-radius: 10cm;
     border: 1px solid $color-gray-1;
     max-width: 35px;
     padding: 3px;
   }
-.user-progress {
-  color: darkblue;
-  background-color: grey;
-}
-/deep/ td.action-column {
-      width: 10px;
-}
-/deep/ td.photo-column {
-      width: 50px;
-}
-/deep/ td.percentage-column {
+
+  .user-progress {
+    color: darkblue;
+    background-color: grey;
+  }
+
+  /deep/ td.action-column {
+    width: 10px;
+  }
+
+  /deep/ td.photo-column {
+    width: 50px;
+  }
+
+  /deep/ td.percentage-column {
     width: 150px;
-}
-/deep/ td.costCenter-column {
-  width: 400px;
-}
-/deep/ td.origin-column {
-  width: 400px;
-}
-.column-period {
+  }
+
+  /deep/ td.costCenter-column {
+    width: 400px;
+  }
+
+  /deep/ td.origin-column {
+    width: 400px;
+  }
+
+  .column-period {
     float: left;
     margin-left: 15px;
     margin-top: 7.4px;
@@ -214,12 +263,13 @@ export default {
       .multiselect__select {
         height: 32px;
       }
-      .multiselect__single{
+      .multiselect__single {
         font-size: .9rem;
         margin: 0;
       }
     }
   }
+
   .user-info {
     text-transform: capitalize;
   }

@@ -1,23 +1,23 @@
 <template>
   <b-col cols="12">
     <b-row class="page">
-        <b-col cols="12">
-          <h1 class="page--title"><span class="icon-calendar-check-o h4"></span> Feriados</h1>
-        </b-col>
+      <b-col cols="12">
+        <h1 class="page--title"><span class="icon-calendar-check-o h4"></span> Feriados</h1>
+      </b-col>
     </b-row>
 
     <b-row>
       <b-col cols=12>
         <b-form>
           <b-form-group id="dateHoliday"
-                            label="Ano:"
-                            label-for="year_holiday"
-                            label-class="sr-only pt-2"
-                            class="row">
-              <b-form-select id="year_holiday"
-                            :options="years"
-                            v-model="form.year"
-                            required />
+                        label="Ano:"
+                        label-for="year_holiday"
+                        label-class="sr-only pt-2"
+                        class="row">
+            <b-form-select id="year_holiday"
+                           :options="years"
+                           v-model="form.year"
+                           required/>
           </b-form-group>
         </b-form>
       </b-col>
@@ -26,7 +26,7 @@
     <b-row>
       <b-col cols="12" v-if="holidaysGroup != undefined && holidaysGroup.length > 0  ">
         <b-card no-body header="Feriado">
-        <!-- <b-card no-body header="Janeiro"> -->
+          <!-- <b-card no-body header="Janeiro"> -->
           <b-list-group flush v-for="holiday in holidaysGroup" :key="holiday.id">
             <b-list-group-item class="flex-column align-items-start">
               <div class="d-flex w-100 justify-content-between">
@@ -70,86 +70,87 @@
 </template>
 
 <script>
+  /* eslint-disable */
+  export default {
 
-export default {
-  name: 'Holiday',
-  data() {
-    return {
-      form: {
-        year: new Date().getFullYear(),
-      },
-      years: [],
-      holidaysGroup: [],
-    };
-  },
-  mounted() {
-    this.getInitialData();
-  },
-  methods: {
-    getInitialData() {
-      const url = 'holiday';
-
-      this.$http().get(url).then((response) => {
-        this.years = response.data.years;
-        this.holidaysGroup = response.data.holidays;
-      });
+    name: 'Holiday',
+    data() {
+      return {
+        form: {
+          year: new Date().getFullYear(),
+        },
+        years: [],
+        holidaysGroup: [],
+      };
     },
-    doSearch() {
-      const url = 'holiday/search';
-
-      this.$http().get(url, { year: this.form.year }).then((response) => {
-        console.log('response'); // eslint-disable-line
-        this.holidaysGroup = response.data;
-      },
-      (err) => {
-        console.error('> sign-in.AllCenters() error!', err); // eslint-disable-line
-      });
+    mounted() {
+      this.getInitialData();
     },
-  },
-};
+    methods: {
+      getInitialData() {
+        const url = 'holiday';
+
+        this.$http().get(url).then((response) => {
+          this.years = response.data.years;
+          this.holidaysGroup = response.data.holidays;
+        });
+      },
+      doSearch() {
+        const url = 'holiday/search';
+
+        this.$http().get(url, {year: this.form.year}).then((response) => {
+            console.log('response'); // eslint-disable-line
+            this.holidaysGroup = response.data;
+          },
+          (err) => {
+            console.error('> sign-in.AllCenters() error!', err); // eslint-disable-line
+          });
+      },
+    },
+  };
 </script>
 
 <style>
-.panel {
-  margin-bottom: 10px;
-  margin-bottom: 20px;
-  background-color: #fff;
-  border: 1px solid transparent;
-  border-top-color: transparent;
-  border-right-color: transparent;
-  border-bottom-color: transparent;
-  border-left-color: transparent;
-  border-radius: 4px;
-  -webkit-box-shadow: 0 1px 1px rgba(0, 0, 0, .05);
-  box-shadow: 0 1px 1px rgba(0, 0, 0, .05);
-}
+  .panel {
+    margin-bottom: 10px;
+    margin-bottom: 20px;
+    background-color: #fff;
+    border: 1px solid transparent;
+    border-top-color: transparent;
+    border-right-color: transparent;
+    border-bottom-color: transparent;
+    border-left-color: transparent;
+    border-radius: 4px;
+    -webkit-box-shadow: 0 1px 1px rgba(0, 0, 0, .05);
+    box-shadow: 0 1px 1px rgba(0, 0, 0, .05);
+  }
 
-.panel-default {
+  .panel-default {
     border-color: #ddd;
-}
+  }
 
-.panel-body {
-  padding: 15px;
-}
+  .panel-body {
+    padding: 15px;
+  }
 
-.panel-footer {
-  padding: 10px 15px;
-  text-align: center;
-}
+  .panel-footer {
+    padding: 10px 15px;
+    text-align: center;
+  }
 
-.control-label {
-  text-align: right;
-  font-weight: bold;
-}
+  .control-label {
+    text-align: right;
+    font-weight: bold;
+  }
 
-.separator::after{
-  content: " ";
-  display: inline-block;
-  background: black;
-  margin: 0 10px;
-  height: 23px;
-  vertical-align: middle;
-  width: 1px;
-}
+  .separator::after {
+    content: " ";
+    display: inline-block;
+    background: black;
+    margin: 0 10px;
+    height: 23px;
+    vertical-align: middle;
+    width: 1px;
+  }
 
 </style>
