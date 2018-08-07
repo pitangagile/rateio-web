@@ -1,17 +1,17 @@
 <template>
   <div>
-    <div id="select">
+    <div id="element">
       <vue-single-select
-        ref="selectCoastCenter"
+        ref="select"
         option-key="code"
         option-label="description"
-        v-model="selectedCoastCenter"
-        :options="coastCenters"
+        v-model="selectedCostCenter"
+        :options="costCenters"
         placeholder="Selecione um centro de custo"
         :required="true">
       </vue-single-select>
     </div>
-    <b-button variant="primary" v-on:click="addCoastCenter">Adicionar</b-button>
+    <b-button variant="primary" v-on:click="addCostCenter">Adicionar</b-button>
     <v-server-table striped hover class="grid mt-3 mb-2" :url="urlApiGrid" :columns="columns" :options="options"
                     ref="grid">
       <div slot="actions" slot-scope="props" class="btn-group">
@@ -29,6 +29,7 @@
   import variables from './../../../commons/helpers/variables';
   import VueSingleSelect from "vue-single-select";
 
+
   Vue.use(ServerTable, options, false, 'bootstrap4', 'default');
 
   // FIXME: Buscar usuário da sessão
@@ -40,9 +41,9 @@
     data() {
       const self = this;
       return {
-        selectedCoastCenter: null,
-        urlApiGrid: `${variables.http.root}employee/findUserCoastCentersByUserId`,
-        coastCenters: [],
+        selectedCostCenter: null,
+        urlApiGrid: `${variables.http.root}employee/findUserCostCentersByUserId`,
+        costCenters: [],
         columns: ['code', 'description', 'actions'],
         options: {
           headings: {
@@ -56,7 +57,7 @@
             actions: 'action-column text-center',
           },
           requestFunction(data) {
-            return self.$http().get('employee/findUserCoastCentersByUserId', {params: {data, 'user_id': user_id}})
+            return self.$http().get('employee/findUserCostCentersByUserId', {params: {data, 'user_id': user_id}})
               .catch((e) => {
                 this.dispatch('error', e);
               });
@@ -67,22 +68,25 @@
         }
       }
     },
+    mounted(){
+      this.findCostCentersWithoutUserId();
+    },
     methods: {
-      findCoastCentersWithoutUserId() {
-        this.$http().get('employee/findCoastCentersWithoutUserId', {params: {'user_id': user_id}}).then((response, err) => {
+      findCostCentersWithoutUserId() {
+        this.$http().get('employee/findCostCentersWithoutUserId', {params: {'user_id': user_id}}).then((response, err) => {
           if (err)
             console.log('err >', err);
-          this.coastCenters = response.data;
+          this.costCenters = response.data;
         });
       },
-      addCoastCenter() {
-        if (this.selectedCoastCenter === null || this.selectedCoastCenter === undefined) {
+      addCostCenter() {
+        if (this.selectedCostCenter === null || this.selectedCostCenter === undefined) {
           this.$snotify.warning('Selecione um centro de custo');
         } else {
-          this.$http().post('employee/addCoastCenter', {
+          this.$http().post('employee/addCostCenter', {
             params: {
               'user_id': user_id,
-              'coastCenter': this.selectedCoastCenter
+              'costCenter': this.selectedCostCenter
             }
           }).then(() => {
             this.$swal(
@@ -90,11 +94,8 @@
               'Centro de custo adicionado.',
               'success',
             );
-            this.selectedCoastCenter = null;
-            this.findCoastCentersWithoutUserId();
-            this.refreshGrid();
+            this.refresh();
           }, () => {
-            this.refreshSelect();
             this.$swal(
               'Erro',
               '',
@@ -103,11 +104,11 @@
           });
         }
       },
-      removeCenter(coastCenterID) {
+      removeCenter(costCenterID) {
         this.$http().delete('employee', {
           params: {
             'user_id': user_id,
-            'coastCenterId': coastCenterID
+            'costCenterId': costCenterID
           }
         }).then(() => {
           this.$swal(
@@ -115,8 +116,7 @@
             'Centro de custo removido.',
             'success',
           );
-          this.findCoastCentersWithoutUserId();
-          this.refreshGrid();
+          this.refresh();
         }, () => {
           this.$swal(
             'Erro',
@@ -125,19 +125,17 @@
           );
         });
       },
-      refreshGrid() {
+      refresh() {
+        this.findCostCentersWithoutUserId();
         this.$refs.grid.refresh();
-        this.$refs.selectCoastCenter.refresh();
+        this.$refs.select.refresh();
       }
-    },
-    mounted() {
-      this.findCoastCentersWithoutUserId();
     }
   }
 </script>
 
 <style lang="scss" scoped>
-  #select {
+  #element {
     padding: 20px 0px 20px 0px;
     max-width: 300px;
   }

@@ -75,9 +75,9 @@
     },
     data() {
       return {
-        allCoastCenters: [],
+        allCostCenters: [],
         columns: ['picture', 'fullname', 'progress', 'status', 'action'],
-        tableUserCoastCenters: [],
+        tableUserCostCenters: [],
         center: null,
         options: {
           sortable: ['status', 'fullname', 'progress'],
@@ -186,7 +186,7 @@
     },
     methods: {
       AllCenters() {
-        const url = 'coastcenter/getAll';
+        const url = 'costcenter/getAll';
 
         this.$NProgress().start();
 
@@ -213,13 +213,13 @@
           if (this.checkingList(centerToAdd.code)) {
             this.$snotify.info('Centro ja adicionado');
           } else {
-            this.tableUserCoastCenters.push(centerToAdd);
+            this.tableUserCostCenters.push(centerToAdd);
           }
         }
       },
       checkingList(code) {
-        for (let i = 0; i < this.tableUserCoastCenters.length; i += 1) {
-          if (this.tableUserCoastCenters[i].code === code) {
+        for (let i = 0; i < this.tableUserCostCenters.length; i += 1) {
+          if (this.tableUserCostCenters[i].code === code) {
             return true;
           }
         }

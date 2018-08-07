@@ -1,7 +1,7 @@
 <template>
   <b-row class="page">
     <b-col cols="12">
-      <h1 class="page--title"><span class="icon-cog h4"></span> Centros de custo</h1>
+      <h1 class="page--title"><span class="icon-cog h4"></span>Centros de custo</h1>
     </b-col>
 
     <b-col cols="12">
@@ -41,7 +41,7 @@
       const self = this;
       return {
         columns: ['code', 'description', 'actions'],
-        allCoastCenters: [],
+        allCostCenters: [],
         options: {
           headings: {
             code: 'Código',
@@ -56,20 +56,20 @@
           },
           requestFunction(data) {
             return self.$http()
-              .get('coastcenter', {params: data})
+              .get('costcenter', {params: data})
               .catch((e) => {
                 this.dispatch('error', e);
               });
           },
           responseAdapter(response) {
             console.log(response); // eslint-disable-line
-            return {data: response.data.data, count: response.data.count};
+            return response.data;
           },
         },
       };
     },
     methods: {
-      refreshGrid() {
+      refresh() {
         this.$ref.grid.refresh();
       },
     },

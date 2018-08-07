@@ -4,7 +4,7 @@
       <h1 class="page--title"><span class="icon-calendar-1 h4"></span> Período</h1>
     </b-col>
  <b-col cols="12">
-      <div id="coastCenters">
+      <div id="costCenters">
         <v-client-table class="table mt-4 mb-2" ref="grid" :data="reporting" :columns="columns" :options="options">
           <span slot="h__description">Descrição</span>
           <span slot="h__initialDate">Início</span>

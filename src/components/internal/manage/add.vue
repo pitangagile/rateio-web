@@ -73,7 +73,7 @@
         this.hours = 0;
       },
       onChange(e) {
-        this.allCoastCenters.map(item => item.id).indexOf(e);
+        this.allCostCenters.map(item => item.id).indexOf(e);
         this.hours = '';
       },
     },

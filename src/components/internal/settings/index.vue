@@ -77,7 +77,7 @@
     padding-top: 4px;
   }
 
-  .coastcenter {
+  .costcenter {
     width: 550px;
   }
 

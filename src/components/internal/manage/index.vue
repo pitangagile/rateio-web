@@ -177,7 +177,7 @@
         this.finaldate = data[0].finaldate;
       },
       getAllCostCenters() {
-        const url = 'coastcenter/getAll';
+        const url = 'costcenter/getAll';
 
         this.$http().get(url).then((response) => {
           this.costCenters = response.data.map(data => data.description);
