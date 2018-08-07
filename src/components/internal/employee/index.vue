@@ -7,7 +7,7 @@
     <b-col cols="12">
       <v-server-table class="grid mt-3 mb-2" :url="urlApiGrid" :columns="columns" :options="options">
         <div slot="costCenterOrigin" slot-scope="props">
-          {{props.row.costCenterOrigin.description}}
+          <label v-if="props.row.costCenterOrigin" v-model="props.row.costCenterOrigin.description" />
         </div>
         <div slot="actions" slot-scope="props" class="btn-group">
           <b-btn class="btn-default btn-sm"> Editar</b-btn>
@@ -51,7 +51,7 @@
           },
           responseAdapter(response) {
             console.log(response); // eslint-disable-line
-            return {data: response.data.data, count: response.data.count};
+            return response.data;
           },
         },
       };
