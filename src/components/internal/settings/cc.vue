@@ -1,10 +1,21 @@
 <template>
   <div>
-    <AddCC ref="add" @refreshGrid="refreshGrid()"></AddCC>
+    <div id="select">
+      <vue-single-select
+        ref="selectCoastCenter"
+        option-key="code"
+        option-label="description"
+        v-model="selectedCoastCenter"
+        :options="coastCenters"
+        placeholder="Selecione um centro de custo"
+        :required="true">
+      </vue-single-select>
+    </div>
+    <b-button variant="primary" v-on:click="addCoastCenter">Adicionar</b-button>
     <v-server-table striped hover class="grid mt-3 mb-2" :url="urlApiGrid" :columns="columns" :options="options"
                     ref="grid">
       <div slot="actions" slot-scope="props" class="btn-group">
-        <RemoveCC :_id="props.row._id" @refreshGrid="refreshGrid()">remover</RemoveCC>
+        <b-btn v-on:click="removeCenter(props.row._id)" class="icon-trash" size="lg" variant="link" onmouseover="title='Remover'"></b-btn>
       </div>
     </v-server-table>
   </div>
@@ -16,21 +27,20 @@
   import {ServerTable} from 'vue-tables-2';
   import options from './../../../commons/helpers/grid.config';
   import variables from './../../../commons/helpers/variables';
-  import AddCC from './addCC';
-  import RemoveCC from './removeCC';
+  import VueSingleSelect from "vue-single-select";
 
-  Vue.use(ServerTable, options,   false, 'bootstrap4', 'default');
+  Vue.use(ServerTable, options, false, 'bootstrap4', 'default');
 
   // FIXME: Buscar usuário da sessão
   const user_id = '5b6240f74855b1272d7d500e';
 
   export default {
-    components: {AddCC, RemoveCC},
+    components: {VueSingleSelect},
     name: 'cc',
     data() {
       const self = this;
       return {
-        // hoursOfWork: 8,
+        selectedCoastCenter: null,
         urlApiGrid: `${variables.http.root}employee/findUserCoastCentersByUserId`,
         coastCenters: [],
         columns: ['code', 'description', 'actions'],
@@ -58,15 +68,77 @@
       }
     },
     methods: {
+      findCoastCentersWithoutUserId() {
+        this.$http().get('employee/findCoastCentersWithoutUserId', {params: {'user_id': user_id}}).then((response, err) => {
+          if (err)
+            console.log('err >', err);
+          this.coastCenters = response.data;
+        });
+      },
+      addCoastCenter() {
+        if (this.selectedCoastCenter === null || this.selectedCoastCenter === undefined) {
+          this.$snotify.warning('Selecione um centro de custo');
+        } else {
+          this.$http().post('employee/addCoastCenter', {
+            params: {
+              'user_id': user_id,
+              'coastCenter': this.selectedCoastCenter
+            }
+          }).then(() => {
+            this.$swal(
+              'Adicionado',
+              'Centro de custo adicionado.',
+              'success',
+            );
+            this.selectedCoastCenter = null;
+            this.findCoastCentersWithoutUserId();
+            this.refreshGrid();
+          }, () => {
+            this.refreshSelect();
+            this.$swal(
+              'Erro',
+              '',
+              'error',
+            );
+          });
+        }
+      },
+      removeCenter(coastCenterID) {
+        this.$http().delete('employee', {
+          params: {
+            'user_id': user_id,
+            'coastCenterId': coastCenterID
+          }
+        }).then(() => {
+          this.$swal(
+            'Removido',
+            'Centro de custo removido.',
+            'success',
+          );
+          this.findCoastCentersWithoutUserId();
+          this.refreshGrid();
+        }, () => {
+          this.$swal(
+            'Erro',
+            '',
+            'error',
+          );
+        });
+      },
       refreshGrid() {
         this.$refs.grid.refresh();
-        // FIXME: ao deletar, recarregar a lista e a tabela com os valores corretos.
-        // this.$refs.add.refresh();
+        this.$refs.selectCoastCenter.refresh();
       }
+    },
+    mounted() {
+      this.findCoastCentersWithoutUserId();
     }
   }
 </script>
 
 <style lang="scss" scoped>
-
+  #select {
+    padding: 20px 0px 20px 0px;
+    max-width: 300px;
+  }
 </style>
