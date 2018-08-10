@@ -12,13 +12,13 @@
       <b-navbar-nav class="ml-auto">
 
         <b-nav-form class="search-form" @submit.prevent="search">
-          <b-form-input size="sm" class="mr-sm-2" type="text" v-model="term" />
+          <b-form-input size="sm" class="mr-sm-2" type="text" v-model="term"/>
           <b-button size="sm" type="submit">
             <span class="icon-search"></span>
           </b-button>
         </b-nav-form>
 
-        <topbaruser />
+        <topbaruser/>
       </b-navbar-nav>
 
     </b-collapse>
@@ -26,67 +26,69 @@
 </template>
 
 <script>
-import topbaruser from './topbaruser';
+  /* eslint-disable */
+  import topbaruser from './topbaruser';
 
-export default {
-  name: 'Topbar',
-  components: {
-    topbaruser,
-  },
-  data() {
-    return {
-      term: '',
-    };
-  },
-  methods: {
-    search() {
-      console.log('> Do search: ', this.term); // eslint-disable-line
+  export default {
+    name: 'Topbar',
+    components: {
+      topbaruser,
     },
-  },
-};
+    data() {
+      return {
+        term: '',
+      };
+    },
+    methods: {
+      search() {
+        console.log('> Do search: ', this.term); // eslint-disable-line
+      },
+    },
+  };
 </script>
 
 <style lang="scss" scoped>
-@import '../../../assets/styles/variables.scss';
+  @import '../../../assets/styles/variables.scss';
 
-.topbar {
-  background-color: rgba(255, 255, 255, .8);
-  border-bottom: 1px solid $color-gray-1;
+  .topbar {
+    background-color: rgba(255, 255, 255, .8);
+    border-bottom: 1px solid $color-gray-1;
 
-  .navbar-toggler {
-    border: 0;
-  }
-
-  .search-form {
-    position: relative;
-    margin-top: 15px;
-
-    input {
-      border-radius: 1cm;
-      padding-right: 30px;
+    .navbar-toggler {
+      border: 0;
     }
 
-    button {
-      background: none;
-      border: 0;
-      right: 8px;
-      position: absolute;
+    .search-form {
+      position: relative;
+      margin-top: 15px;
 
-      span {
-        color: $color-gray-1;
+      input {
+        border-radius: 1cm;
+        padding-right: 30px;
+      }
+
+      button {
+        background: none;
+        border: 0;
+        right: 8px;
+        position: absolute;
+
+        span {
+          color: $color-gray-1;
+        }
       }
     }
   }
-}
-@media (min-width: 768px) {
-  .topbar.bg-light {
-    background-color: transparent !important;
-  }
-  .topbar {
-    .search-form,
-    .user-settings {
-      margin: 0;
+
+  @media (min-width: 768px) {
+    .topbar.bg-light {
+      background-color: transparent !important;
+    }
+    .topbar {
+      .search-form,
+      .user-settings {
+        margin: 0;
+      }
     }
   }
-}
 </style>

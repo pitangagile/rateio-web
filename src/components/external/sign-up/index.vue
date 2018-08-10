@@ -2,8 +2,8 @@
   <b-row class="page">
     <b-col cols="12" class="">
       <b-card title="Register"
-          sub-title=""
-          class="mb-2 text-center">
+              sub-title=""
+              class="mb-2 text-center">
 
         <div class="social">
           <b-button variant="link" class="btn-facebook btn-circle">
@@ -25,7 +25,8 @@
 
         <form class="text-left">
           <div class="form-group">
-            <input type="email" class="form-control" aria-describedby="emailHelp" placeholder="Enter email" autocomplete="email">
+            <input type="email" class="form-control" aria-describedby="emailHelp" placeholder="Enter email"
+                   autocomplete="email">
           </div>
           <div class="form-group">
             <input type="password" class="form-control" placeholder="Password" autocomplete="password">
@@ -40,7 +41,9 @@
         <router-link to="/" class="btn">Back</router-link>
         <br>
         <small>
-          Already have an account? <router-link to="/external/signin">Log in</router-link>.
+          Already have an account?
+          <router-link to="/external/signin">Log in</router-link>
+          .
         </small>
       </b-card>
     </b-col>
@@ -48,63 +51,76 @@
 </template>
 
 <script>
-export default {
-  name: 'SignUp',
-  showLoading: true,
-};
+  /* eslint-disable */
+  export default {
+    name: 'SignUp',
+    showLoading: true,
+  };
 </script>
 
 <style lang="scss" scoped>
-@import '../../../assets/styles/variables.scss';
+  @import '../../../assets/styles/variables.scss';
 
-.page {
-  .card {
-    pointer-events: all;
-    margin: 0 auto;
-    margin-top: 20vh;
-    max-width: 20rem;
-
-    .social {
-      margin-top: 20px;
-
-      .btn span { color: $color-light; }
-      .btn-google { background-color: $color-google; }
-      .btn-facebook { background-color: $color-facebook; }
-      .btn-twitter { background-color: $color-twitter; }
-    }
-
-    .divider {
-      float: none;
-      overflow: hidden;
-      margin: 15px 0;
-      position: relative;
-      text-align: center;
-      width: 100%;
-
-      .line {
-        border-top: 1px solid $color-gray-3;
-        position: absolute;
-        top: 10px;
-        width: 40%;
-        &.l { left: 0; }
-        &.r { right: 0;}
-      }
-    }
-
-    form {
-      margin-bottom: 15px;
-      .form-group {
-        margin-bottom: 5px;
-      }
-    }
-  }
-}
-
-@media (min-width: 768px) {
   .page {
     .card {
-      margin-top: 25vh;
+      pointer-events: all;
+      margin: 0 auto;
+      margin-top: 20vh;
+      max-width: 20rem;
+
+      .social {
+        margin-top: 20px;
+
+        .btn span {
+          color: $color-light;
+        }
+        .btn-google {
+          background-color: $color-google;
+        }
+        .btn-facebook {
+          background-color: $color-facebook;
+        }
+        .btn-twitter {
+          background-color: $color-twitter;
+        }
+      }
+
+      .divider {
+        float: none;
+        overflow: hidden;
+        margin: 15px 0;
+        position: relative;
+        text-align: center;
+        width: 100%;
+
+        .line {
+          border-top: 1px solid $color-gray-3;
+          position: absolute;
+          top: 10px;
+          width: 40%;
+          &.l {
+            left: 0;
+          }
+          &.r {
+            right: 0;
+          }
+        }
+      }
+
+      form {
+        margin-bottom: 15px;
+        .form-group {
+          margin-bottom: 5px;
+        }
+      }
     }
   }
-}
+
+  @media (min-width: 768px) {
+    .page {
+      .card {
+        margin-top: 25vh;
+      }
+    }
+  }
 </style>

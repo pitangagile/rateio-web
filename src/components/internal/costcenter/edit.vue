@@ -1,7 +1,7 @@
 <template>
   <div>
-    <b-button-group @click="showModal()" class="icon-edit" size="lg" variant="link"
-                    onmouseover="title='Editar'"></b-button-group>
+    <b-btn @click="showModal()" class="icon-edit icon-table" size="sm" variant="warning"
+                    onmouseover="title='Editar'"></b-btn>
     <!-- Modal Component -->
     <b-modal ref="myModalRef"
              centered title="Editar Centro de Custo"
@@ -86,3 +86,9 @@
   };
 
 </script>
+
+<style lang="scss" scoped>
+  .icon-table {
+    margin: 1px;
+  }
+</style>

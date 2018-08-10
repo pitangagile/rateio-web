@@ -6,11 +6,20 @@
 
     <b-col cols="12">
       <v-server-table class="grid mt-3 mb-2" :url="urlApiGrid" :columns="columns" :options="options">
+        <div slot="name" slot-scope="props">
+          <label v-if="props.row.name">{{props.row.name.toUpperCase()}}</label>
+        </div>
+        <div slot="registration" slot-scope="props">
+          <label v-if="props.row.registration">{{props.row.registration.toUpperCase()}}</label>
+        </div>
+        <div slot="email" slot-scope="props">
+          <label v-if="props.row.email">{{props.row.email.toUpperCase()}}</label>
+        </div>
         <div slot="costCenterOrigin" slot-scope="props">
           <label v-if="props.row.costCenterOrigin" v-model="props.row.costCenterOrigin.description" />
         </div>
         <div slot="actions" slot-scope="props" class="btn-group">
-          <b-btn class="btn-default btn-sm"> Editar</b-btn>
+          <b-btn class="icon-edit" size="sm" variant="warning"></b-btn>
         </div>
       </v-server-table>
     </b-col>
@@ -40,7 +49,10 @@
             registration: 'Matrícula',
             email: 'e-mail',
             costCenterOrigin: 'C.C. Origem',
-            actions: '',
+            actions: 'Ações',
+          },
+          columnsClasses: {
+            actions: 'action-column text-center',
           },
           sortable: ['name'],
           requestFunction(data) {

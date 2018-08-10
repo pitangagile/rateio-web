@@ -1,6 +1,6 @@
 <template>
   <div>
-    <b-button class="add-button" @click="showModal">Adicionar</b-button>
+    <b-button variant="success" class="add-button" @click="showModal">Adicionar</b-button>
     <b-modal ref="modal" centered title="Adicionar Reportagem" ok-title="Adicionar"
              cancel-title="Cancelar" @ok="save">
       <p v-if="period">Período - {{period.description}}</p>

@@ -1,8 +1,8 @@
 <template>
   <div>
-    <b-row nam="title" class="page">
+    <b-row class="page">
       <b-col cols="12">
-        <h1 class="page--title">{{title}}</h1>
+        <h1 class="page--title"><span class="icon-home h4"></span> {{title}}</h1>
       </b-col>
     </b-row>
     <b-row nam="basic_information">
@@ -20,11 +20,11 @@
 
 <script>
   /* eslint-disable */
-  import Vue from 'vue';
   import Basic from './basic';
   import Cc from './cc';
 
   export default {
+    name: 'Settings',
     components: {
       Basic,
       Cc,

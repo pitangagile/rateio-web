@@ -11,11 +11,11 @@
         :required="true">
       </vue-single-select>
     </div>
-    <b-button variant="primary" v-on:click="addCostCenter">Adicionar</b-button>
+    <b-button variant="success" v-on:click="addCostCenter">Adicionar</b-button>
     <v-server-table striped hover class="grid mt-3 mb-2" :url="urlApiGrid" :columns="columns" :options="options"
                     ref="grid">
       <div slot="actions" slot-scope="props" class="btn-group">
-        <b-btn v-on:click="removeCenter(props.row._id)" class="icon-trash" size="lg" variant="link" onmouseover="title='Remover'"></b-btn>
+        <b-btn v-on:click="removeCenter(props.row._id)" class="icon-trash" size="sm" variant="danger" onmouseover="title='Remover'"></b-btn>
       </div>
     </v-server-table>
   </div>
@@ -28,7 +28,6 @@
   import options from './../../../commons/helpers/grid.config';
   import variables from './../../../commons/helpers/variables';
   import VueSingleSelect from "vue-single-select";
-
 
   Vue.use(ServerTable, options, false, 'bootstrap4', 'default');
 

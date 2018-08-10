@@ -1,7 +1,7 @@
 <template>
   <b-row class="page">
     <b-col cols="12">
-      <h1 class="page--title"><span class="icon-cog h4"></span> Gerenciar Rateio</h1>
+      <h1 class="page--title"><span class="icon-archive h4"></span> {{title}}</h1>
     </b-col>
     <b-col cols="12">
       <v-client-table ref="grid" class="mt-5 mb-2" :data="filterCollaborators(selectedCenter, incompletePercentage)"
@@ -93,6 +93,7 @@
 
     data() {
       return {
+        title: 'Gerenciar Rateio',
         selectedPeriod: null,
         selectedCenter: null,
         incompletePercentage: false,

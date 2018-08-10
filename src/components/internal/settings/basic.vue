@@ -12,17 +12,6 @@
       </b-form-checkbox>
     </b-card-body>
   </b-card>
-
-  <!--<div class="card active-bg text-white">-->
-  <!--<div class="body profile-header">-->
-  <!--<img :src="user.PictureUrl" class="user_pic rounded img-raised" alt="User">-->
-  <!--<div class="detail">-->
-  <!--<div class="u_name">-->
-  <!--<h4><strong>{{user.FirstName}}</strong> {{user.LastName}}</h4>-->
-  <!--</div>-->
-  <!--</div>-->
-  <!--</div>-->
-  <!--</div>-->
 </template>
 
 <script>

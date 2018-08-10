@@ -23,15 +23,15 @@
     <meta name="msapplication-TileImage" content="/ms-icon-144x144.png">
     <meta name="theme-color" content="#ffffff">
     <!--[if IE]><link rel="shortcut icon" href="/static/img/icons/favicon.ico"><![endif]-->
-    <!-- Add to home screen for Android and modern mobile browsers -->
+    <!-- Add to signin screen for Android and modern mobile browsers -->
     <link rel="manifest" href="<%= htmlWebpackPlugin.files.publicPath %>static/manifest.json">
     <meta name="theme-color" content="#ffffff">
 
-    <!-- Add to home screen for Safari on iOS -->
+    <!-- Add to signin screen for Safari on iOS -->
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black">
     <meta name="apple-mobile-web-app-title" content="Rateio">
-    <!-- Add to home screen for Windows -->
+    <!-- Add to signin screen for Windows -->
     <meta name="msapplication-TileColor" content="#000000">
     <% for (var chunk of webpack.chunks) {
         for (var file of chunk.files) {
@@ -41,6 +41,7 @@
     <!--<link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,700" rel="stylesheet"> -->
 
     <link href="https://fonts.googleapis.com/css?family=Lato:300,400,700" rel="stylesheet">
+    <script src="https://apis.google.com/js/api.js"></script>
   </head>
   <body>
     <noscript>

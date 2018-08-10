@@ -1,4 +1,4 @@
-/* eslint-disable no-param-reassign */
+/* eslint-disable */
 import variables from '../../helpers/variables';
 
 const AuthModule = {

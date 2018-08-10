@@ -12,7 +12,7 @@ module.exports = merge(prodEnv, {
   // #region Auth
   APP_AUTH_TOKEN_KEY: '"rateio-auth"',
   APP_AUTH_EXPIRES: '15', // in minutes
-  APP_AUTH_USER_DETAILS:'"rateio-user-details"',
+  APP_AUTH_USER_DETAILS: '"rateio-user-details"',
   // #endregion Auth
 
   // #region Api
@@ -20,7 +20,11 @@ module.exports = merge(prodEnv, {
   // #endregion Api
 
   // #region Social
-  GOOGLE_CLIENT_ID: '"189232583533-hbi5ar1q3ov5uvd6e4g875mtk99g19br.apps.googleusercontent.com"',
-  GOOGLE_REDIRECT_URI: '"http://localhost:8080/internal"'
+  // GOOGLE_CLIENT_ID: '"189232583533-hbi5ar1q3ov5uvd6e4g875mtk99g19br.apps.googleusercontent.com"',
+  // GOOGLE_REDIRECT_URI: '"http://localhost:8080/internal"'
   // #region
+
+  // Glauber Configuration
+  GOOGLE_CLIENT_ID: '"432671285072-bh09ij6l9s3hub9l2vi3tha71rpeoobl.apps.googleusercontent.com"',
+  GOOGLE_REDIRECT_URI: '"http://localhost:8080/internal"'
 });

@@ -1,7 +1,7 @@
 <template>
   <b-row class="page">
     <b-col cols="12">
-      <h1 class="page--title"><span class="icon-cog h4"></span>Centros de custo</h1>
+      <h1 class="page--title"><span class="icon-money h4"></span> {{title}}</h1>
     </b-col>
 
     <b-col cols="12">
@@ -40,13 +40,14 @@
     data() {
       const self = this;
       return {
+        title: 'Centros de Custo',
         columns: ['code', 'description', 'actions'],
         allCostCenters: [],
         options: {
           headings: {
             code: 'Código',
             description: 'Descrição',
-            actions: '',
+            actions: 'Ações',
           },
           sortable: [],
           filterable: ['code', 'description'],

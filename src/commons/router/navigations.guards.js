@@ -1,3 +1,4 @@
+/* eslint-disable */
 import variables from '../helpers/variables';
 
 function getAuthMetadata() {

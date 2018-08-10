@@ -1,7 +1,7 @@
 <template>
   <div>
-    <b-button-group @click="removeCenter" class="icon-trash" size="lg" variant="link"
-                    onmouseover="title='Remover'"></b-button-group>
+    <b-btn @click="removeCenter" class="icon-trash icon-table" size="sm" variant="danger"
+                    onmouseover="title='Remover'"></b-btn>
   </div>
 </template>
 
@@ -55,5 +55,7 @@
 </script>
 
 <style lang="scss" scoped>
-
+  .icon-table {
+    margin: 1px;
+  }
 </style>

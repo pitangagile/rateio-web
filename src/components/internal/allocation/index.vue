@@ -7,10 +7,11 @@
 </template>
 
 <script>
-export default {
-  name: 'Allocation',
-  showLoading: true,
-};
+  /* eslint-disable */
+  export default {
+    name: 'Allocation',
+    showLoading: true,
+  };
 </script>
 
 <style lang="scss" scoped>

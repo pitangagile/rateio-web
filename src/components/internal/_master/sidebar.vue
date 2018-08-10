@@ -4,9 +4,6 @@
       <div class="brand mt-4 mb-2 text-center">
         <a href="#">
           <img class="brand--logo mb-2" src="/static/img/pitanga-vermelha.png"/>
-          <!-- <br>
-          <strong class="text-light">Rateio</strong> -->
-          <!-- <div class="brand--img red"></div> -->
         </a>
       </div>
 
@@ -35,9 +32,9 @@
 
       <ul class="nav flex-column mb-2">
         <li class="nav-item">
-          <router-link to="/internal/" class="nav-link" :class="{ 'active' : isActive('dashboard')}">
-            <span class="icon-chart-line mr-2"></span>
-            Dashboard
+          <router-link to="/internal/" class="nav-link" :class="{ 'active' : isActive('settings')}">
+            <span class="icon-home mr-2"></span>
+            Home
           </router-link>
         </li>
         <li class="nav-item">
@@ -46,48 +43,33 @@
             Reportagem
           </router-link>
         </li>
+      </ul>
+
+      <h6 class="sidebar-heading d-flex justify-content-between align-items-center px-3 mt-4 mb-3 text-muted">
+        <span>CONFIGURAÇÃO</span>
+      </h6>
+      <ul class="nav flex-column mb-2">
         <li class="nav-item">
           <router-link to="/internal/manage" class="nav-link" :class="{ 'active' : isActive('manage')}">
             <span class="icon-archive mr-2"></span>
             Gerenciar Rateio
           </router-link>
         </li>
-
-        <!-- <li class="nav-item">
-          <router-link to="/internal/allocation" class="nav-link" :class="{ 'active' : isActive('allocation')}">
-            <span class="icon-calendar mr-2"></span>
-            Alocação
-          </router-link>
-        </li> -->
-        <!-- <li class="nav-item">
-          <router-link to="/internal/allocationmap" class="nav-link" :class="{ 'active' : isActive('allocationmap')}">
-            <span class="icon-calendar mr-2"></span>
-            Mapa alocação
-          </router-link>
-        </li> -->
-      </ul>
-
-      <h6 class="sidebar-heading d-flex justify-content-between align-items-center px-3 mt-4 mb-3 text-muted">
-        <span>CONFIGURAÇÃO</span>
-      </h6>
-
-      <ul class="nav flex-column mb-2">
-        <li class="nav-item">
-          <router-link to="/internal/settings" class="nav-link" :class="{ 'active' : isActive('settings')}">
-            <span class="icon-cog mr-2"></span>
-            Configurações
-          </router-link>
-        </li>
         <li class="nav-item">
           <router-link to="/internal/period" class="nav-link" :class="{ 'active' : isActive('period')}">
             <span class="icon-calendar-1 mr-2"></span>
-            Período
+            Configurar Período
           </router-link>
         </li>
+      </ul>
+      <h6 class="sidebar-heading d-flex justify-content-between align-items-center px-3 mt-4 mb-3 text-muted">
+        <span>DADOS GERAIS</span>
+      </h6>
+      <ul class="nav flex-column mb-2">
         <li class="nav-item">
           <router-link to="/internal/costcenter" class="nav-link" :class="{ 'active' : isActive('costcenter')}">
             <span class="icon-money mr-2"></span>
-            Centros de custo
+            Centros de Custo
           </router-link>
         </li>
         <li class="nav-item">
@@ -102,25 +84,15 @@
             Feriados
           </router-link>
         </li>
-        <li class="nav-item">
-          <router-link to="/internal/fileupload" class="nav-link" :class="{ 'active' : isActive('fileupload')}">
-            <span class="icon-file-excel mr-2"></span>
-            Planilhas
-          </router-link>
-        </li>
-        <!-- <li class="nav-item">
-          <router-link to="/internal/schedule" class="nav-link" :class="{ 'active' : isActive('schedule')}">
-            <span class="icon-user-o mr-2"></span>
-            Rotinas batch
-          </router-link>
-        </li> -->
+      </ul>
+      <ul class="nav flex-column mb-2">
+        <hr>
         <li class="nav-item">
           <router-link to="/internal/help" class="nav-link" :class="{ 'active' : isActive('help')}">
             <span class="icon-help-circled mr-2"></span>
             Ajuda
           </router-link>
         </li>
-        <hr>
         <li class="nav-item">
           <a class="nav-link" href="#" @click.prevent="logout">
             <span class="icon-logout mr-2"></span>
