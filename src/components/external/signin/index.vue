@@ -24,9 +24,7 @@
         {{$env.app.name}}
       </i18n>
       <br>
-      <!--<router-link to="/external/signin" class="btn btn-default btn-rounded">{{$t('enter')}}</router-link>-->
-      <!--<b-button @click="social('google')" variant="link" class="btn-google btn-circle">-->
-      <b-button @click="social()" variant="link" class="btn-google btn-circle">
+      <b-button @click="social('google')" variant="link" class="btn-google btn-circle">
         <span class="icon-google">Pitang</span>
       </b-button>
     </b-col>
@@ -46,84 +44,57 @@
       return {}
     },
     created() {
-      /*this.socialLoginInit();
-      this.logout(false);*/
+      this.socialLoginInit();
+      this.logout(false);
     },
     methods: {
-      /*socialLoginInit() {
+      socialLoginInit() {
         hello.init(
           {google: variables.social.google.clientId},
           {redirect_uri: variables.social.google.redirectUri},
         );
-      },*/
-      social() {
-        /*await gapi.load('client', {
-          callback: function () {
-            console.log('info >', 'client initialized with success!');
-          },
-          onerror: function () {
-            alert('gapi.client failed to load!');
-          },
-          timeout: 5000, // 5 seconds.
-          ontimeout: function () {
-            // Handle timeout.
-            alert('gapi.client could not load in a timely manner!');
-          }
-        });*/
-        gapi.auth2.init({
-          clientId: '432671285072-bh09ij6l9s3hub9l2vi3tha71rpeoobl.apps.googleusercontent.com'
-        }).then(
-          callback => {
-            console.log('oauth2 inicializado com sucesso');
-          },
-          onerror => {
-            console.log('erro ao inicializar oauth2');
-          },
-          ontimeout => {
-            console.log('timeout em outh2');
-          }
-        );
-
-        gapi.client.init({
-          apiKey: 'AIzaSyAW21tlYY92HlX9SqfgC043SE1A53POdnM',
-          clientId: '432671285072-bh09ij6l9s3hub9l2vi3tha71rpeoobl.apps.googleusercontent.com',
-          scope: 'profile'
-        }).then(
-          callback => {
-            console.log('client inicializado com sucesso');
-            gapi.auth2.getAuthInstance().isSignedIn.listen(updateSigninStatus);
-            updateSigninStatus(gapi.auth2.getAuthInstance().isSignedIn.get());
-          }, onerror => {
-            console.log('client com error');
-          }, ontimeout => {
-            console.log('client com timeout');
-          }
-        );
-        //
-        // await gapi.client.request({
-        //   path: 'https://people.googleapis.com/v1/people/me/',
-        //   params: {
-        //     'personFields': 'names'
-        //   }
-        // }).then(function (response) {
-        //   console.log('response > ', response);
-        // }, function (reason) {
-        //   console.log('reason > ' + reason.result.error.message);
-        // });
       },
+      social(issuer) {
+        if (this.disabled) {
+          return;
+        }
+
+        this.$NProgress().start();
+        hello(issuer).login({scope: 'email'}, {force: true}).then((auth) => {
+          hello(auth.network).api('me').then((user) => {
+            const url = 'auth/socialLogin';
+            this.$http().post(url, {
+              username: undefined,
+              email: user.email,
+              issuer,
+              token: auth.authResponse.access_token,
+            }).then((response) => {
+              this.configureUser(user, response.data);
+              this.$NProgress().done();
+            }, (err) => {
+              this.$NProgress().done();
+              console.log('> sign-in.social() error! (2)', err);  // eslint-disable-line
+            });
+          },(err) => {
+            this.$NProgress().done();
+            console.log('> sign-in.social() error! (1)', err);  // eslint-disable-line
+          });
+        });
+      },
+      configureUser(user, token) {
+        this.$http().get('employee/findEmployeeByEmail', {params: {email: user.email}}).then((user_db, err) => {
+          if (err) {
+            this.$snotify.warning('Colaborador não encontrado no sistema. Entre em contato com o suporte.');
+          } else {
+            user_db.data.picture = user.picture;
+            this.$store.dispatch('auth/setUser', user_db.data);
+            this.$store.dispatch('auth/setToken', token);
+            this.$router.push({name: 'settings'});
+          }
+        })
+      }
     }
-    /*
-    var user = gapi.auth2.getAuthInstance().currentUser.get();
-    var oauthToken = user.getAuthResponse().access_token;
-    var xhr = new XMLHttpRequest();
-    xhr.open('GET',
-      'https://people.googleapis.com/v1/people/me');
-    xhr.setRequestHeader('Authorization',
-      'Bearer ' + oauthToken);
-    xhr.send();*/
   };
-  gapi.load('client', this.social);
-  gapi.load('auth2', this.social);
 </script>
 
 <style lang="scss" scoped>

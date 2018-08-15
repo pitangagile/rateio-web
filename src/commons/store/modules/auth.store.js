@@ -9,13 +9,11 @@ const AuthModule = {
     setUser(state, newUser) {
       if (newUser) {
         const userDTO = {
-          Id: newUser.id,
-          FirstName: newUser.first_name,
-          LastName: newUser.last_name,
-          DisplayName: newUser.displayName,
+          ID: newUser._id,
+          DisplayName: newUser.name,
           Email: newUser.email,
-          Domain: newUser.domain,
           PictureUrl: newUser.picture,
+          hours : newUser.workHours,
         };
         if (userDTO.PictureUrl) {
           userDTO.PictureUrl = userDTO.PictureUrl.substring(0, userDTO.PictureUrl.indexOf('?'));

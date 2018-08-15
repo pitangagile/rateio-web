@@ -20,11 +20,7 @@ module.exports = merge(prodEnv, {
   // #endregion Api
 
   // #region Social
-  // GOOGLE_CLIENT_ID: '"189232583533-hbi5ar1q3ov5uvd6e4g875mtk99g19br.apps.googleusercontent.com"',
-  // GOOGLE_REDIRECT_URI: '"http://localhost:8080/internal"'
-  // #region
-
-  // Glauber Configuration
-  GOOGLE_CLIENT_ID: '"432671285072-bh09ij6l9s3hub9l2vi3tha71rpeoobl.apps.googleusercontent.com"',
+  GOOGLE_CLIENT_ID: '"189232583533-hbi5ar1q3ov5uvd6e4g875mtk99g19br.apps.googleusercontent.com"',
   GOOGLE_REDIRECT_URI: '"http://localhost:8080/internal"'
+  // #region
 });

@@ -39,9 +39,6 @@
   Vue.use(ServerTable, options, false, 'bootstrap4', 'default');
 
   // FIXME: Buscar usuário da sessão
-  const user_id = '5b6240f74855b1272d7d500e';
-  const user_hours_per_month = 200;
-
   export default {
     name: 'Reporting',
     removable: false,
@@ -51,6 +48,7 @@
       return {
         title: 'Reportagem',
         period: null,
+        totalHoras: 0,
         urlApiGrid: `${variables.http.root}reporting/findReportsByUserId`,
         columns: ['period', 'costCenter', 'hours', 'actions'],
         options: {
@@ -66,7 +64,12 @@
             actions: 'action-column text-center',
           },
           requestFunction(data) {
-            return this.$http().get('reporting/findReportsByUserId', {params: {data, 'user_id': user_id}})
+            return this.$http().get('reporting/findReportsByUserId', {
+              params: {
+                data,
+                'user_id': this.$store.getters['auth/user'].ID
+              }
+            })
               .catch((e) => {
                 this.dispatch('error', e);
               });
@@ -76,10 +79,22 @@
           },
         },
       }
-    }, methods: {
+    },
+    mounted() {
+      this.getReportingTotalHoursPerActivePeriodAndByUserId();
+    },
+    methods: {
+      getReportingTotalHoursPerActivePeriodAndByUserId() {
+        this.totalHoras = this.$http().get('reporting/getReportingTotalHoursPerActivePeriodAndByUserId',
+          {params: {'user_id': this.$store.getters['auth/user'].ID}}).then((response, err) => {
+          if (err)
+            console.log('err > ', err);
+          console.log('response.data.data.totalHoras > ', response.data.data.totalHoras);
+          this.totalHoras = response.data.data.totalHoras;
+        });
+      },
       convertHoursToPercent(hours) {
-        console.log('typeof hours > ', typeof hours);
-        return ((hours / user_hours_per_month) * 100);
+        return (hours / (this.totalHoras < this.$store.getters['auth/user'].hours ? this.$store.getters['auth/user'].hours : this.totalHoras)) * 100;
       },
       removeCenter(_id) {
         this.$http().delete('reporting', {params: {'_id': _id}}).then(() => {

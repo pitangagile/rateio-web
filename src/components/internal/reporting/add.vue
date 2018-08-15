@@ -27,9 +27,6 @@
   /* eslint-disable */
   import VueSingleSelect from "vue-single-select";
 
-  // FIXME: Buscar usuário da sessão
-  const user_id = '5b6240f74855b1272d7d500e';
-
   export default {
     components: {VueSingleSelect},
     data() {
@@ -44,7 +41,8 @@
     mounted() {
       this.pickActivePeriod();
       this.findUserCostCentersByUserId();
-    }, methods: {
+    },
+    methods: {
       pickActivePeriod() {
         this.$http().get('period/pickActivePeriod').then((response, err) => {
           if (err)
@@ -54,14 +52,14 @@
         });
       },
       findUserCostCentersByUserId() {
-        this.$http().get('employee/findUserCostCentersByUserId', {params: {'user_id': user_id}}).then((response, err) => {
+        this.$http().get('employee/findUserCostCentersByUserId', {params: {'user_id': this.$store.getters['auth/user'].ID}}).then((response, err) => {
           if (err)
             console.log('err >', err);
           this.costCenters = response.data.data;
         });
       },
       save(event) {
-        this.$http().post('reporting', {params: {'user_id': user_id , 'period' : this.period, 'costCenter' : this.costCenter, 'hours' : this.hours}}).then(() => {
+        this.$http().post('reporting', {params: {'user_id': this.$store.getters['auth/user'].ID , 'period' : this.period, 'costCenter' : this.costCenter, 'hours' : this.hours}}).then(() => {
           this.$swal(
             'Adicionado',
             'Reportagem adicionada.',

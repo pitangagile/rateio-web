@@ -45,11 +45,6 @@
     name: 'FileUpload',
     showLoading: true,
 
-    computed: {
-      user() {
-        return this.$store.getters['auth/user'];
-      },
-    },
     data() {
       const self = this;
       return {
@@ -92,7 +87,7 @@
         formData.append('name', this.file.name);
         formData.append("file", this.file);
         // formData.append("contentType", this.file.type);
-        formData.append("responsable", this.user.DisplayName);
+        formData.append("responsable", this.$store.getters['auth/user'].DisplayName);
         axios.post(`${variables.http.root}fileupload`,
           formData,
           {

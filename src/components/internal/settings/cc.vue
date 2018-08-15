@@ -31,9 +31,6 @@
 
   Vue.use(ServerTable, options, false, 'bootstrap4', 'default');
 
-  // FIXME: Buscar usuário da sessão
-  const user_id = '5b6240f74855b1272d7d500e';
-
   export default {
     components: {VueSingleSelect},
     name: 'cc',
@@ -56,7 +53,7 @@
             actions: 'action-column text-center',
           },
           requestFunction(data) {
-            return self.$http().get('employee/findUserCostCentersByUserId', {params: {data, 'user_id': user_id}})
+            return self.$http().get('employee/findUserCostCentersByUserId', {params: {'data': data, 'user_id': this.$store.getters['auth/user'].ID}})
               .catch((e) => {
                 this.dispatch('error', e);
               });
@@ -72,7 +69,9 @@
     },
     methods: {
       findCostCentersWithoutUserId() {
-        this.$http().get('employee/findCostCentersWithoutUserId', {params: {'user_id': user_id}}).then((response, err) => {
+        console.log('this.$store.getters[\'auth/user\'] > ', this.$store.getters['auth/user']);
+        console.log('this.$store.getters[\'auth/user\'].ID > ', this.$store.getters['auth/user'].ID);
+        this.$http().get('employee/findCostCentersWithoutUserId', {params: {'user_id': this.$store.getters['auth/user'].ID}}).then((response, err) => {
           if (err)
             console.log('err >', err);
           this.costCenters = response.data;
@@ -84,7 +83,7 @@
         } else {
           this.$http().post('employee/addCostCenter', {
             params: {
-              'user_id': user_id,
+              'user_id': this.$store.getters['auth/user'].ID,
               'costCenter': this.selectedCostCenter
             }
           }).then(() => {
@@ -106,7 +105,7 @@
       removeCenter(costCenterID) {
         this.$http().delete('employee', {
           params: {
-            'user_id': user_id,
+            'user_id': this.$store.getters['auth/user'].ID,
             'costCenterId': costCenterID
           }
         }).then(() => {
