@@ -1,21 +1,27 @@
 <template>
   <div>
-    <div id="element">
-      <vue-single-select
-        ref="select"
-        option-key="code"
-        option-label="description"
-        v-model="selectedCostCenter"
-        :options="costCenters"
-        placeholder="Selecione um centro de custo"
-        :required="true">
-      </vue-single-select>
-    </div>
-    <b-button variant="success" v-on:click="addCostCenter">Adicionar</b-button>
+    <b-row>
+      <b-col cols="3">
+        <div id="element">
+          <vue-single-select
+            ref="select"
+            option-key="code"
+            option-label="description"
+            v-model="selectedCostCenter"
+            :options="costCenters"
+            placeholder="Selecione um centro de custo"
+            :required="true">
+          </vue-single-select>
+          <b-button id="addCostCenter" variant="success" v-on:click="addCostCenter">Adicionar</b-button>
+        </div>
+      </b-col>
+    </b-row>
+    <hr />
     <v-server-table striped hover class="grid mt-3 mb-2" :url="urlApiGrid" :columns="columns" :options="options"
                     ref="grid">
       <div slot="actions" slot-scope="props" class="btn-group">
-        <b-btn v-on:click="removeCenter(props.row._id)" class="icon-trash" size="sm" variant="danger" onmouseover="title='Remover'"></b-btn>
+        <b-btn v-on:click="removeCenter(props.row._id)" class="icon-trash" size="sm" variant="danger"
+               onmouseover="title='Remover'"></b-btn>
       </div>
     </v-server-table>
   </div>
@@ -53,7 +59,12 @@
             actions: 'action-column text-center',
           },
           requestFunction(data) {
-            return self.$http().get('employee/findUserCostCentersByUserId', {params: {'data': data, 'user_id': this.$store.getters['auth/user'].ID}})
+            return self.$http().get('employee/findUserCostCentersByUserId', {
+              params: {
+                'data': data,
+                'user_id': this.$store.getters['auth/user'].ID
+              }
+            })
               .catch((e) => {
                 this.dispatch('error', e);
               });
@@ -64,13 +75,11 @@
         }
       }
     },
-    mounted(){
+    mounted() {
       this.findCostCentersWithoutUserId();
     },
     methods: {
       findCostCentersWithoutUserId() {
-        console.log('this.$store.getters[\'auth/user\'] > ', this.$store.getters['auth/user']);
-        console.log('this.$store.getters[\'auth/user\'].ID > ', this.$store.getters['auth/user'].ID);
         this.$http().get('employee/findCostCentersWithoutUserId', {params: {'user_id': this.$store.getters['auth/user'].ID}}).then((response, err) => {
           if (err)
             console.log('err >', err);
@@ -135,6 +144,9 @@
 <style lang="scss" scoped>
   #element {
     padding: 20px 0px 20px 0px;
-    max-width: 300px;
+  }
+
+  #addCostCenter{
+    margin: 10px 0px 0px 0px;
   }
 </style>

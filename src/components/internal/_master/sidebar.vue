@@ -27,7 +27,7 @@
       </ul>
 
       <h6 class="sidebar-heading d-flex justify-content-between align-items-center px-3 mt-4 mb-3 text-muted">
-        <span>PRINCIPAL</span>
+        <span>COLABORADOR</span>
       </h6>
 
       <ul class="nav flex-column mb-2">
@@ -43,27 +43,27 @@
             Reportagem
           </router-link>
         </li>
+        <li class="nav-item">
+          <router-link to="/internal/holiday" class="nav-link" :class="{ 'active' : isActive('holiday')}">
+            <span class="icon-calendar-check-o mr-2"></span>
+            Feriados
+          </router-link>
+        </li>
       </ul>
 
       <h6 class="sidebar-heading d-flex justify-content-between align-items-center px-3 mt-4 mb-3 text-muted">
-        <span>CONFIGURAÇÃO</span>
+        <span>GERÊNCIA</span>
       </h6>
       <ul class="nav flex-column mb-2">
         <li class="nav-item">
           <router-link to="/internal/manage" class="nav-link" :class="{ 'active' : isActive('manage')}">
             <span class="icon-archive mr-2"></span>
-            Gerenciar Rateio
-          </router-link>
-        </li>
-        <li class="nav-item">
-          <router-link to="/internal/period" class="nav-link" :class="{ 'active' : isActive('period')}">
-            <span class="icon-calendar-1 mr-2"></span>
-            Configurar Período
+            Rateio
           </router-link>
         </li>
       </ul>
       <h6 class="sidebar-heading d-flex justify-content-between align-items-center px-3 mt-4 mb-3 text-muted">
-        <span>DADOS GERAIS</span>
+        <span>ADMINISTRAÇÃO</span>
       </h6>
       <ul class="nav flex-column mb-2">
         <li class="nav-item">
@@ -79,9 +79,9 @@
           </router-link>
         </li>
         <li class="nav-item">
-          <router-link to="/internal/holiday" class="nav-link" :class="{ 'active' : isActive('holiday')}">
-            <span class="icon-calendar-check-o mr-2"></span>
-            Feriados
+          <router-link to="/internal/period" class="nav-link" :class="{ 'active' : isActive('period')}">
+            <span class="icon-calendar-1 mr-2"></span>
+            Período
           </router-link>
         </li>
       </ul>

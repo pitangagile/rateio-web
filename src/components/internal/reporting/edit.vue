@@ -1,67 +1,78 @@
 <template>
   <div>
-    <b-button class="icon-edit" style="color: #3f3f40;" variant="link" @click="handleOk"></b-button>
+    <b-button variant="warning" class="icon-edit icon-table" size="sm" @click="showModal"></b-button>
+    <b-modal ref="modal" centered title="Editar Reportagem" ok-title="Confirmar"
+             cancel-title="Cancelar" @ok="update()">
+      <p v-if="reporting.period.description"><b>Período : </b>{{reporting.period.description.toUpperCase()}}</p>
+      <label v-if="reporting.costCenter.description"><b>Centro de Custo
+        : </b>{{reporting.costCenter.description}}</label>
+      <b-form-input
+        id="qtdHours"
+        v-if="reporting.hours"
+        type="number"
+        v-model="reporting.hours"
+        required
+        :min="min"
+        placeholder="Quantidade de horas trabalhadas no CC">
+      </b-form-input>
+    </b-modal>
   </div>
 </template>
 
 <script>
-
-export default {
-  components: {
-
-  },
-  props: {
-    row: {
-      type: Object,
-      required: true,
+  /* eslint-disable */
+  export default {
+    props: {
+      reporting: {
+        required: true,
+      },
     },
-  },
-  data() {
-    return {
-      hours: 0,
-    };
-  },
-  methods: {
-    handleOk() {
-      const url = 'reportings/update';
-      this.$swal({
-        title: 'Editar',
-        input: 'number',
-        confirmButtonClass: 'btn btn-success',
-        cancelButtonClass: 'btn btn-danger',
-        confirmButtonText: 'Confirmar',
-        cancelButtonText: 'Cancelar',
-        focusConfirm: false,
-        reverseButtons: true,
-        showCancelButton: true,
-        inputValue: this.row.hours,
-        inputAttributes: {
-          min: 0,
-          id: 'hours',
-        },
-      }).then((result) => {
-        if (result.value) {
-          const newHours = document.getElementById('hours').value;
-          this.$http().post(url, { id: this.row._id, hours: newHours }).then(() => { //eslint-disable-line
-            if (newHours >= 0 && newHours != null) {
-              this.$swal(
-                'Editado',
-                'Reportagem Editada.',
-                'success',
-                this.$emit('getAll'),
-              );
-            } else {
-              this.$snotify.error('Não foi possível editar, digite um número válido');
-            }
-          }, (err) => {
-            this.$snotify.error('Não foi possível editar, digite um número válido', err);
-          });
-        }
-      });
+    data() {
+      return {
+        min: 0,
+      };
     },
-  },
-};
+    methods: {
+      showModal() {
+        this.$refs.modal.show();
+      },
+      update() {
+        this.$http().put('reporting', this.reporting).then(() => {
+          this.$swal(
+            'Adicionado',
+            'Reportagem atualizada.',
+            'success',
+            this.$emit('refresh'),
+          );
+        }, () => {
+          this.$swal(
+            'Erro',
+            'Erro ao atualizar reportagem.',
+            'error',
+            this.$emit('refresh'),
+          );
+        });
+      },
+    },
+  };
 </script>
 
-<style>
+<style lang="scss" scoped>
+  .icon-table {
+    margin: 1px;
+  }
+
+  p {
+    text-align: left;
+  }
+
+  label {
+    float: left;
+  }
+
+  #qtdHours{
+    width: 100%;
+    border-radius: 0cm;
+  }
+
 </style>

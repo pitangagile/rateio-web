@@ -8,12 +8,16 @@ const AuthModule = {
   mutations: {
     setUser(state, newUser) {
       if (newUser) {
+        console.log('newUser > ', newUser);
         const userDTO = {
           ID: newUser._id,
           DisplayName: newUser.name,
           Email: newUser.email,
           PictureUrl: newUser.picture,
           hours : newUser.workHours,
+          registration: newUser.registration,
+          workHours: newUser.workHours,
+          isPj: newUser.isPj
         };
         if (userDTO.PictureUrl) {
           userDTO.PictureUrl = userDTO.PictureUrl.substring(0, userDTO.PictureUrl.indexOf('?'));

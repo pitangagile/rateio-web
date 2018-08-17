@@ -1,33 +1,66 @@
 <template>
-  <b-card no-footer :header="user.DisplayName"
-          header-tag="header"
-          title="" style="max-width: 300px;">
-    <img style="border-radius:50%; max-height:90%;" :src="user.PictureUrl" class="card-img"></img>
-    <b-card-body>
-      <b-form-checkbox id="checkbox"
-                       v-model="isPj"
-                       value="false"
-                       unchecked-value="true">
-        <label for="checkbox" id="checkbox-pj">Pessoa Jurídica</label>
-      </b-form-checkbox>
-    </b-card-body>
-  </b-card>
+  <b-row>
+    <b-col cols="3">
+      <b-card no-footer :header="user.DisplayName"
+              header-tag="header"
+              title="">
+        <img style="border-radius:50%; max-height:90%;" :src="user.PictureUrl" class="card-img"></img>
+        <b-card-body>
+          <span><b>Matrícula :</b> {{user.registration}}</span>
+        </b-card-body>
+      </b-card>
+    </b-col>
+    <b-col cols="9">
+      <b-card no-footer :header="'Informações'"
+              header-tag="header"
+              title="">
+        <b-card-body>
+          <!-- Carga Horária Diária -->
+          <b-row class="row-form">
+            <b-col cols="2">
+              <label for="workHours"><b>Carga Horária Trabalho (dia):</b></label>
+            </b-col>
+            <b-col cols="10">
+              <b-form-select id="workHours" class="selectWorkHours" v-model="user.workHours" :options="options"></b-form-select>
+            </b-col>
+          </b-row>
+          <!-- PJ -->
+          <hr />
+          <b-row class="row-form">
+            <b-col cols="2">
+              <label for="checkbox" id="checkbox-pj">Pessoa Jurídica</label>
+            </b-col>
+            <b-col cols="10">
+              <b-form-checkbox id="checkbox"
+                               required
+                               v-model="user.isPj">
+              </b-form-checkbox>
+            </b-col>
+          </b-row>
+        </b-card-body>
+      </b-card>
+    </b-col>
+  </b-row>
 </template>
 
 <script>
   /*eslint-disable*/
+
+  import VueSingleSelect from "vue-single-select";
+
   export default {
-    props: {
-      user:
-        {
-          require: true,
-        },
-    },
-    data(){
-      return{
-        isPj : null,
+    components: {VueSingleSelect},
+    data() {
+      return {
+        isPj: null,
+        options: [{value: 6, text: '6hs'},{value: 8, text: '8hs'}]
       }
-    }
+    },
+    computed: {
+      user() {
+        return this.$store.getters['auth/user'];
+      },
+    },
   }
 </script>
 
@@ -44,6 +77,14 @@
 
   #checkbox-pj {
     font-weight: bold;
+  }
+
+  .selectWorkHours {
+    max-width: 100px;
+  }
+
+  .row-form {
+    text-align: left;
   }
 
 </style>

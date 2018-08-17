@@ -3,9 +3,9 @@
     <b-button variant="success" class="add-button" @click="showModal">Adicionar</b-button>
     <b-modal ref="modal" centered title="Adicionar Reportagem" ok-title="Adicionar"
              cancel-title="Cancelar" @ok="save">
-      <p v-if="period">Período - {{period.description}}</p>
+      <p v-if="period">Período - {{period.description.toUpperCase()}}</p>
       <vue-single-select
-        ref="selectCostCenter"
+        ref="select"
         option-key="code"
         option-label="description"
         v-model="costCenter"
@@ -14,81 +14,102 @@
         :required="true">
       </vue-single-select>
       <b-form-input
+        id="qtdHours"
         type="number"
         v-model="hours"
+        :min="min"
         required
-        placeholder="Insira um percentual">
+        placeholder="Insira a quantidade de horas trabalhadas">
       </b-form-input>
     </b-modal>
   </div>
 </template>
 
 <script>
-  /* eslint-disable */
-  import VueSingleSelect from "vue-single-select";
+/* eslint-disable */
+import VueSingleSelect from "vue-single-select";
 
-  export default {
-    components: {VueSingleSelect},
-    data() {
-      return {
-        reporting: null,
-        period: null,
-        costCenter: null,
-        hours: 0,
-        costCenters: [],
-      }
-    },
-    mounted() {
-      this.pickActivePeriod();
-      this.findUserCostCentersByUserId();
-    },
-    methods: {
-      pickActivePeriod() {
-        this.$http().get('period/pickActivePeriod').then((response, err) => {
-          if (err)
-            console.log('err >', err);
-          console.log('response.data > ', response.data)
+export default {
+  components: { VueSingleSelect },
+  props: {},
+  data() {
+    return {
+      min: 0,
+      reporting: null,
+      period: null,
+      costCenter: null,
+      costCenters: [],
+      hours: 0
+    };
+  },
+  mounted() {
+    this.pickActivePeriod();
+    this.findUserCostCenterByUserIdWithoutReportingInPeriod();
+  },
+  computed: {
+    user() {
+      return this.$store.getters["auth/user"];
+    }
+  },
+  methods: {
+    pickActivePeriod() {
+      this.$http()
+        .get("period/pickActivePeriod")
+        .then((response, err) => {
+          if (err) console.log("err >", err);
           this.period = response.data;
         });
-      },
-      findUserCostCentersByUserId() {
-        this.$http().get('employee/findUserCostCentersByUserId', {params: {'user_id': this.$store.getters['auth/user'].ID}}).then((response, err) => {
-          if (err)
-            console.log('err >', err);
+    },
+    // Centros de Custo que não possuem reportagem no período ativo por usuário
+    findUserCostCenterByUserIdWithoutReportingInPeriod() {
+      this.$http()
+        .get("reporting/findUserCostCenterByUserIdWithoutReportingInPeriod", {
+          params: { user_id: this.user.ID }
+        })
+        .then((response, err) => {
+          if (err) console.log("err >", err);
           this.costCenters = response.data.data;
         });
-      },
-      save(event) {
-        this.$http().post('reporting', {params: {'user_id': this.$store.getters['auth/user'].ID , 'period' : this.period, 'costCenter' : this.costCenter, 'hours' : this.hours}}).then(() => {
-          this.$swal(
-            'Adicionado',
-            'Reportagem adicionada.',
-            'success',
-            this.$emit('refresh'),
-          );
-        }, () => {
-          this.$swal(
-            'Erro',
-            'Erro ao inserir reportagem.',
-            'error',
-            this.$emit('refresh'),
-          );
-        });
-      },
-      addCenter() {
-      },
-      showModal() {
-        this.$refs.modal.show();
-      },
-      hideModal() {
-        this.$refs.modal.hide();
-      },
-      clearModal() {
-        this.selectedCostCenter = null;
-      },
+    },
+    save(event) {
+      this.$http()
+        .post("reporting", {
+          params: {
+            user_id: this.user.ID,
+            period: this.period,
+            costCenter: this.costCenter,
+            hours: this.hours
+          }
+        })
+        .then(
+          () => {
+            this.$swal(
+              "Adicionado",
+              "Reportagem adicionada.",
+              "success",
+              this.$emit("refresh"),
+            );
+          },
+          () => {
+            this.$swal(
+              "Erro",
+              "Erro ao inserir reportagem.",
+              "error",
+              this.$emit("refresh")
+            );
+          }
+        );
+    },
+    showModal() {
+      this.findUserCostCenterByUserIdWithoutReportingInPeriod();
+      this.$refs.modal.show();
     }
   }
+};
 </script>
-
-<style scoped>
+<style lang="scss" scoped>
+#qtdHours {
+  width: 100%;
+  border-radius: 0cm;
+}
 </style>

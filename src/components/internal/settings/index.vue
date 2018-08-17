@@ -7,7 +7,7 @@
     </b-row>
     <b-row nam="basic_information">
       <b-col cols="12">
-        <basic v-bind:user="user"></basic>
+        <basic></basic>
       </b-col>
     </b-row>
     <b-row name="coast_centers">
@@ -33,13 +33,8 @@
     showLoading: true,
     data() {
       return {
-        title: 'Configurações do colaborador',
+        title: 'Perfil do Colaborador',
       }
-    },
-    computed: {
-      user() {
-        return this.$store.getters['auth/user'];
-      },
     },
   };
 </script>
