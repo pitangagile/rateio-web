@@ -18,9 +18,6 @@
         <div slot="costCenterOrigin" slot-scope="props">
           <label v-if="props.row.costCenterOrigin" v-model="props.row.costCenterOrigin.description" />
         </div>
-        <div slot="actions" slot-scope="props" class="btn-group">
-          <b-btn class="icon-edit" size="sm" variant="warning"></b-btn>
-        </div>
       </v-server-table>
     </b-col>
   </b-row>
@@ -42,14 +39,13 @@
       const self = this;
       return {
         urlApiGrid: `${variables.http.root}employee/gridlist`,
-        columns: ['name', 'registration', 'email', 'costCenterOrigin', 'actions'],
+        columns: ['name', 'registration', 'email', 'costCenterOrigin'],
         options: {
           headings: {
             name: 'Nome',
             registration: 'Matrícula',
             email: 'e-mail',
             costCenterOrigin: 'C.C. Origem',
-            actions: 'Ações',
           },
           columnsClasses: {
             actions: 'action-column text-center',

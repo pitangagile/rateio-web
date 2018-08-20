@@ -1,22 +1,23 @@
 <template>
   <b-row class="page">
     <b-col cols="12">
-      <h1 class="page--title"><span class="icon-calendar-1 h4"></span> Período</h1>
+      <h1 class="page--title"><span class="icon-calendar-1 h4"></span> {{title}}</h1>
     </b-col>
     <b-col cols="12">
-      <div align="right">
-        <novo @allPeriods="allPeriods()"></novo>
-      </div>
-      <v-client-table class="table mt-4 mb-2" ref="grid" :data="reporting" :columns="columns" :options="options">
+      <v-server-table class="grid mt-3 mb-2" :url="urlApiGrid" :columns="columns" :options="options">
+        <div slot="afterFilter" class="add-button">
+          <b-button variant="success" class="add-button" style="margin-left: 15px;">Adicionar</b-button>
+        </div>
         <div slot="description" slot-scope="props">
-          <label v-if="props.row.description" style="margin-bottom: 0px !important;">{{props.row.description.toUpperCase()}}</label>
+          <label>{{props.row.description | toUpper }}</label>
         </div>
-        <div slot="action" slot-scope="props" class="btn-group">
-          <generation :row="props.row" @allPeriods="allPeriods()"></generation>
-          <close :row="props.row" @allPeriods="allPeriods()"></close>
-          <remove :row="props.row" @allPeriods="allPeriods()"></remove>
+        <div slot="initialDate" slot-scope="props">
+          <label>{{props.row.initialDate | dateFormat }}</label>
         </div>
-      </v-client-table>
+        <div slot="finalDate" slot-scope="props">
+          <label>{{props.row.finalDate | dateFormat }}</label>
+        </div>
+      </v-server-table>
     </b-col>
 
   </b-row>
@@ -24,61 +25,63 @@
 
 <script>
   /* eslint-disable */
-  import {ClientTable} from 'vue-tables-2';
   import Vue from 'vue';
+  import {ServerTable} from 'vue-tables-2';
   import options from './../../../commons/helpers/grid.config';
-  import novo from './new';
-  import remove from './remove';
-  import close from './close';
-  import generation from './generation';
+  import variables from './../../../commons/helpers/variables';
+  import moment from 'moment';
 
-  Vue.use(ClientTable, options, false, 'bootstrap4', 'default');
+  Vue.use(ServerTable, options, false, 'bootstrap4', 'default');
 
   export default {
     name: 'Period',
-    components: {
-      novo,
-      remove,
-      close,
-      generation,
-    },
+    components: {},
     data() {
       return {
-        columns: ['description', 'initialDate', 'finalDate', 'closuredate', 'closuremanagers', 'generationdate', 'action'],
+        title: 'Período',
+        urlApiGrid: `${variables.http.root}period`,
+        columns: ['description', 'initialDate', 'finalDate', 'closuremanagers', 'generationdate'],
         reporting: [],
         options: {
           headings: {
             description: 'Descrição',
             initialDate: 'Início',
             finalDate: 'Término',
-            closuredate: 'Fechamento Reportagem',
             closuremanagers: 'Fechamento Gerente',
             generationdate: 'Geração Consolidada',
-            action: 'Ações',
           },
           sortable: [],
-          filterable: [],
+          filterable: ['description'],
           columnsClasses: {
             actions: 'action-column text-center',
+          },
+          requestFunction(data) {
+            return this.$http().get('period', {params: data})
+              .catch((e) => {
+                this.dispatch('error', e);
+              });
+          },
+          responseAdapter(response) {
+            return response.data;
           },
         },
       };
     },
-    mounted() {
-      this.allPeriods();
-    },
-    methods: {
-      allPeriods() {
-        this.$http().get('period').then((response) => {
-          this.reporting = response.data;
-        });
+    methods: {},
+    filters : {
+      toUpper(value){
+        if (value !== null && value !== undefined){
+          return value.toUpperCase();
+        }
       },
-    },
+      dateFormat: function(value) {
+        if (value) {
+          return moment(String(value)).format("DD/MM/YYYY");
+        }
+      }
+    }
   };
 </script>
 
 <style lang="scss" scoped>
-  /deep/ td.action-column {
-    width: 200px;
-  }
 </style>

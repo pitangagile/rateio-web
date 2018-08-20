@@ -16,6 +16,7 @@
               {{this.period.description | upperCase}}
             </b-col>
           </b-row>
+          <hr />
           <b-row class="row-form">
             <b-col cols="8">
               <label><b>TOTAL DE HORAS DO PERÍODO:</b></label>
@@ -24,6 +25,7 @@
               {{this.totalIdealHoursByActivePeriod}}hs
             </b-col>
           </b-row>
+          <hr />
           <b-row class="row-form">
             <b-col cols="8">
               <label><b>TOTAL DE HORAS REPORTADAS NO PERÍODO:</b></label>

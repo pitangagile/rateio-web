@@ -33,7 +33,7 @@
     showLoading: true,
     data() {
       return {
-        title: 'Perfil do Colaborador',
+        title: 'Home',
       }
     },
   };

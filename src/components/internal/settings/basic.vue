@@ -1,24 +1,24 @@
 <template>
   <b-row>
     <b-col cols="3">
-      <b-card no-footer :header="user.DisplayName"
+      <b-card no-footer :header="user.DisplayName.toUpperCase()"
               header-tag="header"
               title="">
         <img style="border-radius:50%; max-height:90%;" :src="user.PictureUrl" class="card-img"></img>
         <b-card-body>
-          <span><b>Matrícula :</b> {{user.registration}}</span>
+          <span><b>MATRÍCULA :</b> {{user.registration | toUpper}}</span>
         </b-card-body>
       </b-card>
     </b-col>
     <b-col cols="9">
-      <b-card no-footer :header="'Informações'"
+      <b-card no-footer :header="'INFORMAÇÕES'"
               header-tag="header"
               title="">
         <b-card-body>
           <!-- Carga Horária Diária -->
           <b-row class="row-form">
             <b-col cols="2">
-              <label for="workHours"><b>Carga Horária Trabalho (dia):</b></label>
+              <label for="workHours"><b>CARGA HORÁRIA:</b></label>
             </b-col>
             <b-col cols="10">
               <b-form-select id="workHours" class="selectWorkHours" disabled v-model="user.workHours" :options="options"></b-form-select>
@@ -28,7 +28,7 @@
           <hr />
           <b-row class="row-form">
             <b-col cols="2">
-              <label for="checkbox" id="checkbox-pj">Pessoa Jurídica</label>
+              <label for="checkbox" id="checkbox-pj">PESSOA JURÍDICA</label>
             </b-col>
             <b-col cols="10">
               <b-form-checkbox id="checkbox" disabled
@@ -61,12 +61,19 @@
         return this.$store.getters['auth/user'];
       },
     },
+    filters : {
+      toUpper(value){
+        if (value !== null && value !== undefined){
+          return value.toUpperCase();
+        }
+      }
+    }
   }
 </script>
 
 <style lang="scss" scoped>
   .card-header div {
-    font-size: 18px;
+    /*font-size: 18px;*/
     font-weight: bold;
     text-align: center;
   }

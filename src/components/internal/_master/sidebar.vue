@@ -53,12 +53,6 @@
         </h6>
         <ul class="nav flex-column mb-2">
           <li class="nav-item">
-            <router-link to="/internal/employee" class="nav-link" :class="{ 'active' : isActive('employee')}">
-              <span class="icon-vcard mr-2"></span>
-              Colaboradores
-            </router-link>
-          </li>
-          <li class="nav-item">
             <router-link to="/internal/manage" class="nav-link" :class="{ 'active' : isActive('manage')}">
               <span class="icon-archive mr-2"></span>
               Rateio
@@ -75,6 +69,12 @@
             <router-link to="/internal/costcenter" class="nav-link" :class="{ 'active' : isActive('costcenter')}">
               <span class="icon-money mr-2"></span>
               Centros de Custo
+            </router-link>
+          </li>
+          <li class="nav-item">
+            <router-link to="/internal/employee" class="nav-link" :class="{ 'active' : isActive('employee')}">
+              <span class="icon-vcard mr-2"></span>
+              Colaboradores
             </router-link>
           </li>
           <li class="nav-item">
