@@ -8,7 +8,6 @@ const AuthModule = {
   mutations: {
     setUser(state, newUser) {
       if (newUser) {
-        console.log('newUser > ', newUser);
         const userDTO = {
           ID: newUser._id,
           DisplayName: newUser.name,
@@ -17,11 +16,13 @@ const AuthModule = {
           hours : newUser.workHours,
           registration: newUser.registration,
           workHours: newUser.workHours,
+          role: newUser.role,
           isPj: newUser.isPj
         };
         if (userDTO.PictureUrl) {
           userDTO.PictureUrl = userDTO.PictureUrl.substring(0, userDTO.PictureUrl.indexOf('?'));
         }
+        localStorage.setItem(variables.auth.userRole, newUser.role);
         localStorage.setItem(variables.auth.userdetais, JSON.stringify(userDTO));
       } else {
         localStorage.removeItem(variables.auth.userdetais);
@@ -31,17 +32,21 @@ const AuthModule = {
       if (newToken) {
         const week = new Date();
         week.setDate(week.getDate() + (variables.auth.expires * 60));
-
         const data = {
           expires: week.getTime(),
           token: newToken,
         };
-
         localStorage.setItem(variables.auth.appToken, JSON.stringify(data));
       } else {
         localStorage.removeItem(variables.auth.appToken);
       }
-    },
+    }, setRole(state, newRole){
+      if (newRole){
+        localStorage.setItem(variables.auth.userRole, JSON.stringify(newRole));
+      } else{
+        localStorage.removeItem(variables.auth.userRole);
+      }
+    }
   },
   actions: {
     /**
@@ -57,6 +62,10 @@ const AuthModule = {
     async setToken(context, newToken) {
       context.commit('setToken', newToken);
     },
+
+    async setRole(context, newRole){
+      context.commit('setRole', newRole);
+    }
   },
   getters: {
     /**
@@ -80,6 +89,14 @@ const AuthModule = {
         return undefined;
       }
     },
+
+    role(){
+      try {
+        return JSON.parse(localStorage.getItem(variables.auth.userRole));
+      } catch (e) {
+        return undefined;
+      }
+    }
   },
 };
 

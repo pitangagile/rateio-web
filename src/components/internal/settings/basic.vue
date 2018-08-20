@@ -21,7 +21,7 @@
               <label for="workHours"><b>Carga Horária Trabalho (dia):</b></label>
             </b-col>
             <b-col cols="10">
-              <b-form-select id="workHours" class="selectWorkHours" v-model="user.workHours" :options="options"></b-form-select>
+              <b-form-select id="workHours" class="selectWorkHours" disabled v-model="user.workHours" :options="options"></b-form-select>
             </b-col>
           </b-row>
           <!-- PJ -->
@@ -31,7 +31,7 @@
               <label for="checkbox" id="checkbox-pj">Pessoa Jurídica</label>
             </b-col>
             <b-col cols="10">
-              <b-form-checkbox id="checkbox"
+              <b-form-checkbox id="checkbox" disabled
                                required
                                v-model="user.isPj">
               </b-form-checkbox>

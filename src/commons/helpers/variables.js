@@ -1,3 +1,4 @@
+/* eslint-disable */
 export default {
   env: {
     nodeEnv: process.env.NODE_ENV,
@@ -15,6 +16,7 @@ export default {
     appToken: process.env.APP_AUTH_TOKEN_KEY,
     expires: parseInt(process.env.APP_AUTH_EXPIRES, 10),
     userdetais: process.env.APP_AUTH_USER_DETAILS,
+    userRole: process.env.APP_AUTH_USER_ROLE,
   },
   social: {
     google: {

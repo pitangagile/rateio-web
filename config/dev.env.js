@@ -13,6 +13,7 @@ module.exports = merge(prodEnv, {
   APP_AUTH_TOKEN_KEY: '"rateio-auth"',
   APP_AUTH_EXPIRES: '15', // in minutes
   APP_AUTH_USER_DETAILS: '"rateio-user-details"',
+  APP_AUTH_USER_ROLE: '"rateio-user-role"',
   // #endregion Auth
 
   // #region Api

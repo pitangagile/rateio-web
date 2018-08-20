@@ -1,25 +1,21 @@
 /* eslint-disable */
 import Vue from 'vue';
 import Router from 'vue-router';
-// #region external
+
 import ExternalMaster from '@/components/external/_master/';
 import ExternalSignin from '@/components/external/signin/';
-// #region internal
+
 import InternalMaster from '@/components/internal/_master/';
 import InternalCostCenter from '@/components/internal/costcenter/';
 import InternalManage from '@/components/internal/manage/';
 import InternalReporting from '@/components/internal/reporting/';
 import InternalHoliday from '@/components/internal/holiday/';
-import InternalSchedule from '@/components/internal/schedule';
 import InternalSettings from '@/components/internal/settings/';
 import InternalHelp from '@/components/internal/help/';
 import InternalPeriod from '@/components/internal/period/';
-import InternalEmployee from '@/components/internal/employee';
-import InternalFileUpload from '@/components/internal/fileupload';
-// #endregion internal
+import InternalEmployee from '@/components/internal/employee/';
+
 import NavigationGuards from './navigations.guards';
-// import ExternalSignUp from '@/components/external/sign-up/';
-// #endregion external
 
 Vue.use(Router);
 
@@ -50,55 +46,56 @@ const router = new Router({
       meta: { requiresAuth: true },
       props: true,
       children: [
+        // Full access
         {
           path: '',
           name: 'settings',
           component: InternalSettings,
-        },
-        {
-          path: 'fileupload',
-          name: 'fileupload',
-          component: InternalFileUpload,
-        },
-        {
-          path: 'costcenter',
-          name: 'costcenter',
-          component: InternalCostCenter,
-        },
-        {
-          path: 'manage',
-          name: 'manage',
-          component: InternalManage,
+          meta : {roles: ['colaborador', 'gerente', 'administrador']}
         },
         {
           path: 'reporting',
           name: 'reporting',
           component: InternalReporting,
+          meta : {roles: ['colaborador', 'gerente', 'administrador']}
         },
         {
           path: 'holiday',
           name: 'holiday',
           component: InternalHoliday,
-        },
-        {
-          path: 'schedule',
-          name: 'schedule',
-          component: InternalSchedule,
+          meta : {roles: ['colaborador', 'gerente', 'administrador']}
         },
         {
           path: 'help',
           name: 'help',
           component: InternalHelp,
+          meta : {roles: ['colaborador', 'gerente', 'administrador']}
         },
-        {
-          path: 'period',
-          name: 'period',
-          component: InternalPeriod,
-        },
+        // Gerente
         {
           path: 'employee',
           name: 'employee',
           component: InternalEmployee,
+          meta : {roles: ['gerente', 'administrador']}
+        },
+        {
+          path: 'manage', // rateio
+          name: 'manage',
+          component: InternalManage,
+          meta : {roles: ['gerente', 'administrador']}
+        },
+        // Administrador
+        {
+          path: 'period',
+          name: 'period',
+          component: InternalPeriod,
+          meta : {roles: ['administrador']}
+        },
+        {
+          path: 'costcenter',
+          name: 'costcenter',
+          component: InternalCostCenter,
+          meta : {roles: ['administrador']}
         },
       ],
     },

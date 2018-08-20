@@ -69,9 +69,7 @@
     },
     methods: {
       allPeriods() {
-        const url = 'period';
-
-        this.$http().get(url).then((response) => {
+        this.$http().get('period').then((response) => {
           this.reporting = response.data;
         });
       },

@@ -89,6 +89,7 @@
             user_db.data.picture = user.picture;
             this.$store.dispatch('auth/setUser', user_db.data);
             this.$store.dispatch('auth/setToken', token);
+            this.$store.dispatch('auth/setRole', user_db.data.role);
             this.$router.push({name: 'settings'});
           }
         })
