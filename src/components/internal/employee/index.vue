@@ -5,7 +5,7 @@
     </b-col>
 
     <b-col cols="12">
-      <v-server-table class="grid mt-3 mb-2" :url="urlApiGrid" :columns="columns" :options="options">
+      <v-server-table class="grid mt-3 mb-2" :url="urlApiGrid" :columns="columns" :options="options" ref="grid">
         <div slot="name" slot-scope="props">
           <label v-if="props.row.name">{{props.row.name.toUpperCase()}}</label>
         </div>
@@ -17,6 +17,9 @@
         </div>
         <div slot="costCenterOrigin" slot-scope="props">
           <label v-if="props.row.costCenterOrigin" v-model="props.row.costCenterOrigin.description" />
+        </div>
+        <div slot="actions" slot-scope="props">
+          <edit :employee="props.row" @refresh="refresh()"></edit>
         </div>
       </v-server-table>
     </b-col>
@@ -30,22 +33,28 @@
   import options from './../../../commons/helpers/grid.config';
   import variables from './../../../commons/helpers/variables';
 
+  import edit from './edit';
+
   Vue.use(ServerTable, options, false, 'bootstrap4', 'default');
 
   export default {
     name: 'employee',
     showLoading: true,
+    components: {
+      edit,
+    },
     data() {
       const self = this;
       return {
         urlApiGrid: `${variables.http.root}employee/gridlist`,
-        columns: ['name', 'registration', 'email', 'costCenterOrigin'],
+        columns: ['name', 'registration', 'email', 'costCenterOrigin', 'actions'],
         options: {
           headings: {
             name: 'Nome',
             registration: 'Matrícula',
             email: 'e-mail',
             costCenterOrigin: 'C.C. Origem',
+            actions: 'Ações',
           },
           columnsClasses: {
             actions: 'action-column text-center',
@@ -58,12 +67,15 @@
               });
           },
           responseAdapter(response) {
-            console.log(response); // eslint-disable-line
             return response.data;
           },
         },
       };
-    },
+    },methods : {
+      refresh() {
+        this.$refs.grid.refresh();
+      }
+    }
   };
 </script>
 

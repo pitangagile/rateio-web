@@ -3,16 +3,16 @@
     <b-button variant="warning" class="icon-edit icon-table" size="sm" @click="showModal"></b-button>
     <b-modal ref="modal" centered title="Editar Reportagem" ok-title="Confirmar"
              cancel-title="Cancelar" @ok="update()">
-      <p v-if="reporting.period.description"><b>Período : </b>{{reporting.period.description.toUpperCase()}}</p>
-      <label v-if="reporting.costCenter.description"><b>Centro de Custo
+      <p v-if="reporting.period.description"><b>PERÍODO : </b>{{reporting.period.description | toUpper}}</p>
+      <label v-if="reporting.costCenter.description"><b>CENTRO DE CUSTO
         : </b>{{reporting.costCenter.description}}</label>
       <b-form-input
         id="qtdHours"
-        v-if="reporting.hours"
+        v-if="reporting.totalHoursCostCenter"
         type="number"
-        v-model="reporting.hours"
+        v-model="reporting.totalHoursCostCenter"
         required
-        :min="min"
+        :min="0"
         placeholder="Quantidade de horas trabalhadas no CC">
       </b-form-input>
     </b-modal>
@@ -29,7 +29,6 @@
     },
     data() {
       return {
-        min: 0,
       };
     },
     methods: {
@@ -54,6 +53,13 @@
         });
       },
     },
+    filters: {
+      toUpper(value) {
+        if (value !== null && value !== undefined ){
+          return value.toUpperCase();
+        }
+      }
+    }
   };
 </script>
 

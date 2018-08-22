@@ -60,7 +60,7 @@
         }
 
         this.$NProgress().start();
-        hello(issuer).login({scope: 'email'}, {force: true}).then((auth) => {
+        hello(issuer).login({scope: 'email'}).then((auth) => {
           hello(auth.network).api('me').then((user) => {
             const url = 'auth/socialLogin';
             this.$http().post(url, {
@@ -72,24 +72,27 @@
               this.configureUser(user, response.data);
               this.$NProgress().done();
             }, (err) => {
+              console.log('err >', err);
               this.$NProgress().done();
-              console.log('> sign-in.social() error! (2)', err);  // eslint-disable-line
+              this.$snotify.warning('Erro ao realizar login. Entre em contato com o suporte ou tente novamente mais tarde.');
+              // console.log('> sign-in.social() error! (2)', err);  // eslint-disable-line
             });
           },(err) => {
             this.$NProgress().done();
-            console.log('> sign-in.social() error! (1)', err);  // eslint-disable-line
+            this.$snotify.warning('Erro ao realizar login. Entre em contato com o suporte ou tente novamente mais tarde.');
+            // console.log('> sign-in.social() error! (1)', err);  // eslint-disable-line
           });
         });
       },
-      configureUser(user, token) {
-        this.$http().get('employee/findEmployeeByEmail', {params: {email: user.email}}).then((user_db, err) => {
+      configureUser(userGmail, token) {
+        this.$http().get('employee/findEmployeeByEmail', {params: {email: userGmail.email}}).then((user, err) => {
           if (err) {
             this.$snotify.warning('Colaborador não encontrado no sistema. Entre em contato com o suporte.');
           } else {
-            user_db.data.picture = user.picture;
-            this.$store.dispatch('auth/setUser', user_db.data);
+            user.data.picture = userGmail.picture;
+            this.$store.dispatch('auth/setUser', user.data);
             this.$store.dispatch('auth/setToken', token);
-            this.$store.dispatch('auth/setRole', user_db.data.role);
+            this.$store.dispatch('auth/setRole', user.data.role);
             this.$router.push({name: 'settings'});
           }
         })

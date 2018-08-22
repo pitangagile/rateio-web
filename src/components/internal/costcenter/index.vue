@@ -8,7 +8,7 @@
       <v-server-table class="grid mt-3 mb-2" ref="grid"
                       :columns="columns" :options="options" url="">
         <div slot="afterFilter" class="add-button">
-          <novo @allCenters="AllCenters()"></novo>
+          <add @allCenters="AllCenters()"></add>
         </div>
         <div slot="actions" slot-scope="props" class="btn-group">
           <editar :row="props.row" @allCenters="AllCenters()">editar</editar>
@@ -24,7 +24,7 @@
   import {ServerTable} from 'vue-tables-2';
   import Vue from 'vue';
   import options from './../../../commons/helpers/grid.config';
-  import novo from './new';
+  import add from './add';
   import remove from './remove';
   import editar from './edit';
 
@@ -33,7 +33,7 @@
   export default {
     name: 'CostCenter',
     components: {
-      novo,
+      add,
       remove,
       editar,
     },
@@ -63,7 +63,6 @@
               });
           },
           responseAdapter(response) {
-            console.log(response); // eslint-disable-line
             return response.data;
           },
         },

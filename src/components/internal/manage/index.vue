@@ -4,274 +4,28 @@
       <h1 class="page--title"><span class="icon-archive h4"></span> {{title}}</h1>
     </b-col>
     <b-col cols="12">
-      <v-client-table ref="grid" class="mt-5 mb-2" :data="filterCollaborators(selectedCenter, incompletePercentage)"
-                      :columns="columns" :options="options">
-        <span class="column-" slot="h__photo">#</span>
-        <span slot="h__name">Colaborador</span>
-        <span slot="h__originCostCenter">Centro de Custo Origem</span>
-        <span slot="h__costCenter">Centro de Custo</span>
-        <span slot="h__percentage">Porcentagem</span>
-        <span slot="h__actions"></span>
-        <div slot="percentage" slot-scope="props">
-          <b-progress :value="props.row.percentage" :max="100" class="user-progress" show-progress></b-progress>
-        </div>
-        <div slot="photo" slot-scope="props">
-          <img :src="props.row.photo" class="user-picture">
-        </div>
-        <div slot="actions" slot-scope="props" class="btn-toolbar">
-          <editPercentage v-bind:row="props.row" :table="collaboratorsList"/>
-        </div>
-        <div slot="collaborator" slot-scope="props">
-          <div class="user-info">
-            <strong>{{props.row.collaborator}}</strong>
-          </div>
-        </div>
-        <div slot="afterFilter" class="column-period">
-          <multiselect
-            class="select-period"
-            v-model="selectedCenter"
-            :options="costCenters"
-            :searchable="true"
-            :show-labels="false"
-            @input="filterCollaborators(selectedCenter)"
-
-            placeholder="Selecione o Centro">
-          </multiselect>
-        </div>
-        <div slot="afterFilter" class="column-period">
-          <multiselect
-            class="select-period"
-            v-model="selectedPeriod"
-            :options="periods.map(data => data.description)"
-            :searchable="false"
-            :show-labels="false"
-            :allow-empty="false"
-            @input="selectPeriod(selectedPeriod)"
-            placeholder="Selecione o Período">
-          </multiselect>
-        </div>
-        <div slot="afterFilter" class="checkbox">
-          <b-form-checkbox v-model="incompletePercentage" class="checkbox">Apenas percentual abaixo do ideal
-          </b-form-checkbox>
-        </div>
-        <div slot="afterFilter" class="column-period">
-          <p class="date">Data de início: {{this.initialdate}}</p>
-        </div>
-        <div slot="afterFilter" class="column-period">
-          <p class="date">Data de fim: {{this.finaldate}}</p>
-        </div>
-        <div slot="afterFilter">
-          <b-button class="btn-danger">Fechar</b-button>
-        </div>
-        <div slot="afterFilter" class="add-button">
-          <add v-bind:collaboratorsList="collaboratorsList" :costCenters="costCenters"></add>
-        </div>
-      </v-client-table>
     </b-col>
   </b-row>
 </template>
 
 <script>
   /* eslint-disable */
-  import {ClientTable} from 'vue-tables-2';
   import Vue from 'vue';
-  import Multiselect from 'vue-multiselect';
   import options from './../../../commons/helpers/grid.config';
-  import editPercentage from './editPercentage';
-  import add from './add';
-
-  Vue.use(ClientTable, options, false, 'bootstrap4', 'default');
-  Vue.component('multiselect', Multiselect);
 
   export default {
-    name: 'Manage',
     showLoading: true,
-    components: {
-      editPercentage,
-      add,
-    },
-
     data() {
       return {
-        title: 'Gerenciar Rateio',
-        selectedPeriod: null,
-        selectedCenter: null,
-        incompletePercentage: false,
-        initialdate: 'DD/MM/AAAA',
-        finaldate: 'DD/MM/AAAA',
-        columns: ['photo', 'name', 'originCostCenter', 'costCenter', 'percentage', 'actions'],
-        collaboratorsList: [{
-          photo: '/static/img/avatars/1.jpg',
-          name: 'Igor Formiga',
-          percentage: 100,
-          costCenter: 'Centro de Custo 1',
-          originCostCenter: 'Centro de Custo 1'
-        },
-          {
-            photo: '/static/img/avatars/2.jpg',
-            name: 'Ivaldo Barbosa',
-            percentage: 60,
-            costCenter: 'Centro de Custo 10',
-            originCostCenter: 'Centro de Custo 2'
-          },
-          {
-            photo: '/static/img/avatars/2.jpg',
-            name: 'Ivaldo Barbosa',
-            percentage: 40,
-            costCenter: 'Centro de Custo 2',
-            originCostCenter: 'Centro de Custo 2'
-          },
-          {
-            photo: '/static/img/avatars/3.jpg',
-            name: 'Thiago Ferreira',
-            percentage: 70,
-            costCenter: 'Centro de Custo 1',
-            originCostCenter: 'Centro de Custo 1'
-          },
-          {
-            photo: '/static/img/avatars/3.jpg',
-            name: 'Thiago Ferreira',
-            percentage: 20,
-            costCenter: 'Centro de Custo 2',
-            originCostCenter: 'Centro de Custo 1'
-          },
-          {
-            photo: '/static/img/avatars/3.jpg',
-            name: 'Thiago Ferreira',
-            percentage: 10,
-            costCenter: 'Centro de Custo 10',
-            originCostCenter: 'Centro de Custo 1'
-          }],
-        costCenters: [],
-        periods: [],
-        totalHours: 0,
-        options: {
-          sortable: [],
-          columnsClasses: {
-            actions: 'action-column text-center',
-            photo: 'photo-column',
-            originCostCenter: 'origin-column',
-            costCenter: 'costCenter-column',
-            name: 'name-column',
-            percentage: 'percentage-column',
-          },
-        },
+        title: 'Rateio',
       };
     },
     mounted() {
-      this.getAllPeriods();
-      this.getAllCostCenters();
     },
     methods: {
-      getAllPeriods() {
-        const url = 'period/getAll';
-
-        this.$http().get(url).then((response) => {
-          this.periods = response.data;
-          this.selectedPeriod = this.periods[this.periods.length - 1].description;
-          this.selectPeriod(this.selectedPeriod);
-        });
-      },
-      selectPeriod(selectedPeriod) {
-        let data = this.periods.filter(period => period.description === selectedPeriod); //eslint-disable-line
-        this.initialdate = data[0].initialdate;
-        this.finaldate = data[0].finaldate;
-      },
-      getAllCostCenters() {
-        const url = 'costcenter/getAll';
-
-        this.$http().get(url).then((response) => {
-          this.costCenters = response.data.map(data => data.description);
-        });
-      },
-      filterCollaborators(selectedCenter, incompletePercentage) {
-        let response;
-        if (selectedCenter != null) {
-          response = this.collaboratorsList.filter(collaborator => collaborator.costCenter === selectedCenter || collaborator.originCostCenter === selectedCenter); // eslint-disable-line
-        } else {
-          response = this.collaboratorsList;
-        }
-        if (incompletePercentage === true) {
-          response = response.filter(collaborator => collaborator.percentage < 100);
-        }
-        return response;
-      },
     },
   };
 </script>
 
 <style lang="scss" scoped>
-  @import '../../../assets/styles/variables.scss';
-
-  .checkbox {
-    margin-left: 7.4px;
-  }
-
-  .date {
-    margin-left: 0.4px;
-    margin-top: 7.4px;
-    margin-right: 7px;
-  }
-
-  .user-picture {
-    border-radius: 10cm;
-    border: 1px solid $color-gray-1;
-    max-width: 35px;
-    padding: 3px;
-  }
-
-  .user-progress {
-    color: darkblue;
-    background-color: grey;
-  }
-
-  /deep/ td.action-column {
-    width: 10px;
-  }
-
-  /deep/ td.photo-column {
-    width: 50px;
-  }
-
-  /deep/ td.percentage-column {
-    width: 150px;
-  }
-
-  /deep/ td.costCenter-column {
-    width: 400px;
-  }
-
-  /deep/ td.origin-column {
-    width: 400px;
-  }
-
-  .column-period {
-    float: left;
-    margin-left: 15px;
-    margin-top: 7.4px;
-
-    /deep/ .select-period {
-      .multiselect__tags {
-        border-color: #ced4da;
-        border-radius: 10cm;
-        padding-top: 5px;
-        min-height: 32px;
-        font-size: .9rem;
-        .multiselect__input {
-          font-size: .9rem;
-        }
-      }
-      .multiselect__select {
-        height: 32px;
-      }
-      .multiselect__single {
-        font-size: .9rem;
-        margin: 0;
-      }
-    }
-  }
-
-  .user-info {
-    text-transform: capitalize;
-  }
 </style>

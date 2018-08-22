@@ -16,7 +16,6 @@
               {{this.period.description | upperCase}}
             </b-col>
           </b-row>
-          <hr />
           <b-row class="row-form">
             <b-col cols="8">
               <label><b>TOTAL DE HORAS DO PERÍODO:</b></label>
@@ -25,7 +24,6 @@
               {{this.totalIdealHoursByActivePeriod}}hs
             </b-col>
           </b-row>
-          <hr />
           <b-row class="row-form">
             <b-col cols="8">
               <label><b>TOTAL DE HORAS REPORTADAS NO PERÍODO:</b></label>
@@ -37,12 +35,12 @@
         </b-card-body>
       </b-card>
     </b-col>
-    <hr/>
+    <hr />
     <b-col cols="12">
       <v-server-table class="grid mt-3 mb-2" :url="urlApiGrid" :columns="columns" :options="options"
                       ref="grid">
         <div slot="afterFilter" class="add-button">
-          <add ref="add" @refresh="refresh()" :period_prop="this.period"></add>
+          <add ref="add" @refresh="refresh()" :period="period"></add>
         </div>
         <div slot="period" slot-scope="props" class="btn-group">
           <label v-if="props.row.period">{{props.row.period.description.toUpperCase()}}</label>
@@ -50,8 +48,8 @@
         <div slot="costCenter" slot-scope="props" class="btn-group">
           <label v-if="props.row.costCenter">{{props.row.costCenter.description}}</label>
         </div>
-        <div slot="hours" slot-scope="props" class="btn-group mb-2">
-          <b-progress :value="convertHoursToPercent(props.row.hours)" :max="100" show-progress animated
+        <div slot="totalHoursCostCenter" slot-scope="props" class="btn-group mb-2">
+          <b-progress :value="convertHoursToPercent(props.row)" :max="100" show-progress animated
                       variant="success" style="width: 15em;"></b-progress>
         </div>
         <div slot="actions" slot-scope="props" class="btn-group">
@@ -83,17 +81,19 @@
     data() {
       return {
         title: "Reportagem",
+
         period: null,
-        totalHoursReportingByActivePeriod: 0,
+
         totalIdealHoursByActivePeriod: 0,
-        qtdBusinessDaysByActivePeriod: 0,
+        totalHoursReportingByActivePeriod: 0,
+
         urlApiGrid: `${variables.http.root}reporting/findReportsByUserId`,
-        columns: ["period", "costCenter", "hours", "actions"],
+        columns: ["period", "costCenter", "totalHoursCostCenter", "actions"],
         options: {
           headings: {
             period: "Período",
             costCenter: "Centro de Custo",
-            hours: "Percentual de Alocação (%)",
+            totalHoursCostCenter: "Percentual de Alocação (%)",
             actions: "Ações"
           },
           filterable: false,
@@ -121,7 +121,7 @@
     },
     mounted() {
       this.pickActivePeriod();
-      this.calculateTotalBusinessDaysByActivePeriod();
+      this.calculateTotalIdealHoursByActivePeriod();
       this.calculateTotalReportingHoursByUserIdAndPerActivePeriod();
     },
     methods: {
@@ -133,33 +133,24 @@
           this.period = response.data.data;
         });
       },
-      calculateTotalBusinessDaysByActivePeriod() {
+      calculateTotalIdealHoursByActivePeriod() {
         this.$http()
           .get("period/calculateTotalBusinessDaysByActivePeriod").then((response, err) => {
           if (err)
             console.log("err > ", err);
-          this.qtdBusinessDaysByActivePeriod = response.data.data;
-          this.calculateTotalIdealHoursByPeriod();
+          var qtdBusinessDaysByActivePeriod = response.data.data;
+          this.totalIdealHoursByActivePeriod = this.$store.getters["auth/user"].workHours * qtdBusinessDaysByActivePeriod;
         });
       },
       calculateTotalReportingHoursByUserIdAndPerActivePeriod() {
-        this.$http()
-          .get("reporting/calculateTotalReportingHoursByUserIdAndPerActivePeriod", {
-            params: {user_id: this.$store.getters["auth/user"].ID}
-          })
-          .then((response, err) => {
-            if (err) console.log("err > ", err);
-            if (response.data.data !== undefined) {
-              this.totalHoursReportingByActivePeriod = JSON.parse(response.data.data.totalHoursReportingByActivePeriod);
-            }
-          });
+        this.$http().get('reporting/calculateTotalReportingHoursByUserIdAndPerActivePeriod', {params: {'user_id': this.$store.getters['auth/user'].ID}}).then((response, err) => {
+          if (err) console.log('err > ', err);
+          this.totalHoursReportingByActivePeriod = response.data.data.totalHoursReportingByActivePeriod;
+        });
       },
-      calculateTotalIdealHoursByPeriod() {
-        this.totalIdealHoursByActivePeriod = this.$store.getters["auth/user"].workHours * this.qtdBusinessDaysByActivePeriod;
-      },
-      convertHoursToPercent(hours) {
-        var hoursToConsider = this.totalHoursReportingByActivePeriod < this.totalIdealHoursByActivePeriod ? this.totalIdealHoursByActivePeriod : this.totalHoursReportingByActivePeriod;
-        return (hours / hoursToConsider) * 100;
+      convertHoursToPercent(period) {
+        var total = this.totalHoursReportingByActivePeriod > this.totalIdealHoursByActivePeriod ? this.totalHoursReportingByActivePeriod : this.totalIdealHoursByActivePeriod;
+        return (period.totalHoursCostCenter / total) * 100;
       },
       removeCenter(_id) {
         this.$http()

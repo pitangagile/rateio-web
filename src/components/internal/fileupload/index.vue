@@ -123,7 +123,6 @@
             ID: row._id
           },
         }).then((response) => {
-          console.log('response > ', response);
           var buffer = new Uint8Array(response.data);
           var blob = new Blob([response.data], {type: row.file.contentType+';charset=utf-8'});
           require('downloadjs')(blob, 'response.xls', row.file.contentType);

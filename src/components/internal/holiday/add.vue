@@ -99,7 +99,6 @@
         const url = 'holiday/search';
 
         this.$http().get(url, {year: this.form.year}).then((response) => {
-            console.log('response'); // eslint-disable-line
             this.holidaysGroup = response.data;
           },
           (err) => {

@@ -3,21 +3,15 @@
     <b-button variant="success" class="add-button" @click="showModal">Adicionar</b-button>
     <b-modal ref="modal" centered title="Adicionar Reportagem" ok-title="Adicionar"
              cancel-title="Cancelar" @ok="save">
-      <p v-if="period_prop">{{period_prop.description | toUpperPeriod}}</p>
-      <vue-single-select
-        ref="select"
-        option-key="code"
-        option-label="description"
-        v-model="costCenter"
-        :options="costCenters"
-        placeholder="Selecione um centro de custo"
-        :required="true">
-      </vue-single-select>
+      <p v-if="period"><b>PERÍODO :</b> {{period.description | toUpper}}</p>
+      <b-form-select id="select" v-model="costCenter"class="mb-3" required >
+        <option v-for="cc in costCenters" :value="cc">{{cc.description | toUpper}}</option>
+      </b-form-select>
       <b-form-input
         id="qtdHours"
         type="number"
-        v-model="hours"
-        :min="min"
+        v-model="totalHoursCostCenter"
+        :min="0"
         required
         placeholder="Insira a quantidade de horas trabalhadas">
       </b-form-input>
@@ -32,17 +26,16 @@
   export default {
     components: {VueSingleSelect},
     props: {
-      period_prop: {
+      period: {
         required: true,
       }
     },
     data() {
       return {
-        min: 0,
         reporting: null,
         costCenter: null,
         costCenters: [],
-        hours: 0
+        totalHoursCostCenter: 0
       };
     },
     mounted() {
@@ -70,9 +63,9 @@
           .post("reporting", {
             params: {
               user_id: this.user.ID,
-              period: this.period_prop,
+              period: this.period,
               costCenter: this.costCenter,
-              hours: this.hours
+              totalHoursCostCenter: this.totalHoursCostCenter
             }
           })
           .then(
@@ -81,6 +74,9 @@
                 "Adicionado",
                 "Reportagem adicionada.",
                 "success",
+                this.costCenter = null,
+                this.totalHoursCostCenter = null,
+                this.findUserCostCenterByUserIdWithoutReportingInPeriod(),
                 this.$emit("refresh"),
               );
             },
@@ -99,10 +95,9 @@
         this.$refs.modal.show();
       }
     }, filters: {
-      toUpperPeriod(value) {
+      toUpper(value) {
         if (value !== "" && value !== undefined && value !== undefined)
-          return 'PERÍODO - ' + value.toUpperCase();
-        return 'PERÍODO - N/A';
+          return value.toUpperCase();
       }
     }
   };
@@ -111,5 +106,9 @@
   #qtdHours {
     width: 100%;
     border-radius: 0cm;
+  }
+  #select{
+    width: 100%;
+    border-radius: 0px;
   }
 </style>
