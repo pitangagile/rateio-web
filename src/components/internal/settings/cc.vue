@@ -135,7 +135,6 @@
       refresh() {
         this.findCostCentersWithoutUserId();
         this.$refs.grid.refresh();
-        this.$refs.select.refresh();
       }
     }
   }

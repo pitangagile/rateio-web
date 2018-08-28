@@ -1,7 +1,7 @@
 <template>
   <b-row class="page">
     <b-col cols="12">
-      <h1 class="page--title"><span class="icon-vcard h4"></span> Colaboradores</h1>
+      <h1 class="page--title"><span class="icon-group h4"></span> Colaboradores</h1>
     </b-col>
 
     <b-col cols="12">

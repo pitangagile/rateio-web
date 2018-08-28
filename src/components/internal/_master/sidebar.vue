@@ -29,8 +29,8 @@
       </h6>
       <ul class="nav flex-column mb-2">
         <li class="nav-item">
-          <router-link to="/internal/" class="nav-link" :class="{ 'active' : isActive('settings')}">
-            <span class="icon-home mr-2"></span>
+          <router-link to="/internal/" class=" nav-link" :class="{ 'active' : isActive('settings')}">
+            <span class="icon-user-o mr-2"></span>
             Home
           </router-link>
         </li>
@@ -53,6 +53,12 @@
         </h6>
         <ul class="nav flex-column mb-2">
           <li class="nav-item">
+          <router-link to="/internal/reportings" class="nav-link" :class="{ 'active' : isActive('reportings')}">
+            <span class="icon-docs mr-2"></span>
+            Reportagens dos Colaboradores
+          </router-link>
+        </li>
+          <li class="nav-item">
             <router-link to="/internal/manage" class="nav-link" :class="{ 'active' : isActive('manage')}">
               <span class="icon-archive mr-2"></span>
               Rateio
@@ -66,6 +72,12 @@
         </h6>
         <ul class="nav flex-column mb-2">
           <li class="nav-item">
+            <router-link to="/internal/fileupload" class="nav-link" :class="{ 'active' : isActive('fileupload')}">
+              <span class="icon-file-excel mr-2"></span>
+              Planilhas
+            </router-link>
+          </li>
+          <li class="nav-item">
             <router-link to="/internal/costcenter" class="nav-link" :class="{ 'active' : isActive('costcenter')}">
               <span class="icon-money mr-2"></span>
               Centros de Custo
@@ -73,7 +85,7 @@
           </li>
           <li class="nav-item">
             <router-link to="/internal/employee" class="nav-link" :class="{ 'active' : isActive('employee')}">
-              <span class="icon-vcard mr-2"></span>
+              <span class="icon-group mr-2"></span>
               Colaboradores
             </router-link>
           </li>

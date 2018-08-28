@@ -10,8 +10,11 @@
 
 <script>
   /* eslint-disable */
-  import Vue from 'vue';
-  import options from './../../../commons/helpers/grid.config';
+  import Vue from "vue";
+  import {ServerTable} from "vue-tables-2";
+  import options from "../../../commons/helpers/grid.config";
+
+  Vue.use(ServerTable, options, false, "bootstrap4", "default");
 
   export default {
     showLoading: true,
@@ -19,12 +22,8 @@
       return {
         title: 'Rateio',
       };
-    },
-    mounted() {
-    },
-    methods: {
-    },
-  };
+    }
+  }
 </script>
 
 <style lang="scss" scoped>

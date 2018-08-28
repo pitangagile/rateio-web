@@ -73,7 +73,8 @@
         this.$refs.modal.show();
       },
       update() {
-        this.$http().put('employee', this.employee).then(() => {
+        console.log('this.employee', this.employee);
+        this.$http().put('employee', {params: {'employee' : this.employee}}).then(() => {
           this.$swal(
             'Adicionado',
             'Colaborador atualizado.',

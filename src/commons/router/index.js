@@ -14,6 +14,8 @@ import InternalSettings from '@/components/internal/settings/';
 import InternalHelp from '@/components/internal/help/';
 import InternalPeriod from '@/components/internal/period/';
 import InternalEmployee from '@/components/internal/employee/';
+import InternalReportings from '@/components/internal/reportings/'
+import InternalFileUpload from '@/components/internal/fileupload/'
 
 import NavigationGuards from './navigations.guards';
 
@@ -73,9 +75,9 @@ const router = new Router({
         },
         // Gerente
         {
-          path: 'employee',
-          name: 'employee',
-          component: InternalEmployee,
+          path: 'reportings',
+          name: 'reportings',
+          component: InternalReportings,
           meta : {roles: ['gerente', 'administrador']}
         },
         {
@@ -85,6 +87,18 @@ const router = new Router({
           meta : {roles: ['gerente', 'administrador']}
         },
         // Administrador
+        {
+          path: 'fileupload',
+          name: 'fileupload',
+          component: InternalFileUpload,
+          meta : {roles: ['administrador']}
+        },
+        {
+          path: 'employee',
+          name: 'employee',
+          component: InternalEmployee,
+          meta : {roles: ['administrador']}
+        },
         {
           path: 'period',
           name: 'period',

@@ -20,10 +20,11 @@
 .icon-calendar-1:before { content: '\e812'; } /* '' */
 .icon-cancel:before { content: '\e813'; } /* '' */
 .icon-download:before { content: '\e814'; } /* '' */
-.icon-home:before { content: '\e815'; } /* '' */
+.icon-group:before { content: '\e815'; } /* '' */
 .icon-twitter:before { content: '\f099'; } /* '' */
 .icon-facebook:before { content: '\f09a'; } /* '' */
 .icon-tasks:before { content: '\f0ae'; } /* '' */
+.icon-docs:before { content: '\f0c5'; } /* '' */
 .icon-angle-up:before { content: '\f106'; } /* '' */
 .icon-angle-down:before { content: '\f107'; } /* '' */
 .icon-google:before { content: '\f1a0'; } /* '' */

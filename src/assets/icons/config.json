@@ -199,10 +199,16 @@
       "src": "fontawesome"
     },
     {
-      "uid": "513ac180ff85bd275f2b736720cbbf5e",
-      "css": "home",
+      "uid": "e36d581e4f2844db345bddc205d15dda",
+      "css": "group",
       "code": 59413,
-      "src": "entypo"
+      "src": "elusive"
+    },
+    {
+      "uid": "c8585e1e5b0467f28b70bce765d5840c",
+      "css": "docs",
+      "code": 61637,
+      "src": "fontawesome"
     }
   ]
 }

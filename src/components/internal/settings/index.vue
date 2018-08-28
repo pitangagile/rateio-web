@@ -2,7 +2,7 @@
   <div>
     <b-row class="page">
       <b-col cols="12">
-        <h1 class="page--title"><span class="icon-home h4"></span> {{title}}</h1>
+        <h1 class="page--title"><span class="icon-user-o h4"></span> {{title}}</h1>
       </b-col>
     </b-row>
     <b-row nam="basic_information">
