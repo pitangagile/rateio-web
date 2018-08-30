@@ -69,7 +69,7 @@
       };
     }, filters: {
       toUpper(value) {
-        if (value !== null && value !== undefined) {
+        if (value) {
           return value.toUpperCase();
         }
       }

@@ -6,19 +6,30 @@
     <b-col cols="12">
       <b-row>
         <b-col cols="12">
-          <v-server-table striped hover class="grid mt-3 mb-2" :url="urlApiGrid" :columns="columns" :options="options">
+          <v-server-table striped hover class="grid mt-3 mb-2" :url="urlApiGrid" :columns="columns" :options="options" ref="grid">
+
+            <div slot="afterFilter" class="add-button">
+              <b-btn style="margin-left: 10px;" variant="primary" @click="generateManage">Gerar Rateio</b-btn>
+            </div>
 
             <!-- Header -->
             <div slot="h__employee" class="heading_center">Colaborador</div>
             <div slot="h__originCostCenter" class="heading_center">C.C. Origem</div>
+            <div slot="h__destinyCostCenter" class="heading_center">C.C. Destino</div>
+            <div slot="h__allocation" class="heading_center">Percentual de Alocação</div>
 
             <div slot="employee" slot-scope="props" class="btn-group">
               {{props.row.employee.name | toUpper}}
             </div>
-            <div slot="originCostCenter" slot-scope="props" class="btn-group" align="center">
-              {{props.row.originCostCenter.description | toUpper}}
+            <div slot="originCostCenter" slot-scope="props" class="btn-group max-width-td">
+              <label class="text-centered">{{props.row.originCostCenter.description | toUpper}}</label>
             </div>
-
+            <div slot="destinyCostCenter" slot-scope="props" class="btn-group max-width-td">
+              <label class="text-centered"><labelCC :id="props.row.reporting.costCenter"></labelCC></label>
+            </div>
+            <div slot="allocation" slot-scope="props" class="btn-group mb-2" style="width: 100%;">
+              <percent :reporting="props.row.reporting" style="margin: 0 auto 0;"></percent>
+            </div>
           </v-server-table>
         </b-col>
       </b-row>
@@ -32,17 +43,25 @@
   import {ServerTable} from 'vue-tables-2';
   import options from './../../../commons/helpers/grid.config';
   import variables from './../../../commons/helpers/variables';
+  import percent from './percent';
+  import labelCC from './labelCC';
 
   Vue.use(ServerTable, options, false, "bootstrap4", "default");
 
   export default {
+    components:{
+      percent,
+      labelCC,
+    },
     showLoading: true,
     data() {
       return {
         title: 'Rateio',
 
+        description : '',
+
         urlApiGrid: `${variables.http.root}manage/`,
-        columns: ['employee', 'originCostCenter'],
+        columns: ['employee', 'originCostCenter', 'destinyCostCenter', 'allocation'],
         options: {
           filterable: true,
           sortable: [],
@@ -53,17 +72,26 @@
               });
           },
           responseAdapter(response) {
-            console.log('response > ', response)
             return {data: response.data.data, count: response.data.count};
           },
         }
       };
-    }, filters: {
+    },methods : {
+      generateManage(){
+        this.$http().get('manage/generateManage').then((response, err) => {
+          if (err) console.log('err > ', err);
+          this.refresh();
+        })
+      },
+      refresh(){
+        this.$refs.grid.refresh();
+      }
+    },filters: {
       toUpper(value) {
         if (value !== null && value !== undefined) {
           return value.toUpperCase();
         }
-      }
+      },
     }
   }
 </script>
@@ -75,4 +103,14 @@
     text-transform: capitalize;
     text-align: center;
   }
+
+  .max-width-td {
+    width: 100%;
+  }
+
+  .text-centered {
+    text-align: center;
+    width: 100%;
+  }
+
 </style>
