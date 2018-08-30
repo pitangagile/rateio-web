@@ -19,8 +19,8 @@
       this.findCostCenterById();
     },
     methods: {
-      async findCostCenterById(){
-        await this.$http().get('costcenter/findById', {params: {'_id': this.id}}).then((response, err) => {
+      findCostCenterById(){
+        this.$http().get('costcenter/findById', {params: {'_id': this.id}}).then((response, err) => {
           if (err) console.log('err > ', err);
           console.log('response > ', response);
           this.description = response.data.description;

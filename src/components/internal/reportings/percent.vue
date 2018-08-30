@@ -43,10 +43,11 @@
         });
 
         await workHours.then(async wHours => {
-          await qtdBusinessDays.then(async iHours => {
+          await qtdBusinessDays.then(async qtdBusDay => {
             await reportingHours.then(async rHours => {
-              var valorAConsiderar = await (rHours > iHours ? rHours : iHours);
-              this.percent = ((await (wHours * iHours) / valorAConsiderar) * 100);
+              var idealHours = await qtdBusDay * wHours;
+              var valorAConsiderar = await (rHours > idealHours ? rHours : idealHours);
+              this.percent = ((this.reporting.totalHoursCostCenter / valorAConsiderar) * 100);
             });
           });
         });
