@@ -63,7 +63,6 @@
               });
           },
           responseAdapter(response) {
-            console.log('response > ', response);
             return response.data;
           }
         }

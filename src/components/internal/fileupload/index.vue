@@ -5,10 +5,11 @@
         <h1 class="page--title"><span class="icon-cog h4"></span> {{ titulo_pagina }} </h1>
       </b-col>
     </b-row>
-    <b-row>
-      <b-col cols="12">
+    <b-row style="padding-top: 10px !important;">
+      <b-col cols="4">
         <b-form-file id="input" accept=".xls, .xlsx" v-model="file" :state="Boolean(file)"
                      placeholder="Selecione um arquivo"/>
+        <br />
         <b-button id="submit-file" :variant="'primary'" v-on:click="inserirArquivo()">
           Submeter
         </b-button>
@@ -18,26 +19,39 @@
       <b-col cols="12">
         <v-server-table striped hover class="grid mt-3 mb-2" :url="urlApiGrid" :columns="columns" :options="options"
                         ref="planilhas">
+
+          <div slot="h__createdAt" class="heading_center">Data de Criação</div>
+          <div slot="h__status" class="heading_center">Situação</div>
+          <div slot="h__registrations" class="heading_center">Matrículas sem Cadastro</div>
+
           <div slot="name" slot-scope="props">
             <span>{{props.row.name | toUpper}}</span>
           </div>
           <div slot="responsable" slot-scope="props">
             <span>{{props.row.responsable.name | toUpper}}</span>
           </div>
-          <div slot="createdAt" slot-scope="props">
-            <span>{{props.row.createdAt | formatarDateTime}}</span>
+          <div slot="createdAt" slot-scope="props" align="center">
+            <span>{{props.row.createdAt | formatDateTime}}</span>
           </div>
-          <div slot="status" slot-scope="props">
-            <span>{{props.row.status | toUpper}}</span>
+          <div slot="status" slot-scope="props" align="center">
+            <span class="error" v-if="props.row.status === 'Erro'">{{props.row.status | toUpper}}</span>
+            <span class="success" v-if="props.row.status === 'Sucesso'">{{props.row.status | toUpper}}</span>
           </div>
-          <div slot="employees" slot-scope="props">
-            <span v-for="employee in props.row.employees">
-              <p>{{employee.name | toUpper}}</p>
-            </span>
+          <div slot="registrations" slot-scope="props" align="center">
+            <p v-if="!props.row.registrations" @click="">N/A</p>
+            <b-btn variant="primary" v-show="props.row.registrations.length > 0" @click="showModal(props.row.registrations)"><i class="icon-group" style="color: white;"></i> Mostrar</b-btn>
           </div>
         </v-server-table>
       </b-col>
     </b-row>
+    <b-modal ref="registrationsModal" hide-footer title="MATRÍCULAS">
+      <div class="d-block text-center">
+        <ul v-show="registrations.length > 0" v-for="registration in registrations" style="float: left;">
+          <li>{{registration}}</li>
+        </ul>
+      </div>
+      <b-btn class="mt-3" variant="outline-danger" block @click="hideModal">Fechar</b-btn>
+    </b-modal>
   </div>
 </template>
 <script>
@@ -57,17 +71,20 @@
 
     data() {
       return {
+
+        registrations : '',
+
         urlApiGrid: `${variables.http.root}fileupload/gridlist`,
         file: null,
         titulo_pagina: 'Registro de Planilhas',
-        columns: ['name', 'responsable', 'createdAt', 'status', 'employees'],
+        columns: ['name', 'responsable', 'createdAt', 'status', 'registrations'],
         options: {
           headings: {
             name: 'Nome do Arquivo',
             responsable: 'Responsável',
             createdAt: 'Data de Inserção',
             status: "Situação",
-            employees: "Colaboradores sem cadastro"
+            registrations: "Matrículas sem cadastro"
           },
           filterable: false,
           sortable: [],
@@ -89,6 +106,13 @@
       },
     },
     methods: {
+      showModal(registrations){
+        this.registrations = registrations.toString().split(',');
+        this.$refs.registrationsModal.show();
+      },
+      hideModal(){
+        this.$refs.registrationsModal.hide();
+      },
       validateAllEmployeesFromSpreadsheet(uniquesRegistrations) {
         var result = this.$http().get('employee/validateAllEmployeesFromSpreadsheet', {params: {'registrations': uniquesRegistrations}}, (response, err) => {
           if (err) console.log('err > ', err);
@@ -117,12 +141,16 @@
             });
             this.validateAllEmployeesFromSpreadsheet(uniquesRegistrations).then((response, err) => {
               if (err) console.log('err > ', err);
-              var employees = response.data;
-              if (employees.length > 0) {
-                this.create('Erro', employees);
+              var registrationsNotInDatabase = response.data;
+              console.log('registrationsNotInDatabase > ', registrationsNotInDatabase);
+              if (registrationsNotInDatabase.length > 0) {
+                this.create('Erro', registrationsNotInDatabase);
               } else {
-                this.create("Sucesso", null);
-                // TODO: ghcb - processar folha/planilha
+
+                this.$http().post('manage/createManageFromEmployees', {params: {'employees' : employees}}).then((response, err) => {
+                  if (err) console.log('err > ', err);
+                  this.create("Sucesso", registrationsNotInDatabase);
+                });
               }
             });
           }.bind(this));
@@ -138,22 +166,12 @@
           return this.$snotify.warning('Selecione um arquivo');
         }
       },
-      create(status, employees) {
-        var employeesId = [];
-
-        if (employees){
-          for (var i = 0; i < employees.length; i++){
-            employeesId.push(employees[i]._id);
-          }
-        }
-
-        console.log('employeesId > ', employeesId);
-
+      create(status, registrationsNotInDatabase) {
         var formData = new FormData();
         formData.append('name', this.file.name);
         formData.append("responsable", this.user.ID);
         formData.append("status", status);
-        formData.append("employees", employeesId);
+        formData.append("registrations", registrationsNotInDatabase);
         axios.post(`${variables.http.root}fileupload`, formData).then(result => {
           this.$swal(
             'Adicionado',
@@ -167,6 +185,7 @@
             'Não foi possível adicionar a planilha',
             'error'
           );
+          this.onUpdate();
         });
       },
       onUpdate() {
@@ -174,16 +193,16 @@
       }
     },
     filters: {
-      formatarDateTime: function (value) {
+      formatDateTime: function (value) {
         if (value) {
-          return moment(String(value)).format('DD/MM/YYYY - hh:mm')
+          return moment(String(value)).format('DD/MM/YYYY - hh:mm A')
         }
       },
       toUpper: function (value) {
         if (value) {
           return value.toUpperCase();
         }
-      }
+      },
     },
   };
 </script>
@@ -194,6 +213,27 @@
     margin-top: 10px;
     margin-right: 10px;
     margin-bottom: 10px;
+  }
+
+  .error {
+    padding: 10px;
+    border-radius: 15%;
+    background-color: red;
+    color: white
+  }
+
+  .success {
+    padding: 10px;
+    border-radius: 15%;
+    background-color: green;
+    color: white
+  }
+
+  .heading_center {
+    color: #d34c2a;
+    font-size: .9rem;
+    text-transform: capitalize;
+    text-align: center;
   }
 
 </style>
