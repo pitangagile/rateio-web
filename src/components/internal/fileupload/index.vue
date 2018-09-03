@@ -34,8 +34,12 @@
             <span>{{props.row.createdAt | formatDateTime}}</span>
           </div>
           <div slot="status" slot-scope="props" align="center">
-            <span class="error" v-if="props.row.status === 'Erro'">{{props.row.status | toUpper}}</span>
-            <span class="success" v-if="props.row.status === 'Sucesso'">{{props.row.status | toUpper}}</span>
+            <span v-if="props.row.status === 'Erro'">
+              <b-btn disabled ariant="danger">{{props.row.status | toUpper}}</b-btn>
+            </span>
+            <span v-if="props.row.status === 'Sucesso'">
+              <b-btn disabled variant="success">{{props.row.status | toUpper}}</b-btn>
+            </span>
           </div>
           <div slot="registrations" slot-scope="props" align="center">
             <p v-if="!props.row.registrations" @click="">N/A</p>
@@ -213,20 +217,6 @@
     margin-top: 10px;
     margin-right: 10px;
     margin-bottom: 10px;
-  }
-
-  .error {
-    padding: 10px;
-    border-radius: 15%;
-    background-color: red;
-    color: white
-  }
-
-  .success {
-    padding: 10px;
-    border-radius: 15%;
-    background-color: green;
-    color: white
   }
 
   .heading_center {

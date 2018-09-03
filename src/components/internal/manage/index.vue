@@ -9,7 +9,7 @@
           <b-row>
             <b-col cols="12">
               <div class="add-button" style="float: left;">
-                <b-btn v-show="!existManage" variant="primary" @click="generateManage">Gerar Rateio</b-btn>
+                <b-btn v-if="!existManage" variant="primary" @click="generateManage">Gerar Rateio</b-btn>
               </div>
             </b-col>
           </b-row>
@@ -30,13 +30,16 @@
                 <div slot="originCostCenter" slot-scope="props" class="btn-group max-width-td">
                   <label class="text-centered">{{props.row.originCostCenter.description | toUpper}}</label>
                 </div>
-                <div v-if="props.row.reporting" slot="destinyCostCenter" slot-scope="props" class="btn-group max-width-td">
+                <div v-if="props.row.destinyCostCenter" slot="destinyCostCenter" slot-scope="props"
+                     class="btn-group max-width-td">
                   <label class="text-centered">
-                    <labelCC :id="props.row.reporting.costCenter"></labelCC>
+                    {{props.row.destinyCostCenter.description}}
                   </label>
                 </div>
-                <div v-if="props.row.reporting" slot="allocation" slot-scope="props" class="btn-group mb-2" style="width: 100%;">
-                  <percent :reporting="props.row.reporting" style="margin: 0 auto 0;"></percent>
+                <div v-if="props.row.hours" slot="allocation" slot-scope="props" class="btn-group mb-2"
+                     style="width: 100%;">
+                  <percent :hours="props.row.hours" :employeeId="props.row.employee._id"
+                           style="margin: 0 auto 0;"></percent>
                 </div>
               </v-server-table>
             </b-col>
@@ -54,14 +57,12 @@
   import options from './../../../commons/helpers/grid.config';
   import variables from './../../../commons/helpers/variables';
   import percent from './percent';
-  import labelCC from './labelCC';
 
   Vue.use(ServerTable, options, false, "bootstrap4", "default");
 
   export default {
     components: {
       percent,
-      labelCC,
     },
     showLoading: true,
     data() {
@@ -101,20 +102,25 @@
       generateManage() {
         this.$http().get('manage/generateManage').then((response, err) => {
           if (err) console.log('err > ', err);
-          this.verifyManage();
+          this.existManage = true;
           this.refresh();
         })
-      },
-      refresh() {
+      }, refresh() {
         this.$refs.grid.refresh();
-      }
+      },
     }, filters: {
       toUpper(value) {
         if (value !== null && value !== undefined) {
           return value.toUpperCase();
         }
-      },
+      }
+    }, watch: {
+      existManage: function (newValue, oldValue) {
+        console.log('Entrou');
+        this.existManage = newValue;
+      }
     }
+
   }
 </script>
 

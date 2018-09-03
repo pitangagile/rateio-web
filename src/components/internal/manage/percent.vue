@@ -11,8 +11,11 @@
   /* eslint-disable */
   export default {
     props: {
-      reporting: {
-        type: Object,
+      employeeId: {
+        required: true,
+      },
+      hours: {
+        type: Number,
         required: true
       },
     },
@@ -27,7 +30,7 @@
     methods: {
       async convertHoursToPercent() {
 
-        var workHours = this.$http().get('employee/findEmployeeById', {params: {'user_id': this.reporting.employee._id}}).then((response, err) => {
+        var workHours = this.$http().get('employee/findEmployeeById', {params: {'user_id': this.employeeId}}).then((response, err) => {
           if (err) console.log('err > ', err);
           return response.data.workHours;
         });
@@ -37,16 +40,17 @@
           return response.data.data;
         });
 
-        var reportingHours = this.$http().get('reporting/calculateTotalReportingHoursByUserIdAndPerActivePeriod', {params: {'user_id': this.reporting.employee._id}}).then((response, err) => {
+        var reportingHours = this.$http().get('reporting/calculateTotalReportingHoursByUserIdAndPerActivePeriod', {params: {'user_id': this.employeeId}}).then((response, err) => {
           if (err) console.log('err > ', err);
           return response.data.data.totalHoursReportingByActivePeriod;
         });
 
         await workHours.then(async wHours => {
-          await qtdBusinessDays.then(async iHours => {
+          await qtdBusinessDays.then(async qtdBussDays => {
             await reportingHours.then(async rHours => {
-              var valorAConsiderar = await (rHours > iHours ? rHours : iHours);
-              this.percent = ((await (wHours * iHours) / valorAConsiderar) * 100);
+              var idealHours = wHours * qtdBussDays;
+              var valorAConsiderar = await (rHours > idealHours ? rHours : idealHours);
+              this.percent = (this.hours / valorAConsiderar) * 100;
             });
           });
         });
