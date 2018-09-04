@@ -8,8 +8,19 @@
         <b-col cols="12">
           <b-row>
             <b-col cols="12">
-              <div class="add-button" style="float: left;">
-                <b-btn v-if="!existManage" variant="primary" @click="generateManage">Gerar Rateio</b-btn>
+              <div class="add-button" style="width: 100%; float: left;">
+                <b-btn v-if="!existManage" variant="success" @click="generateManage">Gerar Rateio</b-btn>
+                <download-excel
+                  class="btn btn-default"
+                  :data="json_data"
+                  :fields="json_fields"
+                  type="xls"
+                  :name="filename"
+                  v-if="existManage"
+                  style="float: right">
+                  <b-btn variant="primary">
+                    <i class="icon-file-excel" style="color: white;"></i> Download</b-btn>
+                </download-excel>
               </div>
             </b-col>
           </b-row>
@@ -36,10 +47,14 @@
                     {{props.row.destinyCostCenter.description}}
                   </label>
                 </div>
-                <div v-if="props.row.hours" slot="allocation" slot-scope="props" class="btn-group mb-2"
+                <div v-if="props.row.allocation" slot="allocation" slot-scope="props" class="btn-group mb-2"
                      style="width: 100%;">
-                  <percent :hours="props.row.hours" :employeeId="props.row.employee._id"
-                           style="margin: 0 auto 0;"></percent>
+                  <b-progress :value="props.row.allocation"
+                              :max="100"
+                              show-progress animated
+                              variant="success"
+                              style="width: 15em; margin: 0 auto 0;">
+                  </b-progress>
                 </div>
               </v-server-table>
             </b-col>
@@ -56,21 +71,40 @@
   import {ServerTable} from 'vue-tables-2';
   import options from './../../../commons/helpers/grid.config';
   import variables from './../../../commons/helpers/variables';
-  import percent from './percent';
+  import JsonExcel from 'vue-json-excel'
+
+  Vue.component('downloadExcel', JsonExcel);
 
   Vue.use(ServerTable, options, false, "bootstrap4", "default");
 
   export default {
-    components: {
-      percent,
-    },
     showLoading: true,
     data() {
       return {
         title: 'Rateio',
 
+        period: null,
         description: '',
         existManage: false,
+
+        filename: '',
+
+        json_fields: {
+          'Matrícula': 'employee.registration',
+          'Colaborador': 'employee.name',
+          'COD C.C. Origem': 'originCostCenter.code',
+          'C.C. Origem': 'originCostCenter.description',
+          'COD C.C. Destino': 'destinyCostCenter.code',
+          'CC Destino': 'destinyCostCenter.description',
+          'Alocação': 'allocation',
+        },
+        json_data: [],
+        json_meta: [
+          [{
+            "key": "charset",
+            "value": "utf-8"
+          }]
+        ],
 
         urlApiGrid: `${variables.http.root}manage/`,
         columns: ['employee', 'originCostCenter', 'destinyCostCenter', 'allocation'],
@@ -90,20 +124,51 @@
       };
     },
     mounted() {
+      this.loadPeriod();
       this.verifyManage();
+      this.loadAllManage();
     }, methods: {
+      loadPeriod(){
+        this.$http().get('period/pickActivePeriod').then((response, err) => {
+          if (err) console.log('err > ', err);
+          this.period = response.data.data;
+          this.filename = this.period.description + '.xls';
+        })
+      },
+      loadAllManage() {
+        this.$http().get('manage/getAllToDownload').then((response, err) => {
+          if (err) console.log('err > ', err);
+          this.json_data = response.data;
+        })
+      },
       verifyManage() {
         this.$http().get('manage/existManageExecuted').then((response, err) => {
           if (err) console.log('err >', err);
-          console.log('this.existManage > ', response.data);
           this.existManage = response.data;
         })
       },
       generateManage() {
+        this.$NProgress().start();
         this.$http().get('manage/generateManage').then((response, err) => {
-          if (err) console.log('err > ', err);
+          if (err) {
+            console.log('err > ', err);
+            this.$NProgress().done();
+            this.$swal(
+              'Rateio',
+              'Não foi possível executar rateio.',
+              'error'
+            );
+          }
+          console.log('response > ', response);
           this.existManage = true;
+          this.loadAllManage();
           this.refresh();
+          this.$NProgress().done();
+          this.$swal(
+            'Rateio',
+            'Rateio executado com sucesso.',
+            'success'
+          );
         })
       }, refresh() {
         this.$refs.grid.refresh();
@@ -116,7 +181,6 @@
       }
     }, watch: {
       existManage: function (newValue, oldValue) {
-        console.log('Entrou');
         this.existManage = newValue;
       }
     }

@@ -10,7 +10,7 @@
         <b-form-file id="input" accept=".xls, .xlsx" v-model="file" :state="Boolean(file)"
                      placeholder="Selecione um arquivo"/>
         <br />
-        <b-button id="submit-file" :variant="'primary'" v-on:click="inserirArquivo()">
+        <b-button id="submit-file" :variant="'success'" v-on:click="inserirArquivo()">
           Submeter
         </b-button>
       </b-col>
@@ -151,7 +151,7 @@
                 this.create('Erro', registrationsNotInDatabase);
               } else {
 
-                this.$http().post('manage/createManageFromEmployees', {params: {'employees' : employees}}).then((response, err) => {
+                this.$http().post('manage/createManagesFromFile', {params: {'employees' : employees}}).then((response, err) => {
                   if (err) console.log('err > ', err);
                   this.create("Sucesso", registrationsNotInDatabase);
                 });
@@ -162,8 +162,10 @@
         reader.readAsBinaryString(this.file);
       },
       inserirArquivo() {
+        this.$NProgress().start();
         this.validarArquivo();
         this.extractData();
+        this.$NProgress().done();
       },
       validarArquivo: function () {
         if (this.file === undefined || this.file === null) {
