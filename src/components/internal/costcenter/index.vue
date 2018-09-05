@@ -79,7 +79,7 @@
 <style lang="scss" scoped>
   .add-button {
     float: left;
-    margin-left: 15px;
+    padding-left: 5px;
   }
 
   /deep/ td.action-column {

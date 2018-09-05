@@ -6,6 +6,9 @@
 
     <b-col cols="12">
       <v-server-table class="grid mt-3 mb-2" :url="urlApiGrid" :columns="columns" :options="options" ref="grid">
+        <div slot="afterFilter" class="add-button">
+          <add @refresh="refresh()" style="padding-left: 5px;"></add>
+        </div>
         <div slot="name" slot-scope="props">
           <label v-if="props.row.name"><i class="icon-user-o"></i> {{props.row.name.toUpperCase()}}</label>
         </div>
@@ -14,9 +17,6 @@
         </div>
         <div slot="email" slot-scope="props">
           <label v-if="props.row.email">{{props.row.email.toUpperCase()}}</label>
-        </div>
-        <div slot="costCenterOrigin" slot-scope="props">
-          <label v-if="props.row.costCenterOrigin" v-model="props.row.costCenterOrigin.description" />
         </div>
         <div slot="actions" slot-scope="props">
           <edit :employee="props.row" @refresh="refresh()"></edit>
@@ -33,6 +33,7 @@
   import options from './../../../commons/helpers/grid.config';
   import variables from './../../../commons/helpers/variables';
 
+  import add from './add';
   import edit from './edit';
 
   Vue.use(ServerTable, options, false, 'bootstrap4', 'default');
@@ -41,19 +42,19 @@
     name: 'employee',
     showLoading: true,
     components: {
+      add,
       edit,
     },
     data() {
       const self = this;
       return {
         urlApiGrid: `${variables.http.root}employee/gridlist`,
-        columns: ['name', 'registration', 'email', 'costCenterOrigin', 'actions'],
+        columns: ['name', 'registration', 'email', 'actions'],
         options: {
           headings: {
             name: 'Nome',
             registration: 'Matrícula',
             email: 'e-mail',
-            costCenterOrigin: 'C.C. Origem',
             actions: 'Ações',
           },
           columnsClasses: {

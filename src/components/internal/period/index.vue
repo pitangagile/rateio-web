@@ -6,7 +6,7 @@
     <b-col cols="12">
       <v-server-table class="grid mt-3 mb-2" :url="urlApiGrid" :columns="columns" :options="options">
         <div slot="afterFilter" class="add-button">
-          <b-button variant="success" class="add-button" style="margin-left: 15px;">Adicionar</b-button>
+          <b-button variant="success" class="add-button" style="margin-left: 5px;">Adicionar</b-button>
         </div>
         <div slot="description" slot-scope="props">
           <label>{{props.row.description | toUpper }}</label>
