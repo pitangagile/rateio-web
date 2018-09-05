@@ -3,14 +3,14 @@
     <b-col cols="12">
       <h1 class="page--title"><span class="icon-doc-text h4"></span> {{title}}</h1>
     </b-col>
-    <b-col cols="5">
+    <b-col cols="5" style="margin: 0 auto !important;">
       <b-card no-footer :header="'INFORMAÇÕES DO PERÍODO'"
               header-tag="header"
               title="">
-        <b-card-body>
+        <b-card-body style="padding: 5px !important;">
           <b-row class="row-form">
             <b-col cols="8">
-              <label><span><b>PERÍODO:</b></span></label>
+              <i class="icon-calendar-1" style="color: #d34c2a;"></i><label > PERÍODO:</label>
             </b-col>
             <b-col v-if="this.period" cols="4">
               {{this.period.description | upperCase}}
@@ -18,7 +18,7 @@
           </b-row>
           <b-row class="row-form">
             <b-col cols="8">
-              <label><b>TOTAL DE HORAS DO PERÍODO:</b></label>
+              <i class="icon-hourglass" style="color: #d34c2a;"></i><label > TOTAL DE HORAS DO PERÍODO:</label>
             </b-col>
             <b-col cols="4">
               {{this.totalIdealHoursByActivePeriod}}hs
@@ -26,7 +26,7 @@
           </b-row>
           <b-row class="row-form">
             <b-col cols="8">
-              <label><b>TOTAL DE HORAS REPORTADAS NO PERÍODO:</b></label>
+              <i class="icon-hourglass" style="color: #d34c2a;"></i><label > TOTAL DE HORAS REPORTADAS NO PERÍODO:</label>
             </b-col>
             <b-col cols="4">
               {{this.totalHoursReportingByActivePeriod}}hs
@@ -35,7 +35,6 @@
         </b-card-body>
       </b-card>
     </b-col>
-    <hr />
     <b-col cols="12">
       <v-server-table class="grid mt-3 mb-2" :url="urlApiGrid" :columns="columns" :options="options"
                       ref="grid">

@@ -50,9 +50,7 @@
       // Centros de Custo que não possuem reportagem no período ativo por usuário
       findUserCostCenterByUserIdWithoutReportingInPeriod() {
         this.$http()
-          .get("reporting/findUserCostCenterByUserIdWithoutReportingInPeriod", {
-            params: {user_id: this.user.ID}
-          })
+          .get("reporting/findUserCostCenterByUserIdWithoutReportingInPeriod", {params: {user_id: this.$store.getters["auth/user"].ID}})
           .then((response, err) => {
             if (err) console.log("err >", err);
             this.costCenters = response.data.data;

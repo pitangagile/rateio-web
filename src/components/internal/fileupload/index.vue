@@ -2,7 +2,7 @@
   <div>
     <b-row class="page">
       <b-col cols="12">
-        <h1 class="page--title"><span class="icon-cog h4"></span> {{ titulo_pagina }} </h1>
+        <h1 class="page--title"><span class="icon-file-excel h4"></span> {{ titulo_pagina }} </h1>
       </b-col>
     </b-row>
     <b-row style="padding-top: 10px !important;">
@@ -23,6 +23,7 @@
           <div slot="h__createdAt" class="heading_center">Data de Criação</div>
           <div slot="h__status" class="heading_center">Situação</div>
           <div slot="h__registrations" class="heading_center">Matrículas sem Cadastro</div>
+          <div slot="h__actions" class="heading_center">Ações</div>
 
           <div slot="name" slot-scope="props">
             <span>{{props.row.name | toUpper}}</span>
@@ -35,7 +36,7 @@
           </div>
           <div slot="status" slot-scope="props" align="center">
             <span v-if="props.row.status === 'Erro'">
-              <b-btn disabled ariant="danger">{{props.row.status | toUpper}}</b-btn>
+              <b-btn disabled variant="danger">{{props.row.status | toUpper}}</b-btn>
             </span>
             <span v-if="props.row.status === 'Sucesso'">
               <b-btn disabled variant="success">{{props.row.status | toUpper}}</b-btn>
@@ -44,6 +45,10 @@
           <div slot="registrations" slot-scope="props" align="center">
             <p v-if="!props.row.registrations" @click="">N/A</p>
             <b-btn variant="primary" v-show="props.row.registrations.length > 0" @click="showModal(props.row.registrations)"><i class="icon-group" style="color: white;"></i> Mostrar</b-btn>
+          </div>
+          <div v-if="props.row" slot="actions" slot-scope="props" class="btn-group" style="width: 100%;">
+            <b-btn @click="remove(props.row)" class="icon-trash icon-table" size="sm" variant="danger"
+                   onmouseover="title='Remover'" style="margin: 0 auto;"></b-btn>
           </div>
         </v-server-table>
       </b-col>
@@ -81,7 +86,7 @@
         urlApiGrid: `${variables.http.root}fileupload/gridlist`,
         file: null,
         titulo_pagina: 'Registro de Planilhas',
-        columns: ['name', 'responsable', 'createdAt', 'status', 'registrations'],
+        columns: ['name', 'responsable', 'createdAt', 'status', 'registrations', 'actions'],
         options: {
           headings: {
             name: 'Nome do Arquivo',
@@ -143,18 +148,23 @@
                 uniquesRegistrations.push(registration);
               }
             });
-            this.validateAllEmployeesFromSpreadsheet(uniquesRegistrations).then((response, err) => {
+            this.validateAllEmployeesFromSpreadsheet(uniquesRegistrations).then(async (response, err) => {
               if (err) console.log('err > ', err);
               var registrationsNotInDatabase = response.data;
-              console.log('registrationsNotInDatabase > ', registrationsNotInDatabase);
               if (registrationsNotInDatabase.length > 0) {
                 this.create('Erro', registrationsNotInDatabase);
               } else {
-
-                this.$http().post('manage/createManagesFromFile', {params: {'employees' : employees}}).then((response, err) => {
-                  if (err) console.log('err > ', err);
-                  this.create("Sucesso", registrationsNotInDatabase);
+                var result = await this.create("Sucesso", registrationsNotInDatabase).then(function (result, err) {
+                  if (err) {
+                    console.log('err > ', err);
+                    return err;
+                  }else{
+                    return result;
+                  }
                 });
+                if (result){
+                  this.createManages(employees);
+                }
               }
             });
           }.bind(this));
@@ -172,19 +182,26 @@
           return this.$snotify.warning('Selecione um arquivo');
         }
       },
+      createManages(employees){
+        this.$http().post('manage/createManagesFromFile', {params: {'employees' : employees}}).then((response, err) => {
+          if (err) console.log('err > ', err);
+          this.onUpdate();
+        });
+      },
       create(status, registrationsNotInDatabase) {
         var formData = new FormData();
         formData.append('name', this.file.name);
         formData.append("responsable", this.user.ID);
         formData.append("status", status);
         formData.append("registrations", registrationsNotInDatabase);
-        axios.post(`${variables.http.root}fileupload`, formData).then(result => {
+        return axios.post(`${variables.http.root}fileupload`, formData).then(result => {
           this.$swal(
             'Adicionado',
             'Planilha adicionada com sucesso.',
             'success'
           );
           this.onUpdate();
+          return result;
         }, error => {
           this.$swal(
             'Erro',
@@ -193,6 +210,26 @@
           );
           this.onUpdate();
         });
+      },
+      remove(fileUpload){
+        this.$http().delete('fileupload', {params : {'_id' : fileUpload._id}}).then((response, err) => {
+          if (err) {
+            console.log('err > ', err);
+            this.$NProgress().done();
+            this.$swal(
+              'Planilha',
+              'Não foi possível remover a planilha.',
+              'error'
+            );
+          }
+          this.onUpdate();
+          this.$NProgress().done();
+          this.$swal(
+            'Planilha',
+            'Planilha removida com sucesso.',
+            'success'
+          );
+        })
       },
       onUpdate() {
         this.$refs.planilhas.refresh();

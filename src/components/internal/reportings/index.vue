@@ -4,10 +4,15 @@
       <h1 class="page--title"><span class="icon-docs h4"></span> {{title}}</h1>
     </b-col>
     <b-col cols="12">
+      <span style="float: right; color: #d34c2a;" v-if="period">
+        <i class="icon-calendar-1" style="color: #d34c2a;"></i> PERÍODO : {{period.description | toUpper}}
+      </span>
+    </b-col>
+    <b-col cols="12">
       <v-server-table class="grid mt-3 mb-2" :url="urlApiGrid" :columns="columns" :options="options"
                       ref="grid">
         <div slot="employee" slot-scope="props" class="btn-group">
-          {{props.row.employee.name | toUpper}}
+          <i class="icon-doc-text"></i> {{props.row.employee.name | toUpper}}
         </div>
         <div slot="period" slot-scope="props" class="btn-group">
           {{props.row.period.description | toUpper}}
@@ -42,6 +47,8 @@
       return {
         title: 'Reportagens',
 
+        period: null,
+
         urlApiGrid: `${variables.http.root}reporting/findAllByActivePeriod`,
         columns: ['employee', "period", "costCenter", "totalHoursCostCenter"],
         options: {
@@ -67,7 +74,16 @@
           }
         }
       };
-    }, filters: {
+    }, mounted() {
+      this.loadPeriod();
+    }, methods : {
+      loadPeriod() {
+        this.$http().get('period/pickActivePeriod').then((response, err) => {
+          if (err) console.log('err > ', err);
+          this.period = response.data.data;
+        })
+      },
+    } ,filters: {
       toUpper(value) {
         if (value) {
           return value.toUpperCase();

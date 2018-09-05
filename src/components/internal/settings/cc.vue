@@ -19,6 +19,9 @@
     <hr />
     <v-server-table striped hover class="grid mt-3 mb-2" :url="urlApiGrid" :columns="columns" :options="options"
                     ref="grid">
+      <div slot="code" slot-scope="props" class="btn-group">
+        <i class="icon-money"></i> {{props.row.code}}
+      </div>
       <div slot="actions" slot-scope="props" class="btn-group">
         <b-btn v-on:click="removeCenter(props.row._id)" class="icon-trash" size="sm" variant="danger"
                onmouseover="title='Remover'"></b-btn>

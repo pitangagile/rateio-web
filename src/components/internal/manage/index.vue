@@ -8,20 +8,28 @@
         <b-col cols="12">
           <b-row>
             <b-col cols="12">
+              <span style="float: right; color: #d34c2a;" v-if="period">
+                <i class="icon-calendar-1" style="color: #d34c2a;"></i> PERÍODO : {{period.description | toUpper}}
+              </span>
+            </b-col>
+          </b-row>
+          <b-row>
+            <b-col cols="12">
               <div class="add-button" style="width: 100%; float: left;">
-                <b-btn v-if="!existManage" variant="success" @click="generateManage">Gerar Rateio</b-btn>
-                <download-excel
-                  class="btn btn-default"
-                  :data="json_data"
-                  :fields="json_fields"
-                  type="xls"
-                  :name="filename"
-                  v-if="existManage"
-                  style="float: right">
-                  <b-btn variant="primary">
-                    <i class="icon-file-excel" style="color: white;"></i> Download</b-btn>
-                </download-excel>
+                <b-btn v-if="startManage" variant="success" @click="generateManage">Gerar Rateio</b-btn>
               </div>
+              <download-excel
+                class="btn btn-default"
+                :data="json_data"
+                :fields="json_fields"
+                type="xls"
+                :name="filename"
+                v-if="isManageExecutedWithSuccess"
+                style="float: right">
+                <b-btn variant="primary">
+                  <i class="icon-file-excel" style="color: white;"></i> Download
+                </b-btn>
+              </download-excel>
             </b-col>
           </b-row>
           <b-row>
@@ -36,7 +44,7 @@
                 <div slot="h__allocation" class="heading_center">Percentual de Alocação</div>
 
                 <div slot="employee" slot-scope="props" class="btn-group">
-                  {{props.row.employee.name | toUpper}}
+                  <i class="icon-docs"></i> {{props.row.employee.name | toUpper}}
                 </div>
                 <div slot="originCostCenter" slot-scope="props" class="btn-group max-width-td">
                   <label class="text-centered">{{props.row.originCostCenter.description | toUpper}}</label>
@@ -85,7 +93,8 @@
 
         period: null,
         description: '',
-        existManage: false,
+        startManage: false,
+        isManageExecutedWithSuccess : false,
 
         filename: '',
 
@@ -93,9 +102,9 @@
           'Matrícula': 'employee.registration',
           'Colaborador': 'employee.name',
           'COD C.C. Origem': 'originCostCenter.code',
-          'C.C. Origem': 'originCostCenter.description',
+          'Descrição C.C. Origem': 'originCostCenter.description',
           'COD C.C. Destino': 'destinyCostCenter.code',
-          'CC Destino': 'destinyCostCenter.description',
+          'Descrição CC Destino': 'destinyCostCenter.description',
           'Alocação': 'allocation',
         },
         json_data: [],
@@ -125,10 +134,11 @@
     },
     mounted() {
       this.loadPeriod();
-      this.verifyManage();
+      this.isPossibleExecuteManage();
+      this.manageExecutedWithSuccess();
       this.loadAllManage();
     }, methods: {
-      loadPeriod(){
+      loadPeriod() {
         this.$http().get('period/pickActivePeriod').then((response, err) => {
           if (err) console.log('err > ', err);
           this.period = response.data.data;
@@ -141,10 +151,16 @@
           this.json_data = response.data;
         })
       },
-      verifyManage() {
-        this.$http().get('manage/existManageExecuted').then((response, err) => {
+      isPossibleExecuteManage() {
+        this.$http().get('manage/isPossibleExecuteManage').then((response, err) => {
           if (err) console.log('err >', err);
-          this.existManage = response.data;
+          this.startManage = response.data;
+        })
+      },
+      manageExecutedWithSuccess(){
+        this.$http().get('manage/manageExecutedWithSuccess').then((response, err) => {
+          if (err) console.log('err >', err);
+          this.isManageExecutedWithSuccess = response.data;
         })
       },
       generateManage() {
@@ -159,8 +175,8 @@
               'error'
             );
           }
-          console.log('response > ', response);
-          this.existManage = true;
+          this.startManage = false;
+          this.isManageExecutedWithSuccess = true;
           this.loadAllManage();
           this.refresh();
           this.$NProgress().done();
@@ -170,7 +186,7 @@
             'success'
           );
         })
-      }, refresh() {
+      },refresh() {
         this.$refs.grid.refresh();
       },
     }, filters: {
@@ -180,8 +196,8 @@
         }
       }
     }, watch: {
-      existManage: function (newValue, oldValue) {
-        this.existManage = newValue;
+      startManage: function (newValue, oldValue) {
+        this.startManage = newValue;
       }
     }
 

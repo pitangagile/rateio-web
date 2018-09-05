@@ -7,7 +7,7 @@
     <b-col cols="12">
       <v-server-table class="grid mt-3 mb-2" :url="urlApiGrid" :columns="columns" :options="options" ref="grid">
         <div slot="name" slot-scope="props">
-          <label v-if="props.row.name">{{props.row.name.toUpperCase()}}</label>
+          <label v-if="props.row.name"><i class="icon-user-o"></i> {{props.row.name.toUpperCase()}}</label>
         </div>
         <div slot="registration" slot-scope="props">
           <label v-if="props.row.registration">{{props.row.registration.toUpperCase()}}</label>

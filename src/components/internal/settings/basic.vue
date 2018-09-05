@@ -6,7 +6,7 @@
               title="">
         <img style="border-radius:50%; max-height:90%;" :src="user.PictureUrl" class="card-img"></img>
         <b-card-body>
-          <span><b>MATRÍCULA :</b> {{user.registration | toUpper}}</span>
+          <span>MATRÍCULA : {{user.registration | toUpper}}</span>
         </b-card-body>
       </b-card>
     </b-col>
@@ -14,19 +14,18 @@
       <b-card no-footer :header="'INFORMAÇÕES'"
               header-tag="header"
               title="">
-        <b-card-body>
+        <b-card-body style="padding: 0px !important;">
           <!-- Carga Horária Diária -->
           <b-row class="row-form">
             <b-col cols="2">
-              <label for="workHours"><b>CARGA HORÁRIA:</b></label>
+              <label for="workHours">CARGA HORÁRIA:</label>
             </b-col>
             <b-col cols="10">
               <b-form-select id="workHours" class="selectWorkHours" disabled v-model="user.workHours" :options="options"></b-form-select>
             </b-col>
           </b-row>
           <!-- PJ -->
-          <hr />
-          <b-row class="row-form">
+          <b-row class="row-form" style="padding-top: 10px;">
             <b-col cols="2">
               <label for="checkbox" id="checkbox-pj">PESSOA JURÍDICA</label>
             </b-col>
@@ -74,7 +73,6 @@
 <style lang="scss" scoped>
   .card-header div {
     /*font-size: 18px;*/
-    font-weight: bold;
     text-align: center;
   }
 
@@ -83,7 +81,7 @@
   }
 
   #checkbox-pj {
-    font-weight: bold;
+    /*font-weight: bold;*/
   }
 
   .selectWorkHours {
