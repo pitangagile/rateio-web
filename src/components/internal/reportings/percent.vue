@@ -1,9 +1,10 @@
 <template>
-  <b-progress :value="percent"
-              :max="100"
-              show-progress animated
-              variant="success"
-              style="width: 15em;">
+  <b-progress
+    class="percent"
+    :value="percent"
+    :max="100"
+    show-progress animated
+    variant="success">
   </b-progress>
 </template>
 
@@ -57,4 +58,8 @@
 </script>
 
 <style lang="scss" scoped>
+  .percent {
+    width: 15em;
+    margin: 0 auto;
+  }
 </style>

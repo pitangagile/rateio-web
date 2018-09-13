@@ -11,17 +11,21 @@
     <b-col cols="12">
       <v-server-table class="grid mt-3 mb-2" :url="urlApiGrid" :columns="columns" :options="options"
                       ref="grid">
-        <div slot="employee" slot-scope="props" class="btn-group">
+        <div slot="h__period" class="header-table">Período</div>
+        <div slot="h__costCenter" class="header-table">Centro de Custo</div>
+        <div slot="h__totalHoursCostCenter" class="header-table">Percentual de Alocação (%)</div>
+
+        <div slot="employee" slot-scope="props" class="btn-group col-table">
           <i class="icon-doc-text"></i> {{props.row.employee.name | toUpper}}
         </div>
-        <div slot="period" slot-scope="props" class="btn-group">
-          {{props.row.period.description | toUpper}}
+        <div slot="period" slot-scope="props" class="btn-group col-table">
+          <span class="cel-table">{{props.row.period.description | toUpper}}</span>
         </div>
-        <div slot="costCenter" slot-scope="props" class="btn-group">
-          {{props.row.costCenter.description | toUpper}}
+        <div slot="costCenter" slot-scope="props" class="btn-group col-table">
+          <span class="cel-table">{{props.row.costCenter.description | toUpper}}</span>
         </div>
-        <div slot="totalHoursCostCenter" slot-scope="props" class="btn-group mb-2">
-          <percent :reporting="props.row"></percent>
+        <div slot="totalHoursCostCenter" slot-scope="props" class="btn-group col-table" style="text-align: center">
+          <span class="cel-table"><percent :reporting="props.row"></percent></span>
         </div>
       </v-server-table>
     </b-col>
@@ -54,15 +58,9 @@
         options: {
           headings: {
             employee: "Colaborador",
-            period: "Período",
-            costCenter: "Centro de Custo",
-            totalHoursCostCenter: "Percentual de Alocação (%)",
           },
           filterable: true,
           sortable: [],
-          columnsClasses: {
-            actions: "action-column text-center"
-          },
           requestFunction(data) {
             return this.$http()
               .get("reporting/findAllByActivePeriod", {params: {'data': data}}).catch(e => {
@@ -94,4 +92,21 @@
 </script>
 
 <style lang="scss" scoped>
+
+  .header-table {
+    color: #d34c2a;
+    font-size: 1rem;
+    text-transform: capitalize;
+    text-align: center;
+  }
+
+  .col-table {
+    width: 100%;
+  }
+
+  .cel-table {
+    width: 100%;
+    text-align: center;
+  }
+
 </style>

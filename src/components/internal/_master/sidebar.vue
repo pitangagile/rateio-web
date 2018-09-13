@@ -53,11 +53,17 @@
         </h6>
         <ul class="nav flex-column mb-2">
           <li class="nav-item">
-          <router-link to="/internal/reportings" class="nav-link" :class="{ 'active' : isActive('reportings')}">
-            <span class="icon-docs mr-2"></span>
-            Reportagens dos Colaboradores
-          </router-link>
-        </li>
+            <router-link to="/internal/analysis_and_statistics" class="nav-link" :class="{ 'active' : isActive('analysis_and_statistics')}">
+              <span class="icon-chart-bar mr-2"></span>
+              Análise e Estatística
+            </router-link>
+          </li>
+          <li class="nav-item">
+            <router-link to="/internal/reportings" class="nav-link" :class="{ 'active' : isActive('reportings')}">
+              <span class="icon-docs mr-2"></span>
+              Reportagens dos Colaboradores
+            </router-link>
+          </li>
           <li class="nav-item">
             <router-link to="/internal/manage" class="nav-link" :class="{ 'active' : isActive('manage')}">
               <span class="icon-archive mr-2"></span>
