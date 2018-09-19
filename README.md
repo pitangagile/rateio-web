@@ -80,6 +80,9 @@ $ yarn deploy
 ## Who do I talk to if I have questions?
 * **Bruno Monteiro** - [Github](https://github.com/bunomonteiro)
 * **Afonso Amorim** - [Github](https://github.com/afonsosa)
+* **Glauber Batista** - [Github](https://github.com/glauberbatista)
+
+http://s3sira.pitang.com.s3-website-us-east-1.amazonaws.com/
 
 ## Recommendations
 
