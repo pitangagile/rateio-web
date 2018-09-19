@@ -44,11 +44,7 @@
 
 <script>
   /*eslint-disable*/
-
-  import VueSingleSelect from "vue-single-select";
-
   export default {
-    components: {VueSingleSelect},
     data() {
       return {
         isPj: null,

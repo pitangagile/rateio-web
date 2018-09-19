@@ -3,15 +3,9 @@
     <b-row>
       <b-col cols="3">
         <div id="element">
-          <vue-single-select
-            ref="select"
-            option-key="code"
-            option-label="description"
-            v-model="selectedCostCenter"
-            :options="costCenters"
-            placeholder="Selecione um centro de custo"
-            :required="true">
-          </vue-single-select>
+          <b-form-select id="select" v-model="selectedCostCenter" class="mb-3" required>
+            <option v-for="cc in costCenters" :value="cc">{{cc.description | toUpper}}</option>
+          </b-form-select>
           <b-button id="addCostCenter" variant="success" v-on:click="addCostCenter">Adicionar</b-button>
         </div>
       </b-col>
@@ -36,12 +30,10 @@
   import {ServerTable} from 'vue-tables-2';
   import options from './../../../commons/helpers/grid.config';
   import variables from './../../../commons/helpers/variables';
-  import VueSingleSelect from "vue-single-select";
 
   Vue.use(ServerTable, options, false, 'bootstrap4', 'default');
 
   export default {
-    components: {VueSingleSelect},
     name: 'cc',
     data() {
       const self = this;
@@ -90,7 +82,7 @@
         });
       },
       addCostCenter() {
-        if (this.selectedCostCenter === null || this.selectedCostCenter === undefined) {
+        if (!this.selectedCostCenter) {
           this.$snotify.warning('Selecione um centro de custo');
         } else {
           this.$http().post('employee/addCostCenter', {
@@ -138,6 +130,12 @@
       refresh() {
         this.findCostCentersWithoutUserId();
         this.$refs.grid.refresh();
+      },
+    }, filters : {
+      toUpper : function (value) {
+        if (value){
+          return value.toUpperCase();
+        }
       }
     }
   }

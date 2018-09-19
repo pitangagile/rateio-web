@@ -16,13 +16,9 @@
               <label>Período</label>
             </b-col>
             <b-col cols="9">
-              <vue-single-select
-                option-label="description"
-                v-model="period"
-                :options="periods"
-                placeholder="Selecione um período"
-                :required="true">
-              </vue-single-select>
+              <b-form-select id="selectPeriod" v-model="period" class="mb-3" required>
+                <option v-for="period in periods" :value="period">{{period.description | toUpper}}</option>
+              </b-form-select>
             </b-col>
           </b-row>
           <b-row>
@@ -30,13 +26,9 @@
               <label>Centro de Custo</label>
             </b-col>
             <b-col cols="9">
-              <vue-single-select
-                option-label="description"
-                v-model="costCenter"
-                :options="costCenters"
-                placeholder="Selecione um centro de custo"
-                :required="true">
-              </vue-single-select>
+              <b-form-select id="selectCC" v-model="costCenter" class="mb-3" required>
+                <option v-for="cc in costCenters" :value="cc">{{cc.description | toUpper}}</option>
+              </b-form-select>
             </b-col>
           </b-row>
           <b-row>
@@ -106,11 +98,9 @@
 <script>
   /* eslint-disable */
   import Vue from "vue";
-  import VueSingleSelect from "vue-single-select";
 
   export default {
     showLoading: true,
-    components: {VueSingleSelect},
     data() {
       return {
         title: 'Análise e Estatística',
@@ -171,6 +161,12 @@
         } else {
           this.discipline = [];
           this.isShowDiscipline = false;
+        }
+      }
+    }, filters : {
+      toUpper : function (value) {
+        if (value){
+          return value.toUpperCase();
         }
       }
     }

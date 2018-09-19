@@ -3,7 +3,7 @@
     <b-button variant="success" class="add-button" @click="showModal">Adicionar</b-button>
     <b-modal ref="modal" centered title="Adicionar Reportagem" ok-title="Adicionar"
              cancel-title="Cancelar" @ok="save">
-      <p v-if="period"><b>PERÍODO :</b> {{period.description | toUpper}}</p>
+      <p><b>PERÍODO :</b> <span v-if="period">{{period.description | toUpper}}</span></p>
       <b-form-select id="select" v-model="costCenter" class="mb-3" required>
         <option v-for="cc in costCenters" :value="cc">{{cc.description | toUpper}}</option>
       </b-form-select>
@@ -88,10 +88,7 @@
 
 <script>
   /* eslint-disable */
-  import VueSingleSelect from "vue-single-select";
-
   export default {
-    components: {VueSingleSelect},
     props: {
       period: {
         required: true,
@@ -127,12 +124,12 @@
       }
     },
     methods: {
-      // Centros de Custo que não possuem reportagem no período ativo por usuário
       findUserCostCenterByUserIdWithoutReportingInPeriod() {
         this.$http()
           .get("reporting/findUserCostCenterByUserIdWithoutReportingInPeriod", {params: {user_id: this.$store.getters["auth/user"].ID}})
           .then((response, err) => {
             if (err) console.log("err >", err);
+            console.log('response.data.data > ', response.data.data);
             this.costCenters = response.data.data;
           });
       },

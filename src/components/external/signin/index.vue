@@ -73,8 +73,8 @@
               this.$NProgress().done();
             }, (err) => {
               console.log('err >', err);
-              this.$NProgress().done();
               this.$snotify.warning('Erro ao realizar login. Entre em contato com o suporte ou tente novamente mais tarde.');
+              this.$NProgress().done();
               // console.log('> sign-in.social() error! (2)', err);  // eslint-disable-line
             });
           },(err) => {
