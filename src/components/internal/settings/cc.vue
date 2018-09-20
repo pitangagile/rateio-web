@@ -4,6 +4,7 @@
       <b-col cols="3">
         <div id="element">
           <b-form-select id="select" v-model="selectedCostCenter" class="mb-3" required>
+            <option :value="null">Selecione um centro de custo</option>
             <option v-for="cc in costCenters" :value="cc">{{cc.description | toUpper}}</option>
           </b-form-select>
           <b-button id="addCostCenter" variant="success" v-on:click="addCostCenter">Adicionar</b-button>

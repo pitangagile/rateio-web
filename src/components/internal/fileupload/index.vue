@@ -9,10 +9,36 @@
       <b-col cols="4">
         <b-form-file id="input" accept=".xls, .xlsx" v-model="file" :state="Boolean(file)"
                      placeholder="Selecione um arquivo"/>
-        <br />
+        <br/>
         <b-button id="submit-file" :variant="'success'" v-on:click="inserirArquivo()">
           Submeter
         </b-button>
+      </b-col>
+      <b-col cols="8">
+        <b-btn v-on:click="showAndHideInstructions" variant="primary">Instruções</b-btn>
+        <span v-if="showInstuctions">
+          <b-jumbotron style="margin-top: 10px;">
+            <template slot="header">
+              Instruções
+            </template>
+            <template slot="lead">
+              Instruções para submissão de arquivo .xls
+            </template>
+            <hr />
+            <h3>Cabeçalho</h3>
+            <p>O cabeçalho deve conter os seguintes campos:</p>
+            <ul>
+              <ul>
+                <li>MATR</li>
+                <li>COD CC ORIG</li>
+                <li>COD CC DEST</li>
+              </ul>
+            </ul>
+            <p><b>MATR</b> para a matrícula do colaborador</p>
+            <p><b>COD CC ORIG</b> para o centro de custo de origem do colaborador</p>
+            <p><b>COD CC DEST</b> para o centro de custo de destino do colaborador</p>
+          </b-jumbotron>
+        </span>
       </b-col>
     </b-row>
     <b-row>
@@ -44,7 +70,9 @@
           </div>
           <div slot="registrations" slot-scope="props" align="center">
             <p v-if="!props.row.registrations" @click="">N/A</p>
-            <b-btn variant="primary" v-show="props.row.registrations.length > 0" @click="showModal(props.row.registrations)"><i class="icon-group" style="color: white;"></i> Mostrar</b-btn>
+            <b-btn variant="primary" v-show="props.row.registrations.length > 0"
+                   @click="showModal(props.row.registrations)"><i class="icon-group" style="color: white;"></i> Mostrar
+            </b-btn>
           </div>
           <div v-if="props.row" slot="actions" slot-scope="props" class="btn-group" style="width: 100%;">
             <b-btn @click="remove(props.row)" class="icon-trash icon-table" size="sm" variant="danger"
@@ -81,7 +109,8 @@
     data() {
       return {
 
-        registrations : '',
+        registrations: '',
+        showInstuctions: false,
 
         urlApiGrid: `${variables.http.root}fileupload/gridlist`,
         file: null,
@@ -115,11 +144,18 @@
       },
     },
     methods: {
-      showModal(registrations){
+      showAndHideInstructions(){
+        if (this.showInstuctions){
+          this.showInstuctions = false;
+        }else{
+          this.showInstuctions = true;
+        }
+      },
+      showModal(registrations) {
         this.registrations = registrations.toString().split(',');
         this.$refs.registrationsModal.show();
       },
-      hideModal(){
+      hideModal() {
         this.$refs.registrationsModal.hide();
       },
       validateAllEmployeesFromSpreadsheet(uniquesRegistrations) {
@@ -158,11 +194,11 @@
                   if (err) {
                     console.log('err > ', err);
                     return err;
-                  }else{
+                  } else {
                     return result;
                   }
                 });
-                if (result){
+                if (result) {
                   this.createManages(employees);
                 }
               }
@@ -182,8 +218,8 @@
           return this.$snotify.warning('Selecione um arquivo');
         }
       },
-      createManages(employees){
-        this.$http().post('manage/createManagesFromFile', {params: {'employees' : employees}}).then((response, err) => {
+      createManages(employees) {
+        this.$http().post('manage/createManagesFromFile', {params: {'employees': employees}}).then((response, err) => {
           if (err) console.log('err > ', err);
           this.onUpdate();
         });
@@ -211,8 +247,8 @@
           this.onUpdate();
         });
       },
-      remove(fileUpload){
-        this.$http().delete('fileupload', {params : {'_id' : fileUpload._id}}).then((response, err) => {
+      remove(fileUpload) {
+        this.$http().delete('fileupload', {params: {'_id': fileUpload._id}}).then((response, err) => {
           if (err) {
             console.log('err > ', err);
             this.$NProgress().done();
