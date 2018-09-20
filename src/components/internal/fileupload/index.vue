@@ -1,30 +1,66 @@
 <template>
   <div>
+    <span v-if="showErrors">
+      <b-alert variant="danger" show dismissible @dismissed="hideAlert">
+        <ul style="margin: 0px;">
+          <li v-for="error in errors">{{error}}</li>
+        </ul>
+      </b-alert>
+    </span>
     <b-row class="page">
       <b-col cols="12">
         <h1 class="page--title"><span class="icon-file-excel h4"></span> {{ titulo_pagina }} </h1>
       </b-col>
     </b-row>
     <b-row style="padding-top: 10px !important;">
-      <b-col cols="4">
-        <b-form-file id="input" accept=".xls, .xlsx" v-model="file" :state="Boolean(file)"
-                     placeholder="Selecione um arquivo"/>
-        <br/>
-        <b-button id="submit-file" :variant="'success'" v-on:click="inserirArquivo()">
-          Submeter
-        </b-button>
+      <b-col cols="6">
+        <b-form>
+          <b-card
+            class="card-search">
+            <b-card-header style="background: white;">
+              <h3>Adicionar</h3>
+            </b-card-header>
+            <b-card-body>
+              <b-row>
+                <b-col cols="2">Período</b-col>
+                <b-col cols="10">
+                  <b-form-select id="selectPeriod" v-model="period" class="mb-3" required>
+                    <option :value="null">Selecione um período</option>
+                    <option v-for="period in periods" :value="period">{{period.description | toUpper}}</option>
+                  </b-form-select>
+                </b-col>
+              </b-row>
+              <b-row>
+                <b-col cols="2">
+                  <label>Arquivo</label>
+                </b-col>
+                <b-col cols="6">
+                  <b-form-file id="input" accept=".xls, .xlsx" v-model="file" required :state="Boolean(file)"
+                               placeholder="Selecione um arquivo"/>
+                </b-col>
+                <b-col cols="4">
+                  <b-btn v-on:click="showAndHideInstructions" variant="info" style="float: right;">{{showInstuctions ?
+                    'Esconder' : 'Mostrar'}} Instruções
+                  </b-btn>
+                </b-col>
+              </b-row>
+            </b-card-body>
+            <b-card-footer style="background: white;">
+              <b-button class="submit-file" :variant="'success'" v-on:click="inserirArquivo()">Submeter</b-button>
+            </b-card-footer>
+          </b-card>
+        </b-form>
       </b-col>
-      <b-col cols="8">
-        <b-btn v-on:click="showAndHideInstructions" variant="primary">Instruções</b-btn>
+      <b-col cols="6">
         <span v-if="showInstuctions">
-          <b-jumbotron style="margin-top: 10px;">
+          <b-jumbotron>
             <template slot="header">
               Instruções
             </template>
             <template slot="lead">
               Instruções para submissão de arquivo .xls
             </template>
-            <hr />
+            <hr/>
             <h3>Cabeçalho</h3>
             <p>O cabeçalho deve conter os seguintes campos:</p>
             <ul>
@@ -39,7 +75,7 @@
             <p><b>COD CC DEST</b> para o centro de custo de destino do colaborador</p>
           </b-jumbotron>
         </span>
-      </b-col>
+      </b-col> <!-- Instruções -->
     </b-row>
     <b-row>
       <b-col cols="12">
@@ -75,20 +111,35 @@
             </b-btn>
           </div>
           <div v-if="props.row" slot="actions" slot-scope="props" class="btn-group" style="width: 100%;">
-            <b-btn @click="remove(props.row)" class="icon-trash icon-table" size="sm" variant="danger"
+            <b-btn @click="showModalRemove(props.row)" class="icon-trash icon-table" size="sm" variant="danger"
                    onmouseover="title='Remover'" style="margin: 0 auto;"></b-btn>
           </div>
         </v-server-table>
       </b-col>
-    </b-row>
-    <b-modal ref="registrationsModal" hide-footer title="MATRÍCULAS">
+    </b-row> <!--Tabela -->
+    <b-modal ref="registrationsModal" centered hide-footer title="MATRÍCULAS">
       <div class="d-block text-center">
         <ul v-show="registrations.length > 0" v-for="registration in registrations" style="float: left;">
           <li>{{registration}}</li>
         </ul>
       </div>
       <b-btn class="mt-3" variant="outline-danger" block @click="hideModal">Fechar</b-btn>
-    </b-modal>
+    </b-modal> <!-- Modal com matrículas não cadastradas -->
+    <b-modal ref="removeModal" centered hide-footer>
+      <div slot="modal-header" align="left">
+        <h3 style="color: #d34c2a;">Excluir</h3>
+      </div>
+      <div class="d-block text-center">
+        <p style="text-align: left; font-size: 15px;">Deseja realmente excluir o arquivo?</p>
+        <p style="text-align: left; font-weight: bold;">Atenção: Todos os registros de rateio que estão
+          vinculados ao período serão removidos.</p>
+      </div>
+      <hr/>
+      <div style="width: 100%; text-align: right;">
+        <b-btn class="mt-3" variant="danger" @click="hideCancelModal" style="max-width: 100px">Cancelar</b-btn>
+        <b-btn class="mt-3" variant="success" @click="remove" style="max-width: 100px">Confirmar</b-btn>
+      </div>
+    </b-modal> <!-- Modal com matrículas não cadastradas -->
   </div>
 </template>
 <script>
@@ -111,6 +162,11 @@
 
         registrations: '',
         showInstuctions: false,
+        period: null,
+        periods: [],
+
+        errors: [],
+        showErrors: false,
 
         urlApiGrid: `${variables.http.root}fileupload/gridlist`,
         file: null,
@@ -138,16 +194,37 @@
         }
       };
     },
+    mounted() {
+      this.findAllPeriodsWithoutFile();
+    },
     computed: {
       user() {
         return this.$store.getters['auth/user'];
       },
     },
     methods: {
-      showAndHideInstructions(){
-        if (this.showInstuctions){
+      hideAlert() {
+        this.showErrors = false;
+        this.errors = [];
+      },
+      findAllPeriodsWithoutFile() {
+        this.$http().get('period/findAllPeriodsWithoutFile').then((response, err) => {
+          if (err) console.log('err > ', err);
+          this.periods = response.data;
+        });
+      },
+      showModalRemove(fileUpload) {
+        this.file = fileUpload;
+        this.$refs.removeModal.show();
+      },
+      hideCancelModal() {
+        this.file = null;
+        this.$refs.removeModal.hide();
+      },
+      showAndHideInstructions() {
+        if (this.showInstuctions) {
           this.showInstuctions = false;
-        }else{
+        } else {
           this.showInstuctions = true;
         }
       },
@@ -209,13 +286,27 @@
       },
       inserirArquivo() {
         this.$NProgress().start();
-        this.validarArquivo();
-        this.extractData();
-        this.$NProgress().done();
+        this.validate();
+        if (this.errors.length > 0) {
+          this.showErrors = true;
+          this.$NProgress().done();
+        } else {
+          this.extractData();
+          this.$NProgress().done();
+        }
       },
-      validarArquivo: function () {
+      validate() {
+        this.periodValidate();
+        this.fileValidate();
+      },
+      periodValidate: function () {
+        if (this.period === undefined || this.period === null) {
+          this.errors.push('Selecione um período');
+        }
+      },
+      fileValidate: function () {
         if (this.file === undefined || this.file === null) {
-          return this.$snotify.warning('Selecione um arquivo');
+          this.errors.push('Selecione um arquivo');
         }
       },
       createManages(employees) {
@@ -247,8 +338,8 @@
           this.onUpdate();
         });
       },
-      remove(fileUpload) {
-        this.$http().delete('fileupload', {params: {'_id': fileUpload._id}}).then((response, err) => {
+      remove() {
+        this.$http().delete('fileupload', {params: {'_id': this.file._id}}).then((response, err) => {
           if (err) {
             console.log('err > ', err);
             this.$NProgress().done();
@@ -257,14 +348,19 @@
               'Não foi possível remover a planilha.',
               'error'
             );
+            this.$refs.removeModal.hide();
+            this.onUpdate();
+          } else {
+            this.onUpdate();
+            this.$NProgress().done();
+            this.$swal(
+              'Planilha',
+              'Planilha removida com sucesso.',
+              'success'
+            );
+            this.$refs.removeModal.hide();
+            this.onUpdate();
           }
-          this.onUpdate();
-          this.$NProgress().done();
-          this.$swal(
-            'Planilha',
-            'Planilha removida com sucesso.',
-            'success'
-          );
         })
       },
       onUpdate() {
@@ -288,10 +384,12 @@
 
 <style lang="scss" scoped>
 
-  #submit-file {
-    margin-top: 10px;
-    margin-right: 10px;
-    margin-bottom: 10px;
+  label {
+    font-size: .9rem;
+  }
+
+  .submit-file {
+    float: right;
   }
 
   .heading_center {
