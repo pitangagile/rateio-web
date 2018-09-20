@@ -33,7 +33,7 @@
           </b-row>
           <b-row>
             <b-col cols="12">
-              <b-form-group label="Selecione o tipo de pesquisa"
+              <b-form-group label="Tipo de Resultado"
                             style="margin-top: 1rem; color: #d34c2a; font-size: 1rem; text-align: center;">
                 <b-form-radio-group v-model="searchType"
                                     :options="searchTypes"
@@ -51,46 +51,14 @@
       </b-card>
     </b-col>
     <b-col cols="12">
-      <b-card
-        class="card-search"
-        no-footer
-        :header="'RESULTADOS'"
-        header-tag="header"
-        title=""
-        v-if="isShowDiscipline && isFindReporting"
-        style="margin-bottom: 20px;">
-        <b-card-body style="padding: 5px !important;">
-          <b-row style="width: 100%">
-            <b-col cols="6"><label>Disciplina</label></b-col>
-            <b-col cols="6"><label>Horas Reportadas no Período</label></b-col>
-          </b-row>
-          <hr />
-          <b-row style="width: 100%">
-            <b-col cols="6"><b>REQ</b></b-col>
-            <b-col cols="6">{{disciplines.totalReq}} hs</b-col>
-          </b-row>
-          <hr />
-          <b-row style="width: 100%">
-            <b-col cols="6"><b>A&P</b></b-col>
-            <b-col cols="6">{{disciplines.totalAep}} hs</b-col>
-          </b-row>
-          <hr />
-          <b-row style="width: 100%">
-            <b-col cols="6"><b>IMPLE</b></b-col>
-            <b-col cols="6">{{disciplines.totalImple}} hs</b-col>
-          </b-row>
-          <hr />
-          <b-row style="width: 100%">
-            <b-col cols="6"><b>TST</b></b-col>
-            <b-col cols="6">{{disciplines.totalTst}} hs</b-col>
-          </b-row>
-          <hr />
-          <b-row style="width: 100%">
-            <b-col cols="6"><b>P&G</b></b-col>
-            <b-col cols="6">{{disciplines.totalPeg}} hs</b-col>
-          </b-row>
-        </b-card-body>
-      </b-card>
+      <b-table v-if="isShowDiscipline && isFindReporting" class="table-results" bordered :items="disciplines"
+               :fields="fieldsDisciplines"></b-table>
+    </b-col>
+    <b-col cols="12">
+      <b-table v-if="!isShowDiscipline && isFindReporting" class="table-results" bordered :items="employees"
+               :fields="fieldsEmpĺoyees">
+      </b-table>
+      <p class="no-results" v-if="!isShowDiscipline && isFindReporting && employees.length === 0">Não há registros para a consulta efetuada</p>
     </b-col>
   </b-row>
 </template>
@@ -98,6 +66,9 @@
 <script>
   /* eslint-disable */
   import Vue from "vue";
+  import {ClientTable} from 'vue-tables-2';
+
+  Vue.use(ClientTable);
 
   export default {
     showLoading: true,
@@ -110,6 +81,44 @@
 
         periods: [],
         costCenters: [],
+
+        employees: [],
+        disciplines: [],
+
+        fieldsEmpĺoyees: {
+          _id: {
+            label: 'NOME',
+            sortable: false
+          },
+          hours: {
+            label: 'TOTAL DE HORAS REPORTADAS',
+            sortable: false
+          },
+        },
+
+        fieldsDisciplines: {
+          totalReq: {
+            label: 'REQ',
+            sortable: false
+          },
+          totalAep: {
+            label: 'A&P',
+            sortable: false
+          },
+          totalImple: {
+            label: 'IMPLE',
+            sortable: false
+          },
+          totalTst: {
+            label: 'TST',
+            sortable: false
+          },
+          totalPeg: {
+            label: 'P&G',
+            sortable: false
+          },
+        },
+
         searchTypes: [
           {text: 'Disciplinas', value: 'discipline'},
           {text: 'Colaboradores', value: 'employee'},
@@ -118,8 +127,6 @@
         period: null,
         costCenter: null,
         searchType: 'discipline',
-
-        disciplines: {},
       };
     }, mounted() {
       this.findAllPeriods();
@@ -140,19 +147,28 @@
       },
       findReporting() {
         console.log('searchType > ', this.searchType);
-        if (this.searchType && this.searchType === 'discipline') {
-          this.$http().get('reporting/findReportingHoursDisciplinePerCostCenter', {
-            params: {
-              'period': this.period,
-              'costCenter': this.costCenter
-            }
-          }).then((response, err) => {
-            if (err) console.log('err > ', err);
-            console.log('response.data.data > ', response.data.data);
-            this.disciplines = response.data.data;
-            this.isFindReporting = true;
-          });
-        }
+        this.$http().get('reporting/findReportingHoursDisciplinePerCostCenter', {
+          params: {
+            'period': this.period,
+            'costCenter': this.costCenter
+          }
+        }).then((response, err) => {
+          if (err) console.log('err > ', err);
+          console.log('response.data.data > ', response.data.data);
+          this.disciplines = response.data.data;
+          this.isFindReporting = true;
+        });
+        this.$http().get('reporting/findReportingHoursEmployeePerCostCenter', {
+          params: {
+            'period': this.period,
+            'costCenter': this.costCenter
+          }
+        }).then((response, err) => {
+          if (err) console.log('err > ', err);
+          console.log('response.data.data > ', response.data.data);
+          this.employees = response.data.data;
+          this.isFindReporting = true;
+        });
       },
     }, watch: {
       searchType: function (newValue, oldValue) {
@@ -163,9 +179,9 @@
           this.isShowDiscipline = false;
         }
       }
-    }, filters : {
-      toUpper : function (value) {
-        if (value){
+    }, filters: {
+      toUpper: function (value) {
+        if (value) {
           return value.toUpperCase();
         }
       }
@@ -181,11 +197,26 @@
     margin-top: 20px;
   }
 
+  .table-results {
+    width: 50%;
+    margin: 0 auto 0;
+    margin-top: 20px;
+  }
+
   label {
     color: #d34c2a;
     font-size: 1rem;
     text-transform: capitalize;
     text-align: center;
+  }
+
+  .no-results {
+    text-align: center;
+    border: 1px solid #dee2e6;
+    width: 50%;
+    margin: 0 auto;
+    border-top: 0px;
+    padding: 0.75rem;
   }
 
 </style>
