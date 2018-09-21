@@ -142,7 +142,7 @@
         this.$http().get('period/pickActivePeriod').then((response, err) => {
           if (err) console.log('err > ', err);
           this.period = response.data.data;
-          this.filename = this.period.description + '.xls';
+          this.filename = this.period ? this.period.description + '.xls' : '';
         })
       },
       loadAllManage() {
@@ -178,7 +178,7 @@
           this.startManage = false;
           this.isManageExecutedWithSuccess = true;
           this.loadAllManage();
-          this.refresh();
+          this.onUpdate();
           this.$NProgress().done();
           this.$swal(
             'Rateio',
@@ -186,7 +186,7 @@
             'success'
           );
         })
-      },refresh() {
+      },onUpdate() {
         this.$refs.grid.refresh();
       },
     }, filters: {

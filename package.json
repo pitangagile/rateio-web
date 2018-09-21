@@ -35,6 +35,7 @@
     "vue-select": "^2.4.0",
     "vue-snotify": "^3.0.4",
     "vue-tables-2": "^1.4.3",
+    "vuejs-datepicker": "^1.5.3",
     "vuex": "^3.0.1"
   },
   "devDependencies": {

@@ -154,7 +154,6 @@
           }
         }).then((response, err) => {
           if (err) console.log('err > ', err);
-          console.log('response.data.data > ', response.data.data);
           this.disciplines = response.data.data;
           this.isFindReporting = true;
         });
@@ -165,7 +164,6 @@
           }
         }).then((response, err) => {
           if (err) console.log('err > ', err);
-          console.log('response.data.data > ', response.data.data);
           this.employees = response.data.data;
           this.isFindReporting = true;
         });

@@ -15,6 +15,9 @@
             <b-col v-if="this.period" cols="4">
               {{this.period.description | upperCase}}
             </b-col>
+            <b-col v-if="!this.period" cols="4">
+              -
+            </b-col>
           </b-row>
           <b-row class="row-form">
             <b-col cols="8">
@@ -28,8 +31,11 @@
             <b-col cols="8">
               <i class="icon-hourglass" style="color: #d34c2a;"></i><label > TOTAL DE HORAS REPORTADAS NO PERÍODO:</label>
             </b-col>
-            <b-col cols="4">
+            <b-col cols="4" v-if="this.totalHoursReportingByActivePeriod">
               {{this.totalHoursReportingByActivePeriod}}hs
+            </b-col>
+            <b-col cols="4" v-if="!this.totalHoursReportingByActivePeriod">
+              0hs
             </b-col>
           </b-row>
         </b-card-body>

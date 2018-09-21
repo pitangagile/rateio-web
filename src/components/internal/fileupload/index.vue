@@ -76,17 +76,21 @@
           </b-jumbotron>
         </span>
       </b-col> <!-- Instruções -->
-    </b-row>
+    </b-row> <!-- Inserir arquivo + Instruções -->
     <b-row>
       <b-col cols="12">
         <v-server-table striped hover class="grid mt-3 mb-2" :url="urlApiGrid" :columns="columns" :options="options"
                         ref="planilhas">
 
+          <div slot="h__period" class="heading_center">Período</div>
           <div slot="h__createdAt" class="heading_center">Data de Criação</div>
           <div slot="h__status" class="heading_center">Situação</div>
           <div slot="h__registrations" class="heading_center">Matrículas sem Cadastro</div>
           <div slot="h__actions" class="heading_center">Ações</div>
 
+          <div slot="period" slot-scope="props">
+            <span>{{props.row.period.description | toUpper}}</span>
+          </div>
           <div slot="name" slot-scope="props">
             <span>{{props.row.name | toUpper}}</span>
           </div>
@@ -139,7 +143,7 @@
         <b-btn class="mt-3" variant="danger" @click="hideCancelModal" style="max-width: 100px">Cancelar</b-btn>
         <b-btn class="mt-3" variant="success" @click="remove" style="max-width: 100px">Confirmar</b-btn>
       </div>
-    </b-modal> <!-- Modal com matrículas não cadastradas -->
+    </b-modal> <!-- Modal remover arquivo -->
   </div>
 </template>
 <script>
@@ -171,9 +175,10 @@
         urlApiGrid: `${variables.http.root}fileupload/gridlist`,
         file: null,
         titulo_pagina: 'Registro de Planilhas',
-        columns: ['name', 'responsable', 'createdAt', 'status', 'registrations', 'actions'],
+        columns: ['period', 'name', 'responsable', 'createdAt', 'status', 'registrations', 'actions'],
         options: {
           headings: {
+            period: 'Período',
             name: 'Nome do Arquivo',
             responsable: 'Responsável',
             createdAt: 'Data de Inserção',
@@ -364,6 +369,7 @@
         })
       },
       onUpdate() {
+        this.findAllPeriodsWithoutFile();
         this.$refs.planilhas.refresh();
       }
     },

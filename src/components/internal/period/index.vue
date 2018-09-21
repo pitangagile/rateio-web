@@ -1,26 +1,50 @@
 <template>
-  <b-row class="page">
-    <b-col cols="12">
-      <h1 class="page--title"><span class="icon-calendar-1 h4"></span> {{title}}</h1>
-    </b-col>
-    <b-col cols="12">
-      <v-server-table class="grid mt-3 mb-2" :url="urlApiGrid" :columns="columns" :options="options">
-        <div slot="afterFilter" class="add-button">
-          <b-button variant="success" class="add-button" style="margin-left: 5px;">Adicionar</b-button>
-        </div>
-        <div slot="description" slot-scope="props">
-          <label>{{props.row.description | toUpper }}</label>
-        </div>
-        <div slot="initialDate" slot-scope="props">
-          <label>{{props.row.initialDate | dateFormat }}</label>
-        </div>
-        <div slot="finalDate" slot-scope="props">
-          <label>{{props.row.finalDate | dateFormat }}</label>
-        </div>
-      </v-server-table>
-    </b-col>
-
-  </b-row>
+  <div>
+    <b-row class="page">
+      <b-col cols="12">
+        <h1 class="page--title"><span class="icon-calendar-1 h4"></span> {{title}}</h1>
+      </b-col>
+      <b-col cols="12">
+        <v-server-table class="grid mt-3 mb-2" :url="urlApiGrid" :columns="columns" :options="options" ref="grid">
+          <div slot="afterFilter" class="add-button">
+            <add @refresh="onUpdate"></add>
+          </div>
+          <div slot="description" slot-scope="props">
+            <label>{{props.row.description | toUpper }}</label>
+          </div>
+          <div slot="initialDate" slot-scope="props">
+            <label>{{props.row.initialDate | dateFormat }}</label>
+          </div>
+          <div slot="finalDate" slot-scope="props">
+            <label>{{props.row.finalDate | dateFormat }}</label>
+          </div>
+          <div v-if="props.row" slot="actions" slot-scope="props" class="btn-group">
+            <edit @refresh="onUpdate" :period="props.row"></edit>
+            <b-btn @click="showModalRemove(props.row)" class="icon-trash icon-table" size="sm" variant="danger"
+                   onmouseover="title='Remover'" style="margin: 1px;"></b-btn>
+          </div>
+        </v-server-table>
+      </b-col>
+    </b-row>
+    <b-modal ref="removeModal" centered hide-footer>
+      <div slot="modal-header" align="left">
+        <h3 style="color: #d34c2a;">Excluir</h3>
+      </div>
+      <div class="d-block text-center">
+        <p style="text-align: left; font-size: 15px;">Deseja realmente excluir o período?</p>
+        <p style="text-align: left; font-weight: bold;">A remoção do período implicará:</p>
+        <ol>
+          <li style="font-weight: bold; text-align: left">Remoção da planilha de folha associada a ele, caso exista;</li>
+          <li style="font-weight: bold; text-align: left">Remoção do rateio gerado, caso alguma planilha de folha tenha sido inserida com sucesso.</li>
+        </ol>
+      </div>
+      <hr/>
+      <div style="width: 100%; text-align: right;">
+        <b-btn class="mt-3" variant="danger" @click="hideCancelModal" style="max-width: 100px">Cancelar</b-btn>
+        <b-btn class="mt-3" variant="success" @click="remove" style="max-width: 100px">Confirmar</b-btn>
+      </div>
+    </b-modal> <!-- Modal remover arquivo -->
+  </div>
 </template>
 
 <script>
@@ -31,16 +55,22 @@
   import variables from './../../../commons/helpers/variables';
   import moment from 'moment';
 
+  import add from './add';
+  import edit from './edit';
+
   Vue.use(ServerTable, options, false, 'bootstrap4', 'default');
 
   export default {
     name: 'Period',
-    components: {},
+    components: {add, edit},
     data() {
       return {
         title: 'Período',
+
+        period: null,
+
         urlApiGrid: `${variables.http.root}period`,
-        columns: ['description', 'initialDate', 'finalDate', 'closuremanagers', 'generationdate'],
+        columns: ['description', 'initialDate', 'finalDate', 'closuremanagers', 'generationdate', 'actions'],
         reporting: [],
         options: {
           headings: {
@@ -49,6 +79,7 @@
             finalDate: 'Término',
             closuremanagers: 'Fechamento Gerente',
             generationdate: 'Geração Consolidada',
+            actions: 'Ações'
           },
           sortable: [],
           filterable: ['description'],
@@ -67,14 +98,48 @@
         },
       };
     },
-    methods: {},
-    filters : {
-      toUpper(value){
-        if (value !== null && value !== undefined){
+    methods: {
+      showModalRemove(period) {
+        this.period = period;
+        this.$refs.removeModal.show();
+      },
+      hideCancelModal() {
+        this.period = null;
+        this.$refs.removeModal.hide();
+      },
+      remove() {
+        this.$http().delete('period', {params: {'_id': this.period._id}}).then((result, err) => {
+          if (err) {
+            this.$refs.removeModal.hide();
+            this.$swal(
+              'Período',
+              'Não foi possível remover o período selecionado.',
+              'error'
+            );
+            this.onUpdate();
+          } else {
+            this.$refs.removeModal.hide();
+            this.$swal(
+              'Período',
+              'Período removido com sucesso.',
+              'success'
+            );
+            this.onUpdate();
+          }
+        });
+      },
+      onUpdate() {
+        this.period = null;
+        this.$refs.grid.refresh();
+      }
+    },
+    filters: {
+      toUpper(value) {
+        if (value !== null && value !== undefined) {
           return value.toUpperCase();
         }
       },
-      dateFormat: function(value) {
+      dateFormat: function (value) {
         if (value) {
           return moment(String(value)).format("DD/MM/YYYY");
         }

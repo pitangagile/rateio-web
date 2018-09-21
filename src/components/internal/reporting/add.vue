@@ -129,7 +129,6 @@
           .get("reporting/findUserCostCenterByUserIdWithoutReportingInPeriod", {params: {user_id: this.$store.getters["auth/user"].ID}})
           .then((response, err) => {
             if (err) console.log("err >", err);
-            console.log('response.data.data > ', response.data.data);
             this.costCenters = response.data.data;
           });
       },
