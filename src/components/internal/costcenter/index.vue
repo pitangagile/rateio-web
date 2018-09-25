@@ -6,7 +6,7 @@
 
     <b-col cols="12">
       <v-server-table class="grid mt-3 mb-2" ref="grid"
-                      :columns="columns" :options="options" url="">
+                      :columns="columns" :options="options" url="" debounce="1500">
         <div slot="afterFilter" class="add-button">
           <add @allCenters="AllCenters()"></add>
         </div>

@@ -35,7 +35,7 @@
           <b-row>
             <b-col cols="12">
               <v-server-table striped hover class="grid mt-3 mb-2" :url="urlApiGrid" :columns="columns"
-                              :options="options" ref="grid">
+                              :options="options" ref="grid" debounce="1500">
 
                 <!-- Header -->
                 <div slot="h__employee" class="heading_center">Colaborador</div>

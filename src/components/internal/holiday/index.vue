@@ -5,7 +5,7 @@
     </b-col>
     <b-col cols="12">
       <v-server-table class="grid mt-3 mb-2" :url="urlApiGrid" :columns="columns" :options="options"
-                      ref="grid">
+                      ref="grid" debounce="1500">
         <div slot="date" slot-scope="props" class="btn-group">
           <label>{{props.row.date | dateFormat}}</label>
         </div>

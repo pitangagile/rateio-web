@@ -6,7 +6,7 @@
 
     <b-col cols="12">
       <v-server-table class="grid mt-3 mb-2" :url="urlApiGrid" :columns="columns" :options="options" ref="grid">
-        <div slot="afterFilter" class="add-button">
+        <div slot="afterFilter" class="add-button" debounce="1500">
           <add @refresh="refresh()" style="padding-left: 5px;"></add>
         </div>
         <div slot="name" slot-scope="props">

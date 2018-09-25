@@ -80,7 +80,7 @@
     <b-row>
       <b-col cols="12">
         <v-server-table striped hover class="grid mt-3 mb-2" :url="urlApiGrid" :columns="columns" :options="options"
-                        ref="planilhas">
+                        ref="planilhas" debounce="1500">
 
           <div slot="h__period" class="heading_center">Período</div>
           <div slot="h__createdAt" class="heading_center">Data de Criação</div>

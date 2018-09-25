@@ -13,7 +13,7 @@
     </b-row>
     <hr />
     <v-server-table striped hover class="grid mt-3 mb-2" :url="urlApiGrid" :columns="columns" :options="options"
-                    ref="grid">
+                    ref="grid" debounce="1500">
       <div slot="code" slot-scope="props" class="btn-group">
         <i class="icon-money"></i> {{props.row.code}}
       </div>

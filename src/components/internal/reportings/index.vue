@@ -10,7 +10,7 @@
     </b-col>
     <b-col cols="12">
       <v-server-table class="grid mt-3 mb-2" :url="urlApiGrid" :columns="columns" :options="options"
-                      ref="grid">
+                      ref="grid" debounce="1500">
         <div slot="h__period" class="header-table">Período</div>
         <div slot="h__costCenter" class="header-table">Centro de Custo</div>
         <div slot="h__totalHoursCostCenter" class="header-table">Percentual de Alocação (%)</div>

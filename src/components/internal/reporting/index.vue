@@ -44,7 +44,7 @@
       </b-col>
       <b-col cols="12">
         <v-server-table class="grid mt-3 mb-2" :url="urlApiGrid" :columns="columns" :options="options"
-                        ref="grid">
+                        ref="grid" debounce="1500">
           <div slot="afterFilter" class="add-button">
             <add ref="add" @refresh="refresh()" :period="period"></add>
           </div>
