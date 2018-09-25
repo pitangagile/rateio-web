@@ -2,7 +2,7 @@
   <div>
     <b-button variant="warning" class="icon-edit icon-table" size="sm" @click="showModal"
               style="margin: 1px;"></b-button>
-    <b-modal size="lg" class="modal-edit" ref="modal" centered hide-footer title="Editar Período" ok-title="Confirmar"
+    <b-modal class="modal-edit" ref="modal" centered title="Editar Período" ok-title="Confirmar"
              cancel-title="Cancelar" @ok="edit()">
       <span v-if="showErrors">
         <b-alert variant="danger" show dismissible @dismissed="hideAlert">
@@ -12,31 +12,26 @@
         </b-alert>
       </span>
       <b-row>
-        <b-col cols="3"><label><b>MÊS</b></label></b-col>
-        <b-col cols="3">
+        <b-col cols="2"><label><b>MÊS</b></label></b-col>
+        <b-col cols="4">
           <label>{{month | toUpper}}</label>
         </b-col>
-        <b-col cols="3"><label><b>ANO</b></label></b-col>
-        <b-col cols="3">
+        <b-col cols="2"><label><b>ANO</b></label></b-col>
+        <b-col cols="4">
           <label>{{year}}</label>
         </b-col>
       </b-row>
       <hr/>
       <b-row>
-        <b-col cols="3"><label><b>DATA INICIAL</b></label></b-col>
-        <b-col cols="3">
+        <b-col cols="2"><label><b>DATA INICIAL</b></label></b-col>
+        <b-col cols="4">
           <datepicker required :bootstrap-styling="true" format="dd/MM/yyyy" v-model="period.initialDate"></datepicker>
         </b-col>
-        <b-col cols="3"><label><b>DATA FINAL</b></label></b-col>
-        <b-col cols="3">
+        <b-col cols="2"><label><b>DATA FINAL</b></label></b-col>
+        <b-col cols="4">
           <datepicker required :bootstrap-styling="true" format="dd/MM/yyyy" v-model="period.finalDate"></datepicker>
         </b-col>
       </b-row>
-      <hr/>
-      <div style="width: 100%; text-align: right;">
-        <b-btn variant="danger" @click="hideModal" style="max-width: 100px">Cancelar</b-btn>
-        <b-btn variant="success" @click="edit" style="max-width: 100px">Confirmar</b-btn>
-      </div>
     </b-modal>
   </div>
 </template>
@@ -107,36 +102,25 @@
         this.errors = [];
       },
       edit() {
-        this.$http().get('period/findByDescription', {params: {'description': this.month.toUpperCase() + '/' + this.year}}).then((response, err) => {
-          if (err) {
-            this.hideAlert();
-            this.hideModal();
-          } else {
-            if (response.data) {
-              this.errors.push('Período já cadastrado.');
-              this.showErrors = true;
-            } else {
-              this.$http().put('period', {params: {'period': this.period}}).then((response) => {
-                this.$swal(
-                  'Adicionado',
-                  'Período adicionado com sucesso.',
-                  'success',
-                  this.hideModal(),
-                  this.hideAlert(),
-                  this.$emit('refresh'),
-                );
-              }, () => {
-                this.$swal(
-                  'Erro',
-                  'Erro ao adicionar período.',
-                  'error',
-                  this.hideModal(),
-                  this.hideAlert(),
-                  this.$emit('refresh'),
-                );
-              });
-            }
-          }
+
+        this.$http().put('period', {params: {'period': this.period}}).then((response) => {
+          this.$swal(
+            'Adicionado',
+            'Período editado com sucesso.',
+            'success',
+            this.hideModal(),
+            this.hideAlert(),
+            this.$emit('refresh'),
+          );
+        }, () => {
+          this.$swal(
+            'Erro',
+            'Erro ao editar período.',
+            'error',
+            this.hideModal(),
+            this.hideAlert(),
+            this.$emit('refresh'),
+          );
         });
       }
     }, filters: {

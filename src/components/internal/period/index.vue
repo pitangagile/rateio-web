@@ -26,22 +26,21 @@
         </v-server-table>
       </b-col>
     </b-row>
-    <b-modal ref="removeModal" centered hide-footer>
+    <b-modal class="modal-add" ref="removeModal" centered title="Remover Período" ok-title="Confirmar"
+             cancel-title="Cancelar" @ok="remove()">
       <div slot="modal-header" align="left">
-        <h3 style="color: #d34c2a;">Excluir</h3>
+        <h3>Excluir Período</h3>
       </div>
       <div class="d-block text-center">
         <p style="text-align: left; font-size: 15px;">Deseja realmente excluir o período?</p>
         <p style="text-align: left; font-weight: bold;">A remoção do período implicará:</p>
         <ol>
-          <li style="font-weight: bold; text-align: left">Remoção da planilha de folha associada a ele, caso exista;</li>
-          <li style="font-weight: bold; text-align: left">Remoção do rateio gerado, caso alguma planilha de folha tenha sido inserida com sucesso.</li>
+          <li style="font-weight: bold; text-align: left">Remoção da planilha de folha associada a ele, caso exista;
+          </li>
+          <li style="font-weight: bold; text-align: left">Remoção do rateio gerado, caso alguma planilha de folha tenha
+            sido inserida com sucesso.
+          </li>
         </ol>
-      </div>
-      <hr/>
-      <div style="width: 100%; text-align: right;">
-        <b-btn class="mt-3" variant="danger" @click="hideCancelModal" style="max-width: 100px">Cancelar</b-btn>
-        <b-btn class="mt-3" variant="success" @click="remove" style="max-width: 100px">Confirmar</b-btn>
       </div>
     </b-modal> <!-- Modal remover arquivo -->
   </div>

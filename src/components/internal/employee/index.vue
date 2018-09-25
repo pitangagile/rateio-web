@@ -60,7 +60,7 @@
           columnsClasses: {
             actions: 'action-column text-center',
           },
-          sortable: ['name'],
+          sortable: [],
           requestFunction(data) {
             return self.$http().get('employee/gridlist', {params: data})
               .catch((e) => {

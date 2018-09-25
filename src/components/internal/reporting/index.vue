@@ -1,70 +1,80 @@
 <template>
-  <b-row class="page">
-    <b-col cols="12">
-      <h1 class="page--title"><span class="icon-doc-text h4"></span> {{title}}</h1>
-    </b-col>
-    <b-col cols="5" style="margin: 0 auto !important;">
-      <b-card no-footer :header="'INFORMAÇÕES DO PERÍODO'"
-              header-tag="header"
-              title="">
-        <b-card-body style="padding: 5px !important;">
-          <b-row class="row-form">
-            <b-col cols="8">
-              <i class="icon-calendar-1" style="color: #d34c2a;"></i><label > PERÍODO:</label>
-            </b-col>
-            <b-col v-if="this.period" cols="4">
-              {{this.period.description | upperCase}}
-            </b-col>
-            <b-col v-if="!this.period" cols="4">
-              -
-            </b-col>
-          </b-row>
-          <b-row class="row-form">
-            <b-col cols="8">
-              <i class="icon-hourglass" style="color: #d34c2a;"></i><label > TOTAL DE HORAS DO PERÍODO:</label>
-            </b-col>
-            <b-col cols="4">
-              {{this.totalIdealHoursByActivePeriod}}hs
-            </b-col>
-          </b-row>
-          <b-row class="row-form">
-            <b-col cols="8">
-              <i class="icon-hourglass" style="color: #d34c2a;"></i><label > TOTAL DE HORAS REPORTADAS NO PERÍODO:</label>
-            </b-col>
-            <b-col cols="4" v-if="this.totalHoursReportingByActivePeriod">
-              {{this.totalHoursReportingByActivePeriod}}hs
-            </b-col>
-            <b-col cols="4" v-if="!this.totalHoursReportingByActivePeriod">
-              0hs
-            </b-col>
-          </b-row>
-        </b-card-body>
-      </b-card>
-    </b-col>
-    <b-col cols="12">
-      <v-server-table class="grid mt-3 mb-2" :url="urlApiGrid" :columns="columns" :options="options"
-                      ref="grid">
-        <div slot="afterFilter" class="add-button">
-          <add ref="add" @refresh="refresh()" :period="period"></add>
-        </div>
-        <div slot="period" slot-scope="props" class="btn-group">
-          <label v-if="props.row.period">{{props.row.period.description.toUpperCase()}}</label>
-        </div>
-        <div slot="costCenter" slot-scope="props" class="btn-group">
-          <label v-if="props.row.costCenter">{{props.row.costCenter.description}}</label>
-        </div>
-        <div slot="totalHoursCostCenter" slot-scope="props" class="btn-group mb-2">
-          <b-progress :value="convertHoursToPercent(props.row)" :max="100" show-progress animated
-                      variant="success" style="width: 15em;"></b-progress>
-        </div>
-        <div slot="actions" slot-scope="props" class="btn-group">
-          <edit @refresh="refresh()" :reporting="props.row"></edit>
-          <b-btn v-on:click="removeCenter(props.row._id)" class="icon-trash icon-table" size="sm" variant="danger"
-                 onmouseover="title='Remover'"></b-btn>
-        </div>
-      </v-server-table>
-    </b-col>
-  </b-row>
+  <div>
+    <b-row class="page">
+      <b-col cols="12">
+        <h1 class="page--title"><span class="icon-doc-text h4"></span> {{title}}</h1>
+      </b-col>
+      <b-col cols="5" style="margin: 0 auto !important;">
+        <b-card no-footer :header="'INFORMAÇÕES DO PERÍODO'"
+                header-tag="header"
+                title="">
+          <b-card-body style="padding: 5px !important;">
+            <b-row class="row-form">
+              <b-col cols="8">
+                <i class="icon-calendar-1" style="color: #d34c2a;"></i><label > PERÍODO:</label>
+              </b-col>
+              <b-col v-if="this.period" cols="4">
+                {{this.period.description | upperCase}}
+              </b-col>
+              <b-col v-if="!this.period" cols="4">
+                -
+              </b-col>
+            </b-row>
+            <b-row class="row-form">
+              <b-col cols="8">
+                <i class="icon-hourglass" style="color: #d34c2a;"></i><label > TOTAL DE HORAS DO PERÍODO:</label>
+              </b-col>
+              <b-col cols="4">
+                {{this.totalIdealHoursByActivePeriod}}hs
+              </b-col>
+            </b-row>
+            <b-row class="row-form">
+              <b-col cols="8">
+                <i class="icon-hourglass" style="color: #d34c2a;"></i><label > TOTAL DE HORAS REPORTADAS NO PERÍODO:</label>
+              </b-col>
+              <b-col cols="4" v-if="this.totalHoursReportingByActivePeriod">
+                {{this.totalHoursReportingByActivePeriod}}hs
+              </b-col>
+              <b-col cols="4" v-if="!this.totalHoursReportingByActivePeriod">
+                0hs
+              </b-col>
+            </b-row>
+          </b-card-body>
+        </b-card>
+      </b-col>
+      <b-col cols="12">
+        <v-server-table class="grid mt-3 mb-2" :url="urlApiGrid" :columns="columns" :options="options"
+                        ref="grid">
+          <div slot="afterFilter" class="add-button">
+            <add ref="add" @refresh="refresh()" :period="period"></add>
+          </div>
+          <div slot="period" slot-scope="props" class="btn-group">
+            <label v-if="props.row.period">{{props.row.period.description.toUpperCase()}}</label>
+          </div>
+          <div slot="costCenter" slot-scope="props" class="btn-group">
+            <label v-if="props.row.costCenter">{{props.row.costCenter.description}}</label>
+          </div>
+          <div slot="totalHoursCostCenter" slot-scope="props" class="btn-group mb-2">
+            <b-progress :value="convertHoursToPercent(props.row)" :max="100" show-progress animated
+                        variant="success" style="width: 15em;"></b-progress>
+          </div>
+          <div slot="actions" slot-scope="props" class="btn-group">
+            <edit @refresh="refresh()" :reporting="props.row"></edit>
+            <b-btn v-on:click="showRemoveModal(props.row)" class="icon-trash icon-table" size="sm" variant="danger"
+                   onmouseover="title='Remover'"></b-btn>
+          </div>
+        </v-server-table>
+      </b-col>
+    </b-row>
+    <b-modal ref="removeModal" centered ok-title="Confirmar" cancel-title="Cancelar" @ok="removeCenter()">
+      <div slot="modal-header" align="left">
+        <h3>Excluir Reportagem</h3>
+      </div>
+      <div class="d-block text-center">
+        <p style="text-align: left;">Deseja realmente excluir a reportagem?</p>
+      </div>
+    </b-modal> <!-- Modal remover reportagem -->
+  </div>
 </template>
 
 <script>
@@ -88,6 +98,7 @@
         title: "Reportagem",
 
         period: null,
+        reporting: null,
 
         totalIdealHoursByActivePeriod: 0,
         totalHoursReportingByActivePeriod: 0,
@@ -130,6 +141,36 @@
       this.calculateTotalReportingHoursByUserIdAndPerActivePeriod();
     },
     methods: {
+      showRemoveModal(reporting){
+        this.reporting = reporting;
+        this.$refs.removeModal.show();
+      },
+      removeCenter() {
+        this.$http()
+          .delete("reporting", {params: {_id: this.reporting._id}})
+          .then(
+            () => {
+              this.$swal(
+                "Removido",
+                "Reportagem removida.",
+                "success",
+                this.reporting = null,
+                this.refresh(),
+                this.$refs.removeModal.hide(),
+              );
+            },
+            () => {
+              this.$swal(
+                "Erro",
+                "Erro ao remover reportagem.",
+                "error",
+                this.reporting = null,
+                this.refresh(),
+                this.$refs.removeModal.hide(),
+              );
+            }
+          );
+      },
       pickActivePeriod() {
         this.$http()
           .get("period/pickActivePeriod").then((response, err) => {
@@ -156,23 +197,6 @@
       convertHoursToPercent(period) {
         var total = this.totalHoursReportingByActivePeriod > this.totalIdealHoursByActivePeriod ? this.totalHoursReportingByActivePeriod : this.totalIdealHoursByActivePeriod;
         return (period.totalHoursCostCenter / total) * 100;
-      },
-      removeCenter(_id) {
-        this.$http()
-          .delete("reporting", {params: {_id: _id}})
-          .then(
-            () => {
-              this.$swal(
-                "Removido",
-                "Reportagem removida.",
-                "success",
-                this.refresh()
-              );
-            },
-            () => {
-              this.$swal("Erro", "Erro ao remover reportagem.", "error");
-            }
-          );
       },
       refresh() {
         this.calculateTotalReportingHoursByUserIdAndPerActivePeriod();

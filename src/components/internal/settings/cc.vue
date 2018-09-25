@@ -49,7 +49,7 @@
             description: 'Descrição CC',
             actions: 'Ações',
           },
-          sortable: ['code'],
+          sortable: [],
           filterable: false,
           columnsClasses: {
             actions: 'action-column text-center',

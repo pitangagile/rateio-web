@@ -39,7 +39,7 @@
                                placeholder="Selecione um arquivo"/>
                 </b-col>
                 <b-col cols="4">
-                  <b-btn v-on:click="showAndHideInstructions" variant="info" style="float: right;">{{showInstuctions ?
+                  <b-btn title="Instruções" v-b-popover.hover="'Clique para saber mais sobre submissão de arquivos.'" v-on:click="showAndHideInstructions" variant="info" style="float: right;">{{showInstuctions ?
                     'Esconder' : 'Mostrar'}} Instruções
                   </b-btn>
                 </b-col>
@@ -121,7 +121,7 @@
         </v-server-table>
       </b-col>
     </b-row> <!--Tabela -->
-    <b-modal ref="registrationsModal" centered hide-footer title="MATRÍCULAS">
+    <b-modal ref="registrationsModal" centered title="MATRÍCULAS">
       <div class="d-block text-center">
         <ul v-show="registrations.length > 0" v-for="registration in registrations" style="float: left;">
           <li>{{registration}}</li>
@@ -129,19 +129,14 @@
       </div>
       <b-btn class="mt-3" variant="outline-danger" block @click="hideModal">Fechar</b-btn>
     </b-modal> <!-- Modal com matrículas não cadastradas -->
-    <b-modal ref="removeModal" centered hide-footer>
+    <b-modal ref="removeModal" centered @ok="remove()" ok-title="Confirmar" cancel-title="Cancelar">
       <div slot="modal-header" align="left">
-        <h3 style="color: #d34c2a;">Excluir</h3>
+        <h3>Excluir Arquivo</h3>
       </div>
       <div class="d-block text-center">
         <p style="text-align: left; font-size: 15px;">Deseja realmente excluir o arquivo?</p>
         <p style="text-align: left; font-weight: bold;">Atenção: Todos os registros de rateio que estão
           vinculados ao período serão removidos.</p>
-      </div>
-      <hr/>
-      <div style="width: 100%; text-align: right;">
-        <b-btn class="mt-3" variant="danger" @click="hideCancelModal" style="max-width: 100px">Cancelar</b-btn>
-        <b-btn class="mt-3" variant="success" @click="remove" style="max-width: 100px">Confirmar</b-btn>
       </div>
     </b-modal> <!-- Modal remover arquivo -->
   </div>

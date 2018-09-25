@@ -1,7 +1,7 @@
 <template>
   <div>
     <b-btn @click="showModal" class="btn-success" style="margin-left: 5px;">Adicionar</b-btn>
-    <b-modal size="lg" class="modal-add" ref="modal" centered hide-footer title="Adicionar Período" ok-title="Confirmar"
+    <b-modal class="modal-add" ref="modal" centered title="Adicionar Período" ok-title="Confirmar"
              cancel-title="Cancelar" @ok="add()">
       <span v-if="showErrors">
         <b-alert variant="danger" show dismissible @dismissed="hideAlert">
@@ -11,31 +11,26 @@
         </b-alert>
       </span>
       <b-row>
-        <b-col cols="3"><label><b>MÊS</b></label></b-col>
-        <b-col cols="3">
+        <b-col cols="2"><label><b>MÊS</b></label></b-col>
+        <b-col cols="4">
           <b-form-select required class="input-form normal-input" v-model="month" :options="months"/>
         </b-col>
-        <b-col cols="3"><label><b>ANO</b></label></b-col>
-        <b-col cols="3">
+        <b-col cols="2"><label><b>ANO</b></label></b-col>
+        <b-col cols="4">
           <b-form-select required class="input-form normal-input" v-model="year" :options="years"/>
         </b-col>
       </b-row>
       <hr/>
       <b-row>
-        <b-col cols="3"><label><b>DATA INICIAL</b></label></b-col>
-        <b-col cols="3">
+        <b-col cols="2"><label><b>DATA INICIAL</b></label></b-col>
+        <b-col cols="4">
           <datepicker required :bootstrap-styling="true" format="dd/MM/yyyy" v-model="initialDate"></datepicker>
         </b-col>
-        <b-col cols="3"><label><b>DATA FINAL</b></label></b-col>
-        <b-col cols="3">
+        <b-col cols="2"><label><b>DATA FINAL</b></label></b-col>
+        <b-col cols="4">
           <datepicker required :bootstrap-styling="true" format="dd/MM/yyyy" v-model="finalDate"></datepicker>
         </b-col>
       </b-row>
-      <hr/>
-      <div style="width: 100%; text-align: right;">
-        <b-btn variant="danger" @click="hideModal" style="max-width: 100px">Cancelar</b-btn>
-        <b-btn variant="success" @click="add" style="max-width: 100px">Confirmar</b-btn>
-      </div>
     </b-modal>
   </div>
 </template>

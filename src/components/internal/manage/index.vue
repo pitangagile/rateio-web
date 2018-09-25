@@ -16,7 +16,7 @@
           <b-row>
             <b-col cols="12">
               <div class="add-button" style="width: 100%; float: left;">
-                <b-btn v-if="startManage" variant="success" @click="generateManage">Gerar Rateio</b-btn>
+                <b-btn title="Rateio" v-b-popover.hover="'Clique para gerar a primeira versão do rateio (Versão para edição dos gerentes).'"  v-if="startManage" variant="success" @click="generateManage">Gerar Rateio</b-btn>
               </div>
               <download-excel
                 class="btn btn-default"
@@ -26,7 +26,7 @@
                 :name="filename"
                 v-if="isManageExecutedWithSuccess"
                 style="float: right">
-                <b-btn variant="primary">
+                <b-btn variant="primary" title="Rateio" v-b-popover.hover="'Clique para baixa a planilha do rateio gerado.'">
                   <i class="icon-file-excel" style="color: white;"></i> Download
                 </b-btn>
               </download-excel>
