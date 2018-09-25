@@ -105,7 +105,7 @@
 
         this.$http().put('period', {params: {'period': this.period}}).then((response) => {
           this.$swal(
-            'Adicionado',
+            'Edição',
             'Período editado com sucesso.',
             'success',
             this.hideModal(),

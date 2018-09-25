@@ -18,6 +18,12 @@
           <div slot="finalDate" slot-scope="props">
             <label>{{props.row.finalDate | dateFormat }}</label>
           </div>
+          <div slot="closuremanagers" slot-scope="props">
+            <label>{{props.row.endReportingDate | dateFormat }}</label>
+          </div>
+          <div slot="generationdate" slot-scope="props">
+            <label>{{props.row.endReportingAdminDate | dateFormat }}</label>
+          </div>
           <div v-if="props.row" slot="actions" slot-scope="props" class="btn-group">
             <edit @refresh="onUpdate" :period="props.row"></edit>
             <b-btn @click="showModalRemove(props.row)" class="icon-trash icon-table" size="sm" variant="danger"

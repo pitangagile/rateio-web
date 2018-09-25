@@ -16,7 +16,16 @@
           <b-row>
             <b-col cols="12">
               <div class="add-button" style="width: 100%; float: left;">
-                <b-btn title="Rateio" v-b-popover.hover="'Clique para gerar a primeira versão do rateio (Versão para edição dos gerentes).'"  v-if="startManage" variant="success" @click="generateManage">Gerar Rateio</b-btn>
+                <b-btn title="Rateio"
+                       v-b-popover.hover="'Clique para gerar a primeira versão do rateio (Versão para edição dos gerentes).'"
+                       v-if="startManage" variant="success" @click="generateManage" style="width: 225px;">Gerar Rateio -
+                  Versão Gerentes
+                </b-btn>
+                <b-btn title="Rateio"
+                       v-b-popover.hover="'Clique para gerar a versão final do rateio (Versão para download).'"
+                       v-if="executeFinalManage" variant="success" @click="generateFinalManage" style="width: 225px;">
+                  Gerar Rateio - Versão Final
+                </b-btn>
               </div>
               <download-excel
                 class="btn btn-default"
@@ -26,7 +35,8 @@
                 :name="filename"
                 v-if="isManageExecutedWithSuccess"
                 style="float: right">
-                <b-btn variant="primary" title="Rateio" v-b-popover.hover="'Clique para baixa a planilha do rateio gerado.'">
+                <b-btn variant="primary" title="Rateio"
+                       v-b-popover.hover="'Clique para baixa a planilha do rateio gerado.'">
                   <i class="icon-file-excel" style="color: white;"></i> Download
                 </b-btn>
               </download-excel>
@@ -94,7 +104,9 @@
         period: null,
         description: '',
         startManage: false,
-        isManageExecutedWithSuccess : false,
+        isManageExecutedWithSuccess: false,
+        managedExecuted: false,
+        executeFinalManage: false,
 
         filename: '',
 
@@ -135,9 +147,16 @@
     mounted() {
       this.loadPeriod();
       this.isPossibleExecuteManage();
+      this.isPossibleExecuteFinalManage();
       this.manageExecutedWithSuccess();
       this.loadAllManage();
     }, methods: {
+      isPossibleExecuteFinalManage() {
+        this.$http().get('manage/isPossibleExecuteFinalManage').then((response, err) => {
+          if (err) console.log('err >', err);
+          this.executeFinalManage = response.data;
+        })
+      },
       loadPeriod() {
         this.$http().get('period/pickActivePeriod').then((response, err) => {
           if (err) console.log('err > ', err);
@@ -157,7 +176,7 @@
           this.startManage = response.data;
         })
       },
-      manageExecutedWithSuccess(){
+      manageExecutedWithSuccess() {
         this.$http().get('manage/manageExecutedWithSuccess').then((response, err) => {
           if (err) console.log('err >', err);
           this.isManageExecutedWithSuccess = response.data;
@@ -186,7 +205,32 @@
             'success'
           );
         })
-      },onUpdate() {
+      }, generateFinalManage() {
+        this.$http().get('manage/generateFinalManage').then((response, err) => {
+          if (err) {
+            console.log('err > ', err);
+            this.$NProgress().done();
+            this.$swal(
+              'Rateio',
+              'Não foi possível executar rateio.',
+              'error'
+            );
+          }
+          this.loadAllManage();
+          this.onUpdate();
+          this.$NProgress().done();
+          this.$swal(
+            'Rateio',
+            'Rateio executado com sucesso.',
+            'success',
+            this.loadPeriod(),
+            this.isPossibleExecuteManage(),
+            this.isPossibleExecuteFinalManage(),
+            this.manageExecutedWithSuccess(),
+            this.loadAllManage(),
+          );
+        })
+      }, onUpdate() {
         this.$refs.grid.refresh();
       },
     }, filters: {
