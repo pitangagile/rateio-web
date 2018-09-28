@@ -16,10 +16,12 @@ module.exports = {
   APP_AUTH_USER_DETAILS:'"rateio-user-details"',
   // #endregion Auth
   // #region Api
-  API: '"https://2zmssqmrpf.execute-api.us-east-1.amazonaws.com/dev/api/"',
+  // API: '"https://2zmssqmrpf.execute-api.us-east-1.amazonaws.com/dev/api/"',
+  API: '"https://r4bpvs07a9.execute-api.us-east-1.amazonaws.com/dev/api/"',
+
   // #endregion Api
   // #region Social
-  GOOGLE_CLIENT_ID: '"189232583533-hbi5ar1q3ov5uvd6e4g875mtk99g19br.apps.googleusercontent.com"',
-  GOOGLE_REDIRECT_URI: '"http://pitang-rateio-dev.s3-website-us-east-1.amazonaws.com/internal"'
+  GOOGLE_CLIENT_ID: '"7851358069-425t3ttd7479mp67hut4f0k9u6dj530n.apps.googleusercontent.com"',
+  GOOGLE_REDIRECT_URI: '"http://s3sira.pitang.com.s3-website-us-east-1.amazonaws.com/internal"'
   // #region
 };

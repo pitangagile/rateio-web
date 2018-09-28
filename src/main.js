@@ -1,3 +1,4 @@
+/* eslint-disable */
 // The Vue build version to load with the `import` command
 // (runtime-only or standalone) has been set in webpack.base.conf with an alias.
 /* eslint-disable import/first */
@@ -10,8 +11,6 @@ import 'vue-snotify/styles/material.scss';
 import './assets/icons/css/fontello.css';
 import './assets/icons/css/animation.css';
 import './assets/styles/app.scss';
-// #endregion global styles
-
 import Vue from 'vue';
 import Vuex from 'vuex';
 import VueI18n from 'vue-i18n';
@@ -20,7 +19,6 @@ import Snotify from 'vue-snotify';
 import ToggleButton from 'vue-js-toggle-button';
 
 import App from './App'; // eslint-disable-line
-
 import router from './commons/router';
 import store from './commons/store';
 import variables from './commons/helpers/variables';
@@ -30,6 +28,7 @@ import AxiosPlugin from './commons/plugins/axios.plugin';
 import SwalPlugin from './commons/plugins/swal.plugin';
 
 import AuthMixin from './commons/mixins/auth.mixin';
+// #endregion global styles
 
 // #region Usings
 Vue.use(Vuex);

@@ -7,10 +7,11 @@
 </template>
 
 <script>
-export default {
-  name: 'Home',
-  showLoading: true,
-};
+  /* eslint-disable */
+  export default {
+    name: 'Home',
+    showLoading: true,
+  };
 </script>
 
 <style lang="scss" scoped>

@@ -1,241 +1,80 @@
 <template>
-  <b-row class="page">
-    <b-col cols="12">
-      <h1 class="page--title"><span class="icon-cog h4"></span> Configurações do colaborador</h1>
-    </b-col>
-
-    <b-col cols="12">
-      <div class="card active-bg text-white">
-        <div class="body profile-header">
-          <img :src="user.PictureUrl" class="user_pic rounded img-raised" alt="User">
-          <div class="detail">
-            <div class="u_name">
-              <h4><strong>{{user.FirstName}}</strong> {{user.LastName}}</h4>
-            </div>
-            <div class="user_information">
-              <form class="form-horizontal" role="form">
-                <div class="form-group">
-                  <label for="txtWorkedHours" class="control-label col-sm-3" >Horas de trabalho por dia:</label>
-                  <input id="txtWorkedHours" type="number" v-model="hoursOfWork" class="form-control col-sm-1" >
-                </div>
-                <div class="form-group">
-                  <div class="checkbox">
-                    <label>
-                      <input type="checkbox">
-                      <span class="text"> Colaborador PJ</span>
-                    </label>
-                  </div>
-                </div>
-              </form>
-              <div class="form-group">
-              </div>
-            </div>
-
-          </div>
-        </div>
-      </div>
-    </b-col>
-
-    <b-col cols="12">
-        <v-client-table ref="grid" class="mt-5 mb-2" :data="tableUserCenter" :columns="columns" :options="options">
-        <span slot="h__code">Codigo</span>
-        <span slot="h__description">Centro de custo</span>
-        <span slot="h__actions"></span>
-        <div slot="actions" slot-scope="props">
-          <remove v-bind:table="tableUserCenter" :row="props.index">Remover</remove>
-        </div>
-        <div slot="afterFilter" class="add-button">
-          <multiselect
-            class="multiselect--active coastcenter"
-            label="description"
-            :custom-label="codeWithDescription"
-            v-model="center"
-            :options="tableCenter"
-            track-by="code"
-            :searchable="true"
-            :show-labels="false"
-            :allow-empty="false"
-            placeholder="Selecione o Centro de Custo"
-            selectLabel = ''
-            value = ''
-              >
-          </multiselect>
-        </div>
-        <div slot="afterFilter" class="add-button">
-          <b-button v-on:click="addCenter()">Adicionar</b-button>
-        </div>
-      </v-client-table>
-    </b-col>
-  </b-row>
+  <div>
+    <b-row class="page">
+      <b-col cols="12">
+        <h1 class="page--title"><span class="icon-user-o h4"></span> {{title}}</h1>
+      </b-col>
+    </b-row>
+    <b-row nam="basic_information">
+      <b-col cols="12">
+        <basic></basic>
+      </b-col>
+    </b-row>
+    <b-row name="coast_centers">
+      <b-col cols="12">
+        <cc></cc>
+      </b-col>
+    </b-row>
+  </div>
 </template>
 
 <script>
-import { ClientTable } from 'vue-tables-2';
-import Vue from 'vue';
-import Multiselect from 'vue-multiselect';
-import options from './../../../commons/helpers/grid.config';
-import remove from './removeCenterUser';
+  /* eslint-disable */
+  import Basic from './basic';
+  import Cc from './cc';
 
-Vue.use(ClientTable, options, false, 'bootstrap4', 'default');
-Vue.component('multiselect', Multiselect);
-
-export default {
-  components: {
-    remove,
-  },
-  name: 'Settings',
-  showLoading: true,
-  computed: {
-    user() {
-      return this.$store.getters['auth/user'];
+  export default {
+    name: 'Settings',
+    components: {
+      Basic,
+      Cc,
     },
-  },
-  data() {
-    return {
-      hoursOfWork: 8,
-      tableCenter: [],
-      columns: ['code', 'description', 'actions'],
-      tableUserCenter: [],
-      center: null,
-      options: {
-        sortable: ['code'],
-        filterable: ['code', 'description'],
-        columnsClasses: {
-          actions: 'action-column text-center',
-        },
-      },
-    };
-  },
-  mounted() {
-    this.AllCenters();
-  },
-  methods: {
-    AllCenters() {
-      const url = 'coastcenter';
-
-      this.$http().get(url).then((response) => {
-        this.tableCenter = response.data;
-      });
-    },
-    addCenter() {
-      if (this.center === undefined || this.center === null) {
-        this.$snotify.info('Centro nulo');
-      } else {
-        const centerToAdd = {
-          code: this.center.code,
-          description: this.center.description,
-        };
-        if (this.checkingList(centerToAdd.code)) {
-          this.$snotify.info('Centro ja adicionado');
-        } else {
-          this.tableUserCenter.push(centerToAdd);
-        }
+    name: 'Settings',
+    showLoading: true,
+    data() {
+      return {
+        title: 'Home',
       }
     },
-    checkingList(code) {
-      for (let i = 0; i < this.tableUserCenter.length; i += 1) {
-        if (this.tableUserCenter[i].code === code) {
-          return true;
-        }
-      }
-      return false;
-    },
-    codeWithDescription({ code, description }) {
-      return `${code} — ${description}`;
-    },
-  },
-};
+  };
 </script>
 
-<style lang="scss" scoped >
+<style lang="scss" scoped>
+  .page--title {
+    margin-top: 20px;
+    margin-bottom: 20px;
+  }
 
-.card {
-  background: #fff;
-  margin-bottom: 30px;
-  transition: .5s;
-  border: 0;
-  border-radius: .55rem;
-  position: relative;
-  width: 100%;
-  box-shadow: 0 1px 2px 0 rgba(0,0,0,0.1);
-  margin-top: 20px;
-}
+  .add-button {
+    float: left;
+    margin-left: 15px;
+  }
 
-.card .body {
-  font-size: 14px;
-  color: #424242;
-  padding: 20px;
-  font-weight: 400;
-  height: 225px;
-}
+  /deep/ td.action-column {
+    width: 200px;
+  }
 
-.profile-header .user_pic {
-  position: absolute;
-  bottom: -13px;
-  z-index: 99;
-}
+  .multiselect--active {
+    z-index: 100;
+  }
 
-.img-raised {
-  box-shadow: 0px 10px 25px 0px rgba(0,0,0,0.3);
-}
+  .control-label {
+    float: left;
+    width: 155px;
+    top: 7px;
+    padding-left: 0px;
+    padding-right: 0px;
+  }
 
-img {
-  max-width: 100%;
-  border-radius: 1px;
-  width: 250px;
-}
+  .form-control {
+    width: 60px;
+    padding-bottom: 4px;
+    padding-top: 4px;
+  }
 
-.profile-header .detail {
-  margin-left: 250px;
-}
+  .costcenter {
+    width: 550px;
+  }
 
-.profile-header .detail .u_name {
-  margin-left: 20px;
-}
-
-.profile-header .detail .user_information {
-  margin-left: 20px;
-}
-
-h4 {
-  font-size: 1.714em;
-  line-height: 1.45em;
-  margin-bottom: 15px;
-}
-
-.add-button {
-  float: left;
-  margin-left: 15px;
-}
-
-/deep/ strong {
-  font-weight: bolder;
-  font-size: inherit;
-}
-
-/deep/ td.action-column {
-  width: 200px;
-}
-.multiselect--active {
-  z-index: 100;
-}
-
-.control-label{
-  float: left;
-  width: 155px;
-  top: 7px;
-  padding-left: 0px;
-  padding-right: 0px;
-}
-
-.form-control{
-  width: 60px;
-  padding-bottom: 4px;
-  padding-top: 4px;
-}
-
-.coastcenter{
-  width:550px;
-}
 </style>
 <style src="vue-multiselect/dist/vue-multiselect.min.css"></style>

@@ -7,12 +7,14 @@
 </template>
 
 <script>
-export default {
-  name: 'schedule',
-  showLoading: true,
-};
+  /* eslint-disable */
+  export default {
+    name: 'schedule',
+    showLoading: true,
+  };
 </script>
 
 <style lang="scss" scoped>
+
 
 </style>

@@ -1,4 +1,4 @@
-# Rateio (Web Client)
+# [Rateio Web Client](http://s3sira.pitang.com.s3-website-us-east-1.amazonaws.com)
 Rateio, a [Pitang] app for Time Reporting.  
 This is a free [PWA] client, using [Vue.js], that consumes [api] hosted on [AWS Lambda].
 
@@ -80,6 +80,9 @@ $ yarn deploy
 ## Who do I talk to if I have questions?
 * **Bruno Monteiro** - [Github](https://github.com/bunomonteiro)
 * **Afonso Amorim** - [Github](https://github.com/afonsosa)
+* **Glauber Batista** - [Github](https://github.com/glauberbatista)
+
+http://s3sira.pitang.com.s3-website-us-east-1.amazonaws.com/
 
 ## Recommendations
 

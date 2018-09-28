@@ -1,226 +1,268 @@
 <template>
   <b-row class="page">
     <b-col cols="12">
-      <h1 class="page--title"><span class="icon-cog h4"></span> Gerenciar Rateio</h1>
+      <h1 class="page--title"><span class="icon-archive h4"></span> {{title}}</h1>
     </b-col>
     <b-col cols="12">
-      <v-client-table ref="grid" class="mt-5 mb-2" :data="filterCollaborators(selectedCenter, incompletePercentage)" :columns="columns" :options="options">
-        <span class="column-" slot="h__photo">#</span>
-        <span slot="h__name">Colaborador</span>
-        <span slot="h__originCostCenter">Centro de Custo Origem</span>
-        <span slot="h__costCenter">Centro de Custo</span>
-        <span slot="h__percentage">Porcentagem</span>
-        <span slot="h__actions"></span>
-        <div slot="percentage" slot-scope="props">
-          <b-progress :value="props.row.percentage" :max="100" class="user-progress" show-progress></b-progress>
-        </div>
-        <div slot="photo" slot-scope="props">
-          <img :src="props.row.photo" class="user-picture">
-        </div>
-        <div slot="actions" slot-scope="props" class="btn-toolbar">
-          <editPercentage v-bind:row="props.row" :table="collaboratorsList"/>
-        </div>
-        <div slot="collaborator" slot-scope="props">
-          <div class="user-info">
-            <strong>{{props.row.collaborator}}</strong>
-          </div>
-        </div>
-        <div slot="afterFilter" class="column-period">
-            <multiselect
-              class="select-period"
-              v-model="selectedCenter"
-              :options="costCenters"
-              :searchable="true"
-              :show-labels="false"
-              @input="filterCollaborators(selectedCenter)"
+      <b-row>
+        <b-col cols="12">
+          <b-row>
+            <b-col cols="12">
+              <span style="float: right; color: #d34c2a;" v-if="period">
+                <i class="icon-calendar-1" style="color: #d34c2a;"></i> PERÍODO : {{period.description | toUpper}}
+              </span>
+            </b-col>
+          </b-row>
+          <b-row>
+            <b-col cols="12">
+              <div class="add-button" style="width: 100%; float: left;">
+                <b-btn title="Rateio"
+                       v-b-popover.hover="'Clique para gerar a primeira versão do rateio (Versão para edição dos gerentes).'"
+                       v-if="startManage" variant="success" @click="generateManage" style="width: 225px;">Gerar Rateio -
+                  Versão Gerentes
+                </b-btn>
+                <b-btn title="Rateio"
+                       v-b-popover.hover="'Clique para gerar a versão final do rateio (Versão para download).'"
+                       v-if="executeFinalManage" variant="success" @click="generateFinalManage" style="width: 225px;">
+                  Gerar Rateio - Versão Final
+                </b-btn>
+              </div>
+              <download-excel
+                class="btn btn-default"
+                :data="json_data"
+                :fields="json_fields"
+                type="xls"
+                :name="filename"
+                v-if="isManageExecutedWithSuccess"
+                style="float: right">
+                <b-btn variant="primary" title="Rateio"
+                       v-b-popover.hover="'Clique para baixa a planilha do rateio gerado.'">
+                  <i class="icon-file-excel" style="color: white;"></i> Download
+                </b-btn>
+              </download-excel>
+            </b-col>
+          </b-row>
+          <b-row>
+            <b-col cols="12">
+              <v-server-table striped hover class="grid mt-3 mb-2" :url="urlApiGrid" :columns="columns"
+                              :options="options" ref="grid" debounce="1500">
 
-              placeholder="Selecione o Centro">
-            </multiselect>
-        </div>
-        <div slot="afterFilter" class="column-period">
-            <multiselect
-              class="select-period"
-              v-model="selectedPeriod"
-              :options="periods.map(data => data.description)"
-              :searchable="false"
-              :show-labels="false"
-              :allow-empty="false"
-              @input="selectPeriod(selectedPeriod)"
-              placeholder="Selecione o Período">
-            </multiselect>
-        </div>
-        <div slot="afterFilter" class="checkbox">
-          <b-form-checkbox v-model="incompletePercentage" class="checkbox">Apenas percentual abaixo do ideal</b-form-checkbox>
-        </div>
-        <div slot="afterFilter" class="column-period">
-          <p class="date">Data de início: {{this.initialdate}}</p>
-        </div>
-        <div slot="afterFilter" class="column-period">
-          <p class="date">Data de fim: {{this.finaldate}}</p>
-        </div>
-        <div slot="afterFilter">
-          <b-button class="btn-danger">Fechar</b-button>
-        </div>
-        <div slot="afterFilter" class="add-button">
-          <add v-bind:collaboratorsList="collaboratorsList" :costCenters="costCenters"></add>
-        </div>
-      </v-client-table>
+                <!-- Header -->
+                <div slot="h__employee" class="heading_center">Colaborador</div>
+                <div slot="h__originCostCenter" class="heading_center">C.C. Origem</div>
+                <div slot="h__destinyCostCenter" class="heading_center">C.C. Destino</div>
+                <div slot="h__allocation" class="heading_center">Percentual de Alocação</div>
+
+                <div slot="employee" slot-scope="props" class="btn-group">
+                  <i class="icon-docs"></i> {{props.row.employee.name | toUpper}}
+                </div>
+                <div slot="originCostCenter" slot-scope="props" class="btn-group max-width-td">
+                  <label class="text-centered">{{props.row.originCostCenter.description | toUpper}}</label>
+                </div>
+                <div v-if="props.row.destinyCostCenter" slot="destinyCostCenter" slot-scope="props"
+                     class="btn-group max-width-td">
+                  <label class="text-centered">
+                    {{props.row.destinyCostCenter.description}}
+                  </label>
+                </div>
+                <div v-if="props.row.allocation" slot="allocation" slot-scope="props" class="btn-group mb-2"
+                     style="width: 100%;">
+                  <b-progress :value="props.row.allocation"
+                              :max="100"
+                              show-progress animated
+                              variant="success"
+                              style="width: 15em; margin: 0 auto 0;">
+                  </b-progress>
+                </div>
+              </v-server-table>
+            </b-col>
+          </b-row>
+        </b-col>
+      </b-row>
     </b-col>
   </b-row>
 </template>
 
 <script>
-import { ClientTable } from 'vue-tables-2';
-import Vue from 'vue';
-import Multiselect from 'vue-multiselect';
-import options from './../../../commons/helpers/grid.config';
-import editPercentage from './editPercentage';
-import add from './add';
+  /* eslint-disable */
+  import Vue from 'vue';
+  import {ServerTable} from 'vue-tables-2';
+  import options from './../../../commons/helpers/grid.config';
+  import variables from './../../../commons/helpers/variables';
+  import JsonExcel from 'vue-json-excel'
 
-Vue.use(ClientTable, options, false, 'bootstrap4', 'default');
-Vue.component('multiselect', Multiselect);
+  Vue.component('downloadExcel', JsonExcel);
 
-export default {
-  name: 'Manage',
-  showLoading: true,
-  components: {
-    editPercentage,
-    add,
-  },
+  Vue.use(ServerTable, options, false, "bootstrap4", "default");
 
-  data() {
-    return {
-      selectedPeriod: null,
-      selectedCenter: null,
-      incompletePercentage: false,
-      initialdate: 'DD/MM/AAAA',
-      finaldate: 'DD/MM/AAAA',
-      columns: ['photo', 'name', 'originCostCenter', 'costCenter', 'percentage', 'actions'],
-      collaboratorsList: [{ photo: '/static/img/avatars/1.jpg', name: 'Igor Formiga', percentage: 100, costCenter: 'Centro de Custo 1', originCostCenter: 'Centro de Custo 1' },
-        { photo: '/static/img/avatars/2.jpg', name: 'Ivaldo Barbosa', percentage: 60, costCenter: 'Centro de Custo 10', originCostCenter: 'Centro de Custo 2' },
-        { photo: '/static/img/avatars/2.jpg', name: 'Ivaldo Barbosa', percentage: 40, costCenter: 'Centro de Custo 2', originCostCenter: 'Centro de Custo 2' },
-        { photo: '/static/img/avatars/3.jpg', name: 'Thiago Ferreira', percentage: 70, costCenter: 'Centro de Custo 1', originCostCenter: 'Centro de Custo 1' },
-        { photo: '/static/img/avatars/3.jpg', name: 'Thiago Ferreira', percentage: 20, costCenter: 'Centro de Custo 2', originCostCenter: 'Centro de Custo 1' },
-        { photo: '/static/img/avatars/3.jpg', name: 'Thiago Ferreira', percentage: 10, costCenter: 'Centro de Custo 10', originCostCenter: 'Centro de Custo 1' }],
-      costCenters: [],
-      periods: [],
-      totalHours: 0,
-      options: {
-        sortable: [],
-        columnsClasses: {
-          actions: 'action-column text-center',
-          photo: 'photo-column',
-          originCostCenter: 'origin-column',
-          costCenter: 'costCenter-column',
-          name: 'name-column',
-          percentage: 'percentage-column',
+  export default {
+    showLoading: true,
+    data() {
+      return {
+        title: 'Rateio',
+
+        period: null,
+        description: '',
+        startManage: false,
+        isManageExecutedWithSuccess: false,
+        managedExecuted: false,
+        executeFinalManage: false,
+
+        filename: '',
+
+        json_fields: {
+          'Matrícula': 'employee.registration',
+          'Colaborador': 'employee.name',
+          'COD C.C. Origem': 'originCostCenter.code',
+          'Descrição C.C. Origem': 'originCostCenter.description',
+          'COD C.C. Destino': 'destinyCostCenter.code',
+          'Descrição CC Destino': 'destinyCostCenter.description',
+          'Alocação': 'allocation',
         },
+        json_data: [],
+        json_meta: [
+          [{
+            "key": "charset",
+            "value": "utf-8"
+          }]
+        ],
+
+        urlApiGrid: `${variables.http.root}manage/`,
+        columns: ['employee', 'originCostCenter', 'destinyCostCenter', 'allocation'],
+        options: {
+          filterable: true,
+          sortable: [],
+          requestFunction(data) {
+            return this.$http().get('manage/', {params: data})
+              .catch((e) => {
+                this.dispatch('error', e);
+              });
+          },
+          responseAdapter(response) {
+            return {data: response.data.data, count: response.data.count};
+          },
+        }
+      };
+    },
+    mounted() {
+      this.loadPeriod();
+      this.isPossibleExecuteManage();
+      this.isPossibleExecuteFinalManage();
+      this.manageExecutedWithSuccess();
+      this.loadAllManage();
+    }, methods: {
+      isPossibleExecuteFinalManage() {
+        this.$http().get('manage/isPossibleExecuteFinalManage').then((response, err) => {
+          if (err) console.log('err >', err);
+          this.executeFinalManage = response.data;
+        })
       },
-    };
-  },
-  mounted() {
-    this.getAllPeriods();
-    this.getAllCostCenters();
-  },
-  methods: {
-    getAllPeriods() {
-      const url = 'period/getAll';
-
-      this.$http().get(url).then((response) => {
-        this.periods = response.data;
-        this.selectedPeriod = this.periods[this.periods.length - 1].description;
-        this.selectPeriod(this.selectedPeriod);
-      });
-    },
-    selectPeriod(selectedPeriod) {
-      let data = this.periods.filter(period => period.description === selectedPeriod); //eslint-disable-line
-      this.initialdate = data[0].initialdate;
-      this.finaldate = data[0].finaldate;
-    },
-    getAllCostCenters() {
-      const url = 'coastcenter/getAll';
-
-      this.$http().get(url).then((response) => {
-        this.costCenters = response.data.map(data => data.description);
-      });
-    },
-    filterCollaborators(selectedCenter, incompletePercentage) {
-      let response;
-      if (selectedCenter != null) {
-        response = this.collaboratorsList.filter(collaborator => collaborator.costCenter === selectedCenter || collaborator.originCostCenter === selectedCenter); // eslint-disable-line
-      } else {
-        response = this.collaboratorsList;
+      loadPeriod() {
+        this.$http().get('period/pickActivePeriod').then((response, err) => {
+          if (err) console.log('err > ', err);
+          this.period = response.data.data;
+          this.filename = this.period ? this.period.description + '.xls' : '';
+        })
+      },
+      loadAllManage() {
+        this.$http().get('manage/getAllToDownload').then((response, err) => {
+          if (err) console.log('err > ', err);
+          this.json_data = response.data;
+        })
+      },
+      isPossibleExecuteManage() {
+        this.$http().get('manage/isPossibleExecuteManage').then((response, err) => {
+          if (err) console.log('err >', err);
+          this.startManage = response.data;
+        })
+      },
+      manageExecutedWithSuccess() {
+        this.$http().get('manage/manageExecutedWithSuccess').then((response, err) => {
+          if (err) console.log('err >', err);
+          this.isManageExecutedWithSuccess = response.data;
+        })
+      },
+      generateManage() {
+        this.$NProgress().start();
+        this.$http().get('manage/generateManage').then((response, err) => {
+          if (err) {
+            console.log('err > ', err);
+            this.$NProgress().done();
+            this.$swal(
+              'Rateio',
+              'Não foi possível executar rateio.',
+              'error'
+            );
+          }
+          this.startManage = false;
+          this.isManageExecutedWithSuccess = true;
+          this.loadAllManage();
+          this.onUpdate();
+          this.$NProgress().done();
+          this.$swal(
+            'Rateio',
+            'Rateio executado com sucesso.',
+            'success'
+          );
+        })
+      }, generateFinalManage() {
+        this.$http().get('manage/generateFinalManage').then((response, err) => {
+          if (err) {
+            console.log('err > ', err);
+            this.$NProgress().done();
+            this.$swal(
+              'Rateio',
+              'Não foi possível executar rateio.',
+              'error'
+            );
+          }
+          this.loadAllManage();
+          this.onUpdate();
+          this.$NProgress().done();
+          this.$swal(
+            'Rateio',
+            'Rateio executado com sucesso.',
+            'success',
+            this.loadPeriod(),
+            this.isPossibleExecuteManage(),
+            this.isPossibleExecuteFinalManage(),
+            this.manageExecutedWithSuccess(),
+            this.loadAllManage(),
+          );
+        })
+      }, onUpdate() {
+        this.$refs.grid.refresh();
+      },
+    }, filters: {
+      toUpper(value) {
+        if (value !== null && value !== undefined) {
+          return value.toUpperCase();
+        }
       }
-      if (incompletePercentage === true) {
-        response = response.filter(collaborator => collaborator.percentage < 100);
+    }, watch: {
+      startManage: function (newValue, oldValue) {
+        this.startManage = newValue;
       }
-      return response;
-    },
-  },
-};
+    }
+
+  }
 </script>
 
 <style lang="scss" scoped>
-@import '../../../assets/styles/variables.scss';
-.checkbox{
-  margin-left: 7.4px;
-}
-.date{
-  margin-left: 0.4px;
-  margin-top: 7.4px;
-  margin-right: 7px;
-}
-.user-picture {
-    border-radius: 10cm;
-    border: 1px solid $color-gray-1;
-    max-width: 35px;
-    padding: 3px;
-  }
-.user-progress {
-  color: darkblue;
-  background-color: grey;
-}
-/deep/ td.action-column {
-      width: 10px;
-}
-/deep/ td.photo-column {
-      width: 50px;
-}
-/deep/ td.percentage-column {
-    width: 150px;
-}
-/deep/ td.costCenter-column {
-  width: 400px;
-}
-/deep/ td.origin-column {
-  width: 400px;
-}
-.column-period {
-    float: left;
-    margin-left: 15px;
-    margin-top: 7.4px;
-
-    /deep/ .select-period {
-      .multiselect__tags {
-        border-color: #ced4da;
-        border-radius: 10cm;
-        padding-top: 5px;
-        min-height: 32px;
-        font-size: .9rem;
-        .multiselect__input {
-          font-size: .9rem;
-        }
-      }
-      .multiselect__select {
-        height: 32px;
-      }
-      .multiselect__single{
-        font-size: .9rem;
-        margin: 0;
-      }
-    }
-  }
-  .user-info {
+  .heading_center {
+    color: #d34c2a;
+    font-size: .9rem;
     text-transform: capitalize;
+    text-align: center;
   }
+
+  .max-width-td {
+    width: 100%;
+  }
+
+  .text-centered {
+    text-align: center;
+    width: 100%;
+  }
+
 </style>

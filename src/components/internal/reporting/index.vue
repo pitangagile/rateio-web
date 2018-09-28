@@ -1,178 +1,221 @@
 <template>
-  <b-row class="page">
-    <b-col cols="12">
-      <h1 class="page--title"><span class="icon-cog h4"></span> Reportagem</h1>
-    </b-col>
-    <b-col cols="12">
-      <v-client-table ref="grid" class="mt-1 mb-2" :data="getCenterData(selected)" :columns="columns" :options="options">
-        <span style="width: 2px; height: 2px; line-height: 2px; margin-right: 1px; margin-left: 1px" slot="h__period">Período</span>
-        <span style="width: 2px; height: 2px; line-height: 2px; margin-right: 1px; margin-left: 1px" slot="h__costCenter">Centro de custo</span>
-        <span slot="h__hours">Horas</span>
-        <span slot="h__actions"></span>
-        <div slot="actions" slot-scope="props" class="btn-toolbar">
-          <edit v-bind:table="reportingsList" :row="props.row" :index="props.index" :totalHours="totalHours"/>
-        </div>
-        <div slot="afterFilter" class="column-period">
-            <multiselect
-              class="select-period"
-              v-model="selected"
-              :options="periods"
-              :show-labels="false"
-              :allow-empty="false"
-              placeholder="Selecione o Período">
-            </multiselect>
-        </div>
-
-        <div slot="afterFilter" class="column-period">
-          <p class="reportedHours">Reportado: {{this.totalHours}} de {{this.idealHours}} horas para o período</p>
-        </div>
-      </v-client-table>
-    </b-col>
-  </b-row>
+  <div>
+    <b-row class="page">
+      <b-col cols="12">
+        <h1 class="page--title"><span class="icon-doc-text h4"></span> {{title}}</h1>
+      </b-col>
+      <b-col cols="5" style="margin: 0 auto !important;">
+        <b-card no-footer :header="'INFORMAÇÕES DO PERÍODO'"
+                header-tag="header"
+                title="">
+          <b-card-body style="padding: 5px !important;">
+            <b-row class="row-form">
+              <b-col cols="8">
+                <i class="icon-calendar-1" style="color: #d34c2a;"></i><label > PERÍODO:</label>
+              </b-col>
+              <b-col v-if="this.period" cols="4">
+                {{this.period.description | upperCase}}
+              </b-col>
+              <b-col v-if="!this.period" cols="4">
+                -
+              </b-col>
+            </b-row>
+            <b-row class="row-form">
+              <b-col cols="8">
+                <i class="icon-hourglass" style="color: #d34c2a;"></i><label > TOTAL DE HORAS DO PERÍODO:</label>
+              </b-col>
+              <b-col cols="4">
+                {{this.totalIdealHoursByActivePeriod}}hs
+              </b-col>
+            </b-row>
+            <b-row class="row-form">
+              <b-col cols="8">
+                <i class="icon-hourglass" style="color: #d34c2a;"></i><label > TOTAL DE HORAS REPORTADAS NO PERÍODO:</label>
+              </b-col>
+              <b-col cols="4" v-if="this.totalHoursReportingByActivePeriod">
+                {{this.totalHoursReportingByActivePeriod}}hs
+              </b-col>
+              <b-col cols="4" v-if="!this.totalHoursReportingByActivePeriod">
+                0hs
+              </b-col>
+            </b-row>
+          </b-card-body>
+        </b-card>
+      </b-col>
+      <b-col cols="12">
+        <v-server-table class="grid mt-3 mb-2" :url="urlApiGrid" :columns="columns" :options="options"
+                        ref="grid" debounce="1500">
+          <div slot="afterFilter" class="add-button">
+            <add ref="add" @refresh="refresh()" :period="period"></add>
+          </div>
+          <div slot="period" slot-scope="props" class="btn-group">
+            <label v-if="props.row.period">{{props.row.period.description.toUpperCase()}}</label>
+          </div>
+          <div slot="costCenter" slot-scope="props" class="btn-group">
+            <label v-if="props.row.costCenter">{{props.row.costCenter.description}}</label>
+          </div>
+          <div slot="totalHoursCostCenter" slot-scope="props" class="btn-group mb-2">
+            <b-progress :value="convertHoursToPercent(props.row)" :max="100" show-progress animated
+                        variant="success" style="width: 15em;"></b-progress>
+          </div>
+          <div slot="actions" slot-scope="props" class="btn-group">
+            <edit @refresh="refresh()" :reporting="props.row"></edit>
+            <b-btn v-on:click="showRemoveModal(props.row)" class="icon-trash icon-table" size="sm" variant="danger"
+                   onmouseover="title='Remover'"></b-btn>
+          </div>
+        </v-server-table>
+      </b-col>
+    </b-row>
+    <b-modal ref="removeModal" centered ok-title="Confirmar" cancel-title="Cancelar" @ok="removeCenter()">
+      <div slot="modal-header" align="left">
+        <h3>Excluir Reportagem</h3>
+      </div>
+      <div class="d-block text-center">
+        <p style="text-align: left;">Deseja realmente excluir a reportagem?</p>
+      </div>
+    </b-modal> <!-- Modal remover reportagem -->
+  </div>
 </template>
 
 <script>
-import { ClientTable } from 'vue-tables-2';
-import Vue from 'vue';
-import Multiselect from 'vue-multiselect';
-import options from './../../../commons/helpers/grid.config';
-import edit from './edit';
+  /* eslint-disable */
+  import Vue from "vue";
+  import {ServerTable} from "vue-tables-2";
+  import options from "./../../../commons/helpers/grid.config";
+  import variables from "./../../../commons/helpers/variables";
+  import add from "./add";
+  import edit from "./edit";
 
-Vue.use(ClientTable, options, false, 'bootstrap4', 'default');
-Vue.component('multiselect', Multiselect);
+  Vue.use(ServerTable, options, false, "bootstrap4", "default");
 
-export default {
-  name: 'Reporting',
-  removable: false,
-  components: {
-    edit,
-  },
-  showLoading: true,
-  data() {
-    return {
-      selected: null,
-      columns: ['period', 'costCenter', 'hours', 'actions'],
-      reportingsList: [],
-      periods: [],
-      totalHours: 0,
-      idealHours: 0,
-      options: {
-        sortable: [],
-        columnsClasses: {
-          actions: 'action-column text-center',
-          period: 'period-column',
-          costCenter: 'costCenter-Column',
-          hours: 'hours-column',
-        },
-      },
-    };
-  },
-  mounted() {
-    this.getInitialData();
-  },
-  methods: {
-    getTotalHours(reportings) {
-      let result = 0;
-      for (let i = 0, length = reportings.length; i < length; i += 1) {
-        result += reportings[i].hours;
-      }
-      this.totalHours = result;
-    },
-    getCenterData(period) {
-      let table;
-      if (period === null) {
-        table = this.reportingsList;
-      } else {
-        table = this.reportingsList.filter(u => u.period === period);
-      }
-      return table;
-    },
-    getUserData(id) {
-      return this.reportingsList.filter(u => u.id === id)[0];
-    },
-    getInitialData() {
-      const url = 'reporting/getIndexData';
+  export default {
+    name: "Reporting",
+    removable: false,
+    showLoading: true,
+    components: {add, edit},
+    data() {
+      return {
+        title: "Reportagem",
 
-      this.$http().get(url).then((response) => {
-        console.log(response); // eslint-disable-line
-        this.periods = response.data.periods.map(data => data.description);
-        this.selected = this.periods[this.periods.length - 1];
+        period: null,
+        reporting: null,
 
-        this.idealHours = response.data.idealHours;
+        totalIdealHoursByActivePeriod: 0,
+        totalHoursReportingByActivePeriod: 0,
 
-        this.reportingsList = response.data.reportings;
-
-        if (this.reportingsList.length === 0) {
-          this.$swal(
-            'Nenhum centro de custo encontrado',
-            'Deseja ir para página de configurações?',
-            'warning',
-          );
+        urlApiGrid: `${variables.http.root}reporting/findReportsByUserId`,
+        columns: ["period", "costCenter", "totalHoursCostCenter", "actions"],
+        options: {
+          headings: {
+            period: "Período",
+            costCenter: "Centro de Custo",
+            totalHoursCostCenter: "Percentual de Alocação (%)",
+            actions: "Ações"
+          },
+          filterable: false,
+          sortable: [],
+          columnsClasses: {
+            actions: "action-column text-center"
+          },
+          requestFunction(data) {
+            return this.$http()
+              .get("reporting/findReportsByUserId", {
+                params: {
+                  data,
+                  user_id: this.$store.getters["auth/user"].ID
+                }
+              })
+              .catch(e => {
+                this.dispatch("error", e);
+              });
+          },
+          responseAdapter(response) {
+            return response.data;
+          }
         }
-      });
+      };
     },
-    doSearch() {
-      const url = 'reportings/search';
-      const selected = this.selected;
-
-      if (selected != null) {
-        this.$http().post(url, { selected }).then((response) => {
-          this.reportingsList = response.data;
-        },
-        (err) => {
-          console.error('> sign-in.AllCenters() error!', err); // eslint-disable-line
+    mounted() {
+      this.pickActivePeriod();
+      this.calculateTotalIdealHoursByActivePeriod();
+      this.calculateTotalReportingHoursByUserIdAndPerActivePeriod();
+    },
+    methods: {
+      showRemoveModal(reporting){
+        this.reporting = reporting;
+        this.$refs.removeModal.show();
+      },
+      removeCenter() {
+        this.$http()
+          .delete("reporting", {params: {_id: this.reporting._id}})
+          .then(
+            () => {
+              this.$swal(
+                "Removido",
+                "Reportagem removida.",
+                "success",
+                this.reporting = null,
+                this.refresh(),
+                this.$refs.removeModal.hide(),
+              );
+            },
+            () => {
+              this.$swal(
+                "Erro",
+                "Erro ao remover reportagem.",
+                "error",
+                this.reporting = null,
+                this.refresh(),
+                this.$refs.removeModal.hide(),
+              );
+            }
+          );
+      },
+      pickActivePeriod() {
+        this.$http()
+          .get("period/pickActivePeriod").then((response, err) => {
+          if (err)
+            console.log("err > ", err);
+          this.period = response.data.data;
         });
+      },
+      calculateTotalIdealHoursByActivePeriod() {
+        this.$http()
+          .get("period/calculateTotalBusinessDaysByActivePeriod").then((response, err) => {
+          if (err)
+            console.log("err > ", err);
+          var qtdBusinessDaysByActivePeriod = response.data.data;
+          this.totalIdealHoursByActivePeriod = this.$store.getters["auth/user"].workHours * qtdBusinessDaysByActivePeriod;
+        });
+      },
+      calculateTotalReportingHoursByUserIdAndPerActivePeriod() {
+        this.$http().get('reporting/calculateTotalReportingHoursByUserIdAndPerActivePeriod', {params: {'user_id': this.$store.getters['auth/user'].ID}}).then((response, err) => {
+          if (err) console.log('err > ', err);
+          this.totalHoursReportingByActivePeriod = response.data.data.totalHoursReportingByActivePeriod;
+        });
+      },
+      convertHoursToPercent(period) {
+        var total = this.totalHoursReportingByActivePeriod > this.totalIdealHoursByActivePeriod ? this.totalHoursReportingByActivePeriod : this.totalIdealHoursByActivePeriod;
+        return (period.totalHoursCostCenter / total) * 100;
+      },
+      refresh() {
+        this.calculateTotalReportingHoursByUserIdAndPerActivePeriod();
+        this.$refs.grid.refresh();
       }
+    }, filters: {
+      upperCase(value) {
+        return value.toUpperCase();
+      },
     },
-  },
-};
+  };
 </script>
 
 <style lang="scss" scoped>
-@import '../../../assets/styles/variables.scss';
+  .icon-table {
+    margin: 1px;
+  }
 
-/deep/ td.action-column {
-  width: 100px;
-}
-/deep/ td.period-column {
-  width: 150px;
-}
-/deep/ td.hours-column {
-  width: 100px;
-}
-.reportedHours{
-  margin-left: 7.4px;
-  margin-top: 7px;
-  margin-right: 7px;
-}
-
-
-.column-period {
-    float: left;
-    margin-left: 15px;
-    margin-top: 7.4px;
-
-    /deep/ .select-period {
-      .multiselect__tags {
-        border-color: #ced4da;
-        border-radius: 10cm;
-        padding-top: 5px;
-        min-height: 32px;
-        font-size: .9rem;
-
-        .multiselect__input {
-          font-size: .9rem;
-        }
-      }
-
-      .multiselect__select {
-        height: 32px;
-      }
-
-      .multiselect__single{
-        font-size: .9rem;
-        margin: 0;
-      }
-    }
+  .row-form {
+    text-align: left;
   }
 </style>

@@ -1,32 +1,22 @@
+/* eslint-disable */
 import Vue from 'vue';
 import Router from 'vue-router';
 
-// #region external
 import ExternalMaster from '@/components/external/_master/';
-import ExternalHome from '@/components/external/home/';
-import ExternalSignIn from '@/components/external/sign-in/';
-// import ExternalSignUp from '@/components/external/sign-up/';
-// #endregion external
+import ExternalSignin from '@/components/external/signin/';
 
-// #region internal
 import InternalMaster from '@/components/internal/_master/';
-import InternalAllocation from '@/components/internal/allocation/';
-import InternalAllocationMap from '@/components/internal/allocationmap/';
 import InternalCostCenter from '@/components/internal/costcenter/';
-import InternalDashboard from '@/components/internal/dashboard/';
 import InternalManage from '@/components/internal/manage/';
 import InternalReporting from '@/components/internal/reporting/';
 import InternalHoliday from '@/components/internal/holiday/';
-import InternalSchedule from '@/components/internal/schedule';
 import InternalSettings from '@/components/internal/settings/';
 import InternalHelp from '@/components/internal/help/';
 import InternalPeriod from '@/components/internal/period/';
-import InternalEmployee from '@/components/internal/employee';
-
-import InternalExamples from '@/components/internal/examples/';
-import InternalExamplesServerTable from '@/components/internal/examples/server-table';
-
-// #endregion internal
+import InternalEmployee from '@/components/internal/employee/';
+import InternalReportings from '@/components/internal/reportings/'
+import InternalFileUpload from '@/components/internal/fileupload/'
+import AnalysisAndStatisticsReportings from '@/components/internal/analysis_and_statistics/'
 
 import NavigationGuards from './navigations.guards';
 
@@ -48,19 +38,9 @@ const router = new Router({
       children: [
         {
           path: '',
-          name: 'home',
-          component: ExternalHome,
-        },
-        {
-          path: 'signin',
           name: 'signin',
-          component: ExternalSignIn,
+          component: ExternalSignin,
         },
-        // {
-        //   path: 'signup',
-        //   name: 'signup',
-        //   component: ExternalSignUp,
-        // },
       ],
     },
     {
@@ -69,75 +49,74 @@ const router = new Router({
       meta: { requiresAuth: true },
       props: true,
       children: [
+        // Full access
         {
           path: '',
-          name: 'dashboard',
-          component: InternalDashboard,
-        },
-        {
-          path: 'allocation',
-          name: 'allocation',
-          component: InternalAllocation,
-        },
-        {
-          path: 'allocationmap',
-          name: 'allocationmap',
-          component: InternalAllocationMap,
-        },
-        {
-          path: 'costcenter',
-          name: 'costcenter',
-          component: InternalCostCenter,
-        },
-        {
-          path: 'manage',
-          name: 'manage',
-          component: InternalManage,
+          name: 'settings',
+          component: InternalSettings,
+          meta : {roles: ['colaborador', 'gerente', 'administrador']}
         },
         {
           path: 'reporting',
           name: 'reporting',
           component: InternalReporting,
+          meta : {roles: ['colaborador', 'gerente', 'administrador']}
         },
         {
           path: 'holiday',
           name: 'holiday',
           component: InternalHoliday,
-        },
-        {
-          path: 'schedule',
-          name: 'schedule',
-          component: InternalSchedule,
-        },
-        {
-          path: 'settings',
-          name: 'settings',
-          component: InternalSettings,
+          meta : {roles: ['colaborador', 'gerente', 'administrador']}
         },
         {
           path: 'help',
           name: 'help',
           component: InternalHelp,
+          meta : {roles: ['colaborador', 'gerente', 'administrador']}
+        },
+        // Gerente
+        {
+          path: 'analysis_and_statistics',
+          name: 'analysis_and_statistics',
+          component: AnalysisAndStatisticsReportings,
+          meta : {roles: ['gerente', 'administrador']}
         },
         {
-          path: 'examples',
-          name: 'examples',
-          component: InternalExamples,
+          path: 'reportings',
+          name: 'reportings',
+          component: InternalReportings,
+          meta : {roles: ['gerente', 'administrador']}
         },
         {
-          path: 'examples/servertable',
-          name: 'servertable',
-          component: InternalExamplesServerTable,
+          path: 'manage', // rateio
+          name: 'manage',
+          component: InternalManage,
+          meta : {roles: ['gerente', 'administrador']}
         },
+        // Administrador
         {
-          path: 'period',
-          name: 'period',
-          component: InternalPeriod,
+          path: 'fileupload',
+          name: 'fileupload',
+          component: InternalFileUpload,
+          meta : {roles: ['administrador']}
         },
         {
           path: 'employee',
           name: 'employee',
           component: InternalEmployee,
+          meta : {roles: ['administrador']}
+        },
+        {
+          path: 'period',
+          name: 'period',
+          component: InternalPeriod,
+          meta : {roles: ['administrador']}
+        },
+        {
+          path: 'costcenter',
+          name: 'costcenter',
+          component: InternalCostCenter,
+          meta : {roles: ['administrador']}
         },
       ],
     },

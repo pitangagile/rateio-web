@@ -1,61 +1,83 @@
 <template>
-    <b-row class="page">
-        <b-col cols="12">
-            <h1 class="page--title"><span class="icon-vcard h4"></span> Colaboradores</h1>
-        </b-col>
+  <b-row class="page">
+    <b-col cols="12">
+      <h1 class="page--title"><span class="icon-group h4"></span> Colaboradores</h1>
+    </b-col>
 
-        <b-col cols="12">
-            <v-server-table class="grid mt-3 mb-2" :url="urlApiGrid" :columns="columns" :options="options">
-                <div slot="coastCenterOrigin" slot-scope="props">
-                    {{props.row.coastCenterOrigin.description}}
-                </div>
-                <div slot="actions" slot-scope="props" class="btn-group">
-                  <b-btn class="btn-default btn-sm"> Editar</b-btn>
-                </div>
-            </v-server-table>
-        </b-col>
-    </b-row>
+    <b-col cols="12">
+      <v-server-table class="grid mt-3 mb-2" :url="urlApiGrid" :columns="columns" :options="options" ref="grid">
+        <div slot="afterFilter" class="add-button" debounce="1500">
+          <add @refresh="refresh()" style="padding-left: 5px;"></add>
+        </div>
+        <div slot="name" slot-scope="props">
+          <label v-if="props.row.name"><i class="icon-user-o"></i> {{props.row.name.toUpperCase()}}</label>
+        </div>
+        <div slot="registration" slot-scope="props">
+          <label v-if="props.row.registration">{{props.row.registration.toUpperCase()}}</label>
+        </div>
+        <div slot="email" slot-scope="props">
+          <label v-if="props.row.email">{{props.row.email.toUpperCase()}}</label>
+        </div>
+        <div slot="actions" slot-scope="props">
+          <edit :employee="props.row" @refresh="refresh()"></edit>
+        </div>
+      </v-server-table>
+    </b-col>
+  </b-row>
 </template>
 
 <script>
-import Vue from 'vue';
-import { ServerTable } from 'vue-tables-2';
-import options from './../../../commons/helpers/grid.config';
-import variables from './../../../commons/helpers/variables';
+  /* eslint-disable */
+  import Vue from 'vue';
+  import {ServerTable} from 'vue-tables-2';
+  import options from './../../../commons/helpers/grid.config';
+  import variables from './../../../commons/helpers/variables';
 
-Vue.use(ServerTable, options, false, 'bootstrap4', 'default');
+  import add from './add';
+  import edit from './edit';
 
-export default {
-  name: 'employee',
-  showLoading: true,
-  data() {
-    const self = this;
-    return {
-      urlApiGrid: `${variables.http.root}employee/gridlist`,
-      columns: ['name', 'registration', 'email', 'coastCenterOrigin', 'actions'],
-      options: {
-        headings: {
-          name: 'Nome',
-          registration: 'Matrícula',
-          email: 'e-mail',
-          coastCenterOrigin: 'C.C. Origem',
-          actions: '',
+  Vue.use(ServerTable, options, false, 'bootstrap4', 'default');
+
+  export default {
+    name: 'employee',
+    showLoading: true,
+    components: {
+      add,
+      edit,
+    },
+    data() {
+      const self = this;
+      return {
+        urlApiGrid: `${variables.http.root}employee/gridlist`,
+        columns: ['name', 'registration', 'email', 'actions'],
+        options: {
+          headings: {
+            name: 'Nome',
+            registration: 'Matrícula',
+            email: 'e-mail',
+            actions: 'Ações',
+          },
+          columnsClasses: {
+            actions: 'action-column text-center',
+          },
+          sortable: [],
+          requestFunction(data) {
+            return self.$http().get('employee/gridlist', {params: data})
+              .catch((e) => {
+                this.dispatch('error', e);
+              });
+          },
+          responseAdapter(response) {
+            return response.data;
+          },
         },
-        sortable: ['name'],
-        requestFunction(data) {
-          return self.$http().get('employee/gridlist', { params: data })
-            .catch((e) => {
-              this.dispatch('error', e);
-            });
-        },
-        responseAdapter(response) {
-          console.log(response); // eslint-disable-line
-          return { data: response.data.data, count: response.data.count };
-        },
-      },
-    };
-  },
-};
+      };
+    },methods : {
+      refresh() {
+        this.$refs.grid.refresh();
+      }
+    }
+  };
 </script>
 
 <style lang="scss" scoped>
